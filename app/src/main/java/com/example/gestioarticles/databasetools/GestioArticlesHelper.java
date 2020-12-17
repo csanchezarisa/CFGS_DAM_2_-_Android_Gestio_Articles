@@ -6,6 +6,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class GestioArticlesHelper extends SQLiteOpenHelper {
 
+    /* .: 1. DEFINICIÓ DE LES DADES DE LA BBDD :. */
+    // Nom de les taules en la BBDD
+    public static final String TABLE_ARTICLE = "article";
+
+    // Nom dels camps que conformen la taula "ARTICLE"
+    public static final String ARTICLE_ID = "_id";
+    public static final String ARTICLE_CODI = "codiarticle";
+    public static final String ARTICLE_DESCRIPCIO = "descripcio";
+    public static final String ARTICLE_FAMILIA = "familia";
+    public static final String ARTICLE_PREU = "preu";
+    public static final String ARTICLE_ESTOC = "estoc";
+
+    // Dades sobre la BBDD
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "GestioArticles_DataBase";
 
@@ -19,13 +32,13 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
 
         // String amb el codi SQL per crear la taula "ARTICLE" amb els camps corresponents
         String CREATE_TABLE_ARTICLES =
-                "CREATE TABLE article (" +
-                        "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "codiarticle TEXT NOT NULL UNIQUE," +
-                        "descripcio TEXT NOT NULL," +
-                        "familia TEXT," +
-                        "preu REAL NOT NULL," +
-                        "estoc REAL DEFAULT 0);";
+                "CREATE TABLE "+ TABLE_ARTICLE + "(" +
+                        ARTICLE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        ARTICLE_CODI + "TEXT NOT NULL UNIQUE," +
+                        ARTICLE_DESCRIPCIO + "TEXT NOT NULL," +
+                        ARTICLE_FAMILIA + "TEXT," +
+                        ARTICLE_PREU + "REAL NOT NULL," +
+                        ARTICLE_ESTOC + "REAL DEFAULT 0);";
 
         // S'executa el codi
         db.execSQL(CREATE_TABLE_ARTICLES);

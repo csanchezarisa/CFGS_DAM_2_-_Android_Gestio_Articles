@@ -7,15 +7,15 @@ public class GestioArticlesDataSource {
 
     /* .: 1. DEFINICIÓ DE LES DADES DE LA BBDD :. */
     // Nom de les taules en la BBDD
-    public static final String TABLE_ARTICLE = "article";
+    public static final String TABLE_ARTICLE = GestioArticlesHelper.TABLE_ARTICLE;
 
     // Nom dels camps que conformen la taula "ARTICLE"
-    public static final String ARTICLE_ID = "_id";
-    public static final String ARTICLE_CODI = "codiarticle";
-    public static final String ARTICLE_DESCRIPCIO = "descripcio";
-    public static final String ARTICLE_FAMILIA = "familia";
-    public static final String ARTICLE_PREU = "preu";
-    public static final String ARTICLE_ESTOC = "estoc";
+    public static final String ARTICLE_ID = GestioArticlesHelper.ARTICLE_ID;
+    public static final String ARTICLE_CODI = GestioArticlesHelper.ARTICLE_CODI;
+    public static final String ARTICLE_DESCRIPCIO = GestioArticlesHelper.ARTICLE_DESCRIPCIO;
+    public static final String ARTICLE_FAMILIA = GestioArticlesHelper.ARTICLE_FAMILIA;
+    public static final String ARTICLE_PREU = GestioArticlesHelper.ARTICLE_PREU;
+    public static final String ARTICLE_ESTOC = GestioArticlesHelper.ARTICLE_ESTOC;
 
 
     // Mecanismes per treballar amb SQLite
