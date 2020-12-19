@@ -1,6 +1,7 @@
 package com.example.gestioarticles.databasetools;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class GestioArticlesDataSource {
@@ -43,7 +44,34 @@ public class GestioArticlesDataSource {
 
 
     /* .: 3. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
+    // Retorna una select amb tots els articles
+    public Cursor articles_all() {
 
+        String QUERY = "SELECT *" +
+                "FROM " + TABLE_ARTICLE;
+
+        return dbR.rawQuery(QUERY, new String[]{TABLE_ARTICLE});
+    }
+
+    // Retorna una select filtrada amb els articles que contenen un string determinat
+    public Cursor articles_description(String descripcion) {
+
+        String QUERY = "SELECT *" +
+                "FROM " + TABLE_ARTICLE +
+                " WHERE ? LIKE '%?%'";
+
+        return dbR.rawQuery(QUERY, new String[]{ARTICLE_DESCRIPCIO, descripcion});
+    }
+
+    // Retorna una select filtrada amb els articles amb estoc inferior al número passat
+    public Cursor articles_stock_lower(int stock) {
+
+        String QUERY = "SELECT *" +
+                "FROM " + TABLE_ARTICLE +
+                " WHERE ? <= ?;";
+
+        return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock)});
+    }
 
     /* .: 4. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
 }

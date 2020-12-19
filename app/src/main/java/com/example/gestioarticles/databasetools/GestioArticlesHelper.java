@@ -38,7 +38,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
                         ARTICLE_DESCRIPCIO + "TEXT NOT NULL," +
                         ARTICLE_FAMILIA + "TEXT," +
                         ARTICLE_PREU + "REAL NOT NULL," +
-                        ARTICLE_ESTOC + "REAL DEFAULT 0);";
+                        ARTICLE_ESTOC + "REAL NOT NULL DEFAULT 0);";
 
         // S'executa el codi
         db.execSQL(CREATE_TABLE_ARTICLES);
