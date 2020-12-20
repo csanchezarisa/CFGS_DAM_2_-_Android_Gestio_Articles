@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Gestio Articles</string>
+    <string name="app_name">Article management</string>
+
+    <!-- Main Activity -->
+
+    <!-- Buttons -->
+    <string name="btn_add">Add article</string>
 </resources>

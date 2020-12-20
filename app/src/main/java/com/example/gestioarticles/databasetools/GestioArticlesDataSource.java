@@ -54,13 +54,13 @@ public class GestioArticlesDataSource {
     }
 
     // Retorna una select filtrada amb els articles que contenen un string determinat
-    public Cursor articles_description(String descripcion) {
+    public Cursor articles_description(String description) {
 
         String QUERY = "SELECT *" +
                 "FROM " + TABLE_ARTICLE +
                 " WHERE ? LIKE '%?%'";
 
-        return dbR.rawQuery(QUERY, new String[]{ARTICLE_DESCRIPCIO, descripcion});
+        return dbR.rawQuery(QUERY, new String[]{ARTICLE_DESCRIPCIO, description});
     }
 
     // Retorna una select filtrada amb els articles amb estoc inferior al número passat
@@ -71,6 +71,16 @@ public class GestioArticlesDataSource {
                 " WHERE ? <= ?;";
 
         return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock)});
+    }
+
+    // Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
+    public Cursor articles_description_stock_lower(String description, int stock) {
+
+        String QUERY = "SELECT *" +
+                "FROM " + TABLE_ARTICLE +
+                " WHERE ? <= ? AND ? LIKE '%?%'";
+
+        return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock), ARTICLE_DESCRIPCIO, description});
     }
 
     /* .: 4. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
