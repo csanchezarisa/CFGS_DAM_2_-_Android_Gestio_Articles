@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.gestioarticles"
-        minSdkVersion 19
+        minSdkVersion defaultMinSdkVersion2
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

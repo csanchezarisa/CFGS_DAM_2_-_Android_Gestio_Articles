@@ -15,14 +15,14 @@
         android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
         android:clickable="true"
+        android:contentDescription="@string/activity_main_btn_add"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/article_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_btn"
-        tools:ignore="VectorDrawableCompat"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/btn_add"
-        android:focusable="true" />
+        tools:ignore="VectorDrawableCompat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

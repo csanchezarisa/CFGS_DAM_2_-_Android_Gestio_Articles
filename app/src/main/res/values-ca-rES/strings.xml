@@ -4,7 +4,13 @@
 
     <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
-    <string name="btn_add">Afegir article</string>
+    <string name="activity_main_btn_add">Afegir article</string>
+    <string name="activity_main_btn_delete">Esborrar article</string>
+    <string name="activity_main_txt_article_codi">Codi de l\'article</string>
+    <string name="activity_main_txt_article_description">Descripció de l\'article</string>
+    <string name="activity_main_txt_article_stock">Estoc de l\'article</string>
+    <string name="activity_main_txt_article_price_no_iva">Preu sense IVA de l\'article</string>
+    <string name="activity_main_txt_article_price_iva">Preu amb IVA de l\'article</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->

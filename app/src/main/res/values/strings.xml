@@ -3,7 +3,13 @@
 
     <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
-    <string name="btn_add">Add article</string>
+    <string name="activity_main_btn_add">Add article</string>
+    <string name="activity_main_btn_delete">Delete article</string>
+    <string name="activity_main_txt_article_codi">Article code</string>
+    <string name="activity_main_txt_article_description">Article description</string>
+    <string name="activity_main_txt_article_stock">Article stock</string>
+    <string name="activity_main_txt_article_price_no_iva">Article price without IVA</string>
+    <string name="activity_main_txt_article_price_iva">Article price with IVA</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
