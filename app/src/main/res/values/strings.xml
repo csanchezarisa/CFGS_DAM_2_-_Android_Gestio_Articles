@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Article management</string>
 
+    <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
-
-    <!-- Buttons -->
     <string name="btn_add">Add article</string>
+
+    <!-- .: 2. MENUS :. -->
+    <!-- Main Activity Menú -->
+    <string name="activity_main_menu_btn_description">Filter by description</string>
+    <string name="activity_main_menu_btn_stock">Filter by stock</string>
+    <string name="activity_main_menu_btn_all">Show all</string>
 </resources>

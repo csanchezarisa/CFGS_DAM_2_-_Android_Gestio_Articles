@@ -2,8 +2,13 @@
 <resources>
     <string name="app_name">Gestió articles</string>
 
+    <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
-
-    <!-- Buttons -->
     <string name="btn_add">Afegir article</string>
+
+    <!-- .: 2. MENUS :. -->
+    <!-- Main Activity Menú -->
+    <string name="activity_main_menu_btn_description">Filtrar per descripció</string>
+    <string name="activity_main_menu_btn_stock">Filtrar per estoc</string>
+    <string name="activity_main_menu_btn_all">Mostrar tot</string>
 </resources>
