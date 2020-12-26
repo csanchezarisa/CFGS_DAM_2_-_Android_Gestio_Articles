@@ -16,6 +16,11 @@
     <!-- ArticleManage -->
     <string name="activity_article_manage_article_update_title">Article update</string>
     <string name="activity_article_manage_article_add_title">Add article</string>
+    <string name="activity_article_manage_article_family_none">None</string>
+    <string name="activity_article_manage_article_family_software">Software</string>
+    <string name="activity_article_manage_article_family_hardware">Hardware</string>
+    <string name="activity_article_manage_article_family_other">Other</string>
+
 
 
     <!-- .: 2. MENUS :. -->

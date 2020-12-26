@@ -16,46 +16,119 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp"
             android:layout_marginRight="25dp"
             android:layout_marginBottom="25dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
 
             <TextView
                 android:id="@+id/txt_article_codi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="@string/activity_main_txt_article_codi"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <EditText
+                android:id="@+id/input_article_codi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/activity_main_txt_article_codi"
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/txt_article_descripcio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/activity_main_txt_article_description"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <EditText
+                android:id="@+id/input_article_descripcio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/activity_main_txt_article_description"
+                android:inputType="textMultiLine" />
 
             <TextView
                 android:id="@+id/txt_article_familia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/activity_main_txt_article_family"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <RadioGroup
+                android:id="@+id/input_article_familia"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_article_manage_article_family_none" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_article_manage_article_family_software" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_article_manage_article_family_hardware" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_article_manage_article_family_other" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/txt_article_preu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/activity_main_txt_article_price_no_iva"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <EditText
+                android:id="@+id/input_article_preu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/activity_main_txt_article_price_no_iva"
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:id="@+id/txt_article_stoc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/activity_main_txt_article_stock"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <EditText
+                android:id="@+id/input_article_estoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/activity_main_txt_article_stock"
+                android:inputType="number" />
         </LinearLayout>
     </ScrollView>
 
@@ -95,7 +168,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/design_default_color_error"
         android:clickable="true"
-        android:contentDescription="@string/activity_main_btn_add"
+        android:contentDescription="@string/activity_main_btn_delete"
         android:focusable="true"
         app:backgroundTint="@color/design_default_color_error"
         app:borderWidth="0dp"

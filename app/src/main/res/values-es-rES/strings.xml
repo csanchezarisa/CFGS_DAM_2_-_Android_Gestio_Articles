@@ -17,6 +17,10 @@
     <!-- ArticleManage -->
     <string name="activity_article_manage_article_update_title">Actualizar artículo </string>
     <string name="activity_article_manage_article_add_title">Añadir artículo</string>
+    <string name="activity_article_manage_article_family_none">Ninguna</string>
+    <string name="activity_article_manage_article_family_software">Software</string>
+    <string name="activity_article_manage_article_family_hardware">Hardware</string>
+    <string name="activity_article_manage_article_family_other">Otros</string>
 
 
     <!-- .: 2. MENUS :. -->
