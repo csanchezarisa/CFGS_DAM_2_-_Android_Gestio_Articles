@@ -44,7 +44,7 @@ public class GestioArticlesDataSource {
 
 
     /* .: 3. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
-    // Retorna una select amb tots els articles
+    /** Retorna una select amb tots els articles */
     public Cursor articles_all() {
 
         return dbR.query(TABLE_ARTICLE,
@@ -56,7 +56,8 @@ public class GestioArticlesDataSource {
                 null);
     }
 
-    // Retorna una select filtrada amb els articles que contenen un string determinat
+    /** Retorna una select filtrada amb els articles que contenen un string determinat
+     * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la*/
     public Cursor articles_description(String description) {
 
         String QUERY = "SELECT * " +
@@ -66,7 +67,8 @@ public class GestioArticlesDataSource {
         return dbR.rawQuery(QUERY, new String[]{ARTICLE_DESCRIPCIO, description});
     }
 
-    // Retorna una select filtrada amb els articles amb estoc inferior al número passat
+    /** Retorna una select filtrada amb els articles amb estoc inferior al número passat
+     * @param stock Número per filtrar els articles amb estoc inferior a ell */
     public Cursor articles_stock_lower(int stock) {
 
         String QUERY = "SELECT * " +
@@ -76,7 +78,9 @@ public class GestioArticlesDataSource {
         return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock)});
     }
 
-    // Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
+    /** Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
+     * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la
+     * @param stock Número per filtrar els articles amb estoc inferior a ell */
     public Cursor articles_description_stock_lower(String description, int stock) {
 
         String QUERY = "SELECT * " +
