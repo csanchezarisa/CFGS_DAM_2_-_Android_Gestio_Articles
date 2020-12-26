@@ -9,6 +9,7 @@
     <string name="activity_main_btn_edit">Editar article</string>
     <string name="activity_main_txt_article_codi">Codi de l\'article</string>
     <string name="activity_main_txt_article_description">Descripció de l\'article</string>
+    <string name="activity_main_txt_article_family">Familia de l\'article</string>
     <string name="activity_main_txt_article_stock">Estoc de l\'article</string>
     <string name="activity_main_txt_article_price_no_iva">Preu sense IVA de l\'article</string>
     <string name="activity_main_txt_article_price_iva">Preu amb IVA de l\'article</string>

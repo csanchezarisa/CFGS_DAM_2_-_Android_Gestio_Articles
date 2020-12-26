@@ -4,15 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
-
-import java.util.zip.Inflater;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ArticleManage extends AppCompatActivity {
 
@@ -26,6 +27,7 @@ public class ArticleManage extends AppCompatActivity {
 
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +36,30 @@ public class ArticleManage extends AppCompatActivity {
         // Es recupera el ID que se li envia des de la MainActivity
         idArticle = getIntent().getExtras().getLong("id");
 
-        // Es modifica la ActionBar per mostrar el botò per retornar i canviar el títol
-        // segons si s'està actualitzant o afegint un article
+        // Es recuperen els tres Floating Button que hi ha al layout
+        FloatingActionButton btnAdd = (FloatingActionButton) findViewById(R.id.btn_add_action);
+        FloatingActionButton btnEdit = (FloatingActionButton) findViewById(R.id.btn_edit_action);
+        FloatingActionButton btnDelete = (FloatingActionButton) findViewById(R.id.btn_delete_action);
+
+        // Es modifica la ActionBar per mostrar el botò per retornar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Segons si s'ha d'afegir o modificar un element. Es canvien els elements del layout
         if (idArticle < 0) {
+            // Es canvia el títol de l'activity
             actionBar.setTitle(R.string.activity_article_manage_article_add_title);
+
+            // Es desactiva el botó per editar l'article
+            btnEdit.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.GONE);
         }
         else {
+            // Es canvia el títol de l'activity
             actionBar.setTitle(R.string.activity_article_manage_article_update_title);
+
+            // Es desactiva el botó per afegir articles
+            btnAdd.setVisibility(View.GONE);
         }
 
     }
