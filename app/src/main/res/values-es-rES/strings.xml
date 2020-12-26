@@ -6,11 +6,17 @@
     <!-- Main Activity -->
     <string name="activity_main_btn_add">Añadir artículo</string>
     <string name="activity_main_btn_delete">Borrar artículo</string>
+    <string name="activity_main_btn_edit">Editar artículo</string>
     <string name="activity_main_txt_article_codi">Código del artículo</string>
     <string name="activity_main_txt_article_description">Descripción del artículo</string>
     <string name="activity_main_txt_article_stock">Estoc del artículo</string>
     <string name="activity_main_txt_article_price_no_iva">Precio sin IVA del artículo</string>
     <string name="activity_main_txt_article_price_iva">Precio con IVA del artículo</string>
+
+    <!-- ArticleManage -->
+    <string name="activity_article_manage_article_update_title">Actualizar artículo </string>
+    <string name="activity_article_manage_article_add_title">Añadir artículo</string>
+
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
