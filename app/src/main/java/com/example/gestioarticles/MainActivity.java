@@ -3,14 +3,17 @@ package com.example.gestioarticles;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ListView;
 
+import com.example.gestioarticles.adapter.ArticlesAdapter;
+import com.example.gestioarticles.articlemanage.ArticleManage;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.example.gestioarticles.enumerator.FilterEnum;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Complements per gestionar la BBDD i modificar la llista
     private GestioArticlesDataSource bbdd;
+    private ArticlesAdapter adaptadorArticles;
 
     // Columnes i camps de la BBDD
     private static String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.ARTICLE_DESCRIPCIO, GestioArticlesDataSource.ARTICLE_ESTOC, GestioArticlesDataSource.ARTICLE_PREU};
+    private static int[] to = new int[]{R.id.txt_codi_article, R.id.txt_descripcio_article, R.id.txt_article_estoc, R.id.txt_article_preu_iva};
 
     // Enumerador per saber el tipus de filtre, y String que emmagatzema la descripció filtrada
     private FilterEnum filtreActual;
@@ -44,15 +49,20 @@ public class MainActivity extends AppCompatActivity {
         brn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "hola", Toast.LENGTH_LONG).show();
+                // Es crida a l'activity de gestió d'articles, passant un id negatiu per obligar a crear-ne un article nou
+                gestionarArticle(-1);
             }
         });
 
+        // S'instancia el DataSource per poder treballar amb les dades de la BBDD
+        bbdd = new GestioArticlesDataSource(this);
+
+        // Es carreguen els artícles en la llista
         carregarArticles();
     }
 
     /* .: 3. MENÚ PERSONALITZAT :. */
-    // Menú personalitzat amb filtres
+    /** Menú personalitzat amb filtres */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    // Listeners pels botons del menú personalitzat
+    /** Listeners pels botons del menú personalitzat */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -78,9 +88,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /* .: 4. COMUNICACIÓ AMB ALTRES ACTIVITIES :. */
+    /** S'encarrega de fer la crida a l'Activity que permet gestionar els article.
+     * Modificar-los i afegir-ne de nous
+     * @param id Rep l'id de l'article. Negatiu en cas de voler crear-ne un */
+    private void gestionarArticle(long id) {
+
+        // Es prepara un bundle per passar el id a la nova activity
+        Bundle data = new Bundle();
+        data.putLong("id", id);
+
+        // Es prepara un intent que obrirà l'activity per gestionar articles
+        // Passant-li un bundle am el id de l'article
+        Intent intent = new Intent(this, ArticleManage.class);
+        intent.putExtras(data);
+
+        // Per assignar un ID a l'activity per poder gestionar correctament la resposta
+        // Es revisa si l'id és negatiu (S'ha de crear un nou article)
+        // O si l'id és positiu (S'ha de modificar un article)
+        int idTipusActivity;
+        if (id < 0) {
+            idTipusActivity = ACTIVITY_ADD_ARTICLE;
+        }
+        else {
+            idTipusActivity = ACTIVITY_UPDATE_ARTICLE;
+        }
+
+        // Es fa la crida a l'intent i se li assigna un ID segons què ha de fer
+        startActivityForResult(intent, idTipusActivity);
+    }
+
+
+
     /* .: 4. FUNCIONS PRÒPIES :. */
-    // Carrega les dades i les mostra en el llistat
+    /** Carrega les dades de tots els articles */
     private void carregarArticles() {
+
+        Cursor articles = bbdd.articles_all();
+
+        filtreActual = FilterEnum.FILTER_ALL;
+
+        adaptadorArticles = new ArticlesAdapter(this, R.layout.activity_main_fila, articles, from, to, 1);
+
+        ListView llistat = (ListView) findViewById(R.id.article_list);
+        llistat.setAdapter(adaptadorArticles);
+    }
+
+    /** Refresca les dades i les mostra en el llistat */
+    private void refrescarArticles() {
 
         Cursor articles = null;
 

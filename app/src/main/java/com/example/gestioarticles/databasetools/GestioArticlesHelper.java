@@ -33,12 +33,12 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
         // String amb el codi SQL per crear la taula "ARTICLE" amb els camps corresponents
         String CREATE_TABLE_ARTICLES =
                 "CREATE TABLE "+ TABLE_ARTICLE + "(" +
-                        ARTICLE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        ARTICLE_CODI + "TEXT NOT NULL UNIQUE," +
-                        ARTICLE_DESCRIPCIO + "TEXT NOT NULL," +
-                        ARTICLE_FAMILIA + "TEXT," +
-                        ARTICLE_PREU + "REAL NOT NULL," +
-                        ARTICLE_ESTOC + "REAL NOT NULL DEFAULT 0);";
+                        ARTICLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        ARTICLE_CODI + " TEXT NOT NULL UNIQUE," +
+                        ARTICLE_DESCRIPCIO + " TEXT NOT NULL," +
+                        ARTICLE_FAMILIA + " TEXT," +
+                        ARTICLE_PREU + " REAL NOT NULL," +
+                        ARTICLE_ESTOC + " REAL NOT NULL DEFAULT 0);";
 
         // S'executa el codi
         db.execSQL(CREATE_TABLE_ARTICLES);
