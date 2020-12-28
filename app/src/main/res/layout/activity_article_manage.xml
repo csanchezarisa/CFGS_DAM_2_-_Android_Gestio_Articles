@@ -66,35 +66,10 @@
                 android:text="@string/activity_main_txt_article_family"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-            <RadioGroup
+            <Spinner
                 android:id="@+id/input_article_familia"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RadioButton
-                    android:id="@+id/radioButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/activity_article_manage_article_family_none" />
-
-                <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/activity_article_manage_article_family_software" />
-
-                <RadioButton
-                    android:id="@+id/radioButton3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/activity_article_manage_article_family_hardware" />
-
-                <RadioButton
-                    android:id="@+id/radioButton4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/activity_article_manage_article_family_other" />
-            </RadioGroup>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/txt_article_preu"
@@ -138,9 +113,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
+        android:backgroundTint="@android:color/holo_green_dark"
         android:clickable="true"
         android:contentDescription="@string/activity_main_btn_add"
         android:focusable="true"
+        app:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_btn"
@@ -152,9 +129,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
+        android:backgroundTint="@android:color/holo_green_dark"
         android:clickable="true"
         android:contentDescription="@string/activity_main_btn_add"
         android:focusable="true"
+        app:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_edit_btn"

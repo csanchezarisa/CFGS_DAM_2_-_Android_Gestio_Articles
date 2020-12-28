@@ -4,16 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 public class ArticleManage extends AppCompatActivity {
 
@@ -25,9 +29,23 @@ public class ArticleManage extends AppCompatActivity {
      * fer Inserts, Updates, Deletes, etc. */
     private GestioArticlesDataSource bbdd;
 
+    /** Llistat amb els tipus de familia que poden tenir els articles */
+    private static ArrayList<String> familiesArticle = new ArrayList<String>();
+
+    // Elements del Layout
+    // Buttons
+    private FloatingActionButton btnAdd;
+    private FloatingActionButton btnEdit;
+    private FloatingActionButton btnDelete;
+
+    // Inputs
+    private EditText inpCode;
+    private EditText inpDescription;
+    private EditText inpPrice;
+    private EditText inpStock;
+    private Spinner inpFamily;              // Spinner equival a un llistat del tipus 'Dropdown'
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
-    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +54,28 @@ public class ArticleManage extends AppCompatActivity {
         // Es recupera el ID que se li envia des de la MainActivity
         idArticle = getIntent().getExtras().getLong("id");
 
-        // Es recuperen els tres Floating Button que hi ha al layout
-        FloatingActionButton btnAdd = (FloatingActionButton) findViewById(R.id.btn_add_action);
-        FloatingActionButton btnEdit = (FloatingActionButton) findViewById(R.id.btn_edit_action);
-        FloatingActionButton btnDelete = (FloatingActionButton) findViewById(R.id.btn_delete_action);
+        // Es recuperen els elements modificables del layout
+        // Floating buttons
+        btnAdd = (FloatingActionButton) findViewById(R.id.btn_add_action);
+        btnEdit = (FloatingActionButton) findViewById(R.id.btn_edit_action);
+        btnDelete = (FloatingActionButton) findViewById(R.id.btn_delete_action);
+        // Inputs
+        inpCode = (EditText) findViewById(R.id.input_article_codi);
+        inpDescription = (EditText) findViewById(R.id.input_article_descripcio);
+        inpPrice = (EditText) findViewById(R.id.input_article_preu);
+        inpStock = (EditText) findViewById(R.id.input_article_estoc);
+        inpFamily = (Spinner) findViewById(R.id.input_article_familia);
+
+        // S'omple l'array dels tius de familia amb les traduccions corresponents
+        crearArrayFamilies();
 
         // Es modifica la ActionBar per mostrar el botò per retornar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Es crea un adaptador amb les families disponibles per l'article i s'injecten al spinner (dropdown)
+        ArrayAdapter adaptadorFamilia = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, familiesArticle);
+        inpFamily.setAdapter(adaptadorFamilia);
 
         // Segons si s'ha d'afegir o modificar un element. Es canvien els elements del layout
         if (idArticle < 0) {
@@ -91,5 +123,16 @@ public class ArticleManage extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /* .: 5. FUNCIONS PRÒPIES :. */
+    /** Omple l'array dels tipus de familia amb les traduccions que es troben
+     * en el recurs String. Segons l'idioma del dispositiu */
+    private void crearArrayFamilies() {
+        familiesArticle.add(getString(R.string.activity_article_manage_article_family_none));       // Cap
+        familiesArticle.add(getString(R.string.activity_article_manage_article_family_software));   // Software
+        familiesArticle.add(getString(R.string.activity_article_manage_article_family_hardware));   // Hardware
+        familiesArticle.add(getString(R.string.activity_article_manage_article_family_other));      // Altres
     }
 }
