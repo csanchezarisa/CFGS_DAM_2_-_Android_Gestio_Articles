@@ -28,11 +28,16 @@
     <string name="activity_main_menu_btn_description">Filtrar per descripció</string>
     <string name="activity_main_menu_btn_stock">Filtrar per estoc</string>
     <string name="activity_main_menu_btn_all">Mostrar tot</string>
+    <string name="activity_main_menu_btn_clear">Netejar filtres</string>
+    <string name="activity_main_menu_btn_filter">Filtrar</string>
+    <string name="activity_main_menu_btn_order">Ordenar</string>
 
     <!-- .: 3. ALERTAS :. -->
     <!-- Errores -->
     <string name="alert_error_cant_create_article">No s\'ha pogut crear l\'article. Revisa els camps.</string>
+    <string name="alert_error_cant_update_article">No s\'ha pogut actualitzar l\'article. Revisa els camps.</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">L\'article s\'ha generat correctament.</string>
+    <string name="alert_success_article_updated">L\'article s\'ha actualitzat correctament.</string>
 </resources>

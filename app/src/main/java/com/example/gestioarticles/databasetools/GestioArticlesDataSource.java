@@ -1,5 +1,6 @@
 package com.example.gestioarticles.databasetools;
 
+import android.app.usage.ExternalStorageStats;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -144,12 +145,39 @@ public class GestioArticlesDataSource {
         values.put(ARTICLE_PREU, price);
 
         try {
-            id = dbW.insert(TABLE_ARTICLE, null, values);
+            id = dbW.insert(TABLE_ARTICLE,
+                    null,
+                    values);
         }
         catch (Exception e) {
 
         }
 
         return id;
+    }
+
+    /** Permet actualitzar les dades d'un registre. Fa servir el ID per filtrar-lo en el WHERE */
+    public int updateArticle(long id, String description, String family, double price, int stock) {
+
+        int afectedRows = -1;
+
+        ContentValues values = new ContentValues();
+        values.put(ARTICLE_DESCRIPCIO, description);
+        values.put(ARTICLE_FAMILIA, family);
+        values.put(ARTICLE_PREU, price);
+        values.put(ARTICLE_ESTOC, stock);
+
+        try {
+            afectedRows = dbW.update(TABLE_ARTICLE,
+                    values,
+                    ARTICLE_ID + " = ?",
+                    new String[]{String.valueOf(id)});
+        }
+        catch (Exception e) {
+
+        }
+
+        return afectedRows;
+
     }
 }

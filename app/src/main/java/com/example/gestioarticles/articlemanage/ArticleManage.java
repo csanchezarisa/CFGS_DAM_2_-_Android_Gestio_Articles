@@ -148,8 +148,25 @@ public class ArticleManage extends AppCompatActivity {
         });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+
+                if (comprovarInputs()) {
+
+                    int articlesActualitzats = actualitzarArticle();
+
+                    if (articlesActualitzats > 0) {
+                        mostrarSnackBarCorrecte(getString(R.string.alert_success_article_updated));
+                    }
+                    else {
+                        mostrarSnackBarError(getString(R.string.alert_error_cant_update_article));
+                    }
+
+                }
+                else {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_update_article));
+                }
 
             }
         });
@@ -171,6 +188,11 @@ public class ArticleManage extends AppCompatActivity {
         finish();
     }
 
+    // Listener que controla l'acció del botó "Endarrera" del telèfon
+    @Override
+    public void onBackPressed() {
+        finalitzarActivity();
+    }
 
     /* .: 4. MENÚ PERSONALITZAT :. */
     /** Menú personalitzat amb icones d'acció */
@@ -186,7 +208,7 @@ public class ArticleManage extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.home:
+            case android.R.id.home:
                 finalitzarActivity();
                 return true;
         }
@@ -210,6 +232,7 @@ public class ArticleManage extends AppCompatActivity {
 
     }
 
+    /* .: 5.1 TREBALLAR AMB ELS INPUTS DEL LAYOUT :. */
     /** Revisa els valors que tenen els inputs del layout. Si troba cap problema retorna un false,
      * si tot ha anat correctament, retornarà un true. */
     private boolean comprovarInputs() {
@@ -289,6 +312,7 @@ public class ArticleManage extends AppCompatActivity {
         return inputsCorrectes;
     }
 
+    /* .: 5.2. TREBALLAR AMB LA BBDD :. */
     /** S'encarrega de fer l'insert en la BBDD amb els camps que hi ha als inputs.
      * @return Retorna un 'long', que fa referència al ID de l'article. Si és negatiu, l'article no s'ha
      * pogut afegir. Si es positiu, serà l'identificador de l'article en la BBDD*/
@@ -359,6 +383,71 @@ public class ArticleManage extends AppCompatActivity {
         }
     }
 
+    /** S'encarrega de fer l'update en la BBDD amb els camps que hi ha als inputs.
+     * @return Retorna un 'int', que fa referència al número de files afectades per l'actualització.
+     * Si és negatiu, l'article no s'ha pogut afegir. Si es positiu, seran les rows afectades
+     * per la update */
+    private int actualitzarArticle() {
+
+        boolean inputsCorrectes = true;
+
+        String description = "";
+        String family = "";
+        double price = 0;
+        int stock = 0;
+
+        // Revisa la descripció
+        try {
+            description = inpDescription.getText().toString();
+
+            if (description.length() <= 0)
+                throw new Exception("Descripció buida");
+
+        }
+        catch (Exception e) {
+            inpDescription.setText(null);
+            inputsCorrectes = false;
+        }
+
+        try {
+            family = inpFamily.getSelectedItem().toString();
+        }
+        catch (Exception e) {
+            inputsCorrectes = false;
+        }
+
+        // Revisa el preu
+        try {
+            price = Double.parseDouble(inpPrice.getText().toString());
+
+            if (price < 0)
+                throw new Exception("Preu negatiu");
+
+        }
+        catch (Exception e) {
+            inpPrice.setText(null);
+            inputsCorrectes = false;
+        }
+
+        // Revisa l'estoc
+        try {
+            stock = Integer.parseInt(inpStock.getText().toString());
+        }
+        catch (Exception e) {
+            inpStock.setText(null);
+            inputsCorrectes = false;
+        }
+
+        // Comprova si ha hagut algun error amb la extracció dels valors.
+        // Si tot ha funcionat correctament, fa l'insert i retorna l'id de l'article
+        if (inputsCorrectes) {
+            return bbdd.updateArticle(idArticle, description, family, price, stock);
+        }
+        else {
+            return -1;
+        }
+    }
+
     /** Carrega les dades de l'article seleccionat per mostrar-les en els diferents
      * inputs del layout.
      * Si hi ha cap problema fa un finish i tanca l'activity.
@@ -404,6 +493,7 @@ public class ArticleManage extends AppCompatActivity {
 
     }
 
+    /* .: 5.3. MOSTRAR ALERTES :. */
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
      * notificant d'un error
      * @param error String amb el contingut del missatge que s'ha de mostrar*/

@@ -3,12 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_btn_description"
-        android:title="@string/activity_main_menu_btn_description" />
+        android:id="@+id/menu_btn_filter"
+        android:icon="@drawable/ic_filter_btn_light"
+        android:title="@string/activity_main_menu_btn_filter"
+        app:showAsAction="always" />
     <item
-        android:id="@+id/menu_btn_stock"
-        android:title="@string/activity_main_menu_btn_stock" />
+        android:id="@+id/menu_btn_order"
+        android:icon="@drawable/ic_order_btn_light"
+        android:title="@string/activity_main_menu_btn_order"
+        app:showAsAction="always" />
     <item
-        android:id="@+id/menu_btn_all"
-        android:title="@string/activity_main_menu_btn_all" />
+        android:id="@+id/menu_btn_clear"
+        android:icon="@drawable/ic_close_btn_light"
+        android:title="@string/activity_main_menu_btn_clear"
+        app:showAsAction="always" />
 </menu>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ELEMENT resources (string)*><!ELEMENT string (#PCDATA)><!ATTLIST stringname CDATA #REQUIRED>]>
 <resources>
     <string name="app_name">Gestión artículos</string>
 
@@ -28,11 +28,16 @@
     <string name="activity_main_menu_btn_description">Filtrar por descripción</string>
     <string name="activity_main_menu_btn_stock">Filtrar por estoc</string>
     <string name="activity_main_menu_btn_all">Mostrar todo</string>
+    <string name="activity_main_menu_btn_clear">Limpiar filtros</string>
+    <string name="activity_main_menu_btn_filter">Filtrar</string>
+    <string name="activity_main_menu_btn_order">Ordenar</string>
 
     <!-- .: 3. ALERTAS :. -->
     <!-- Errores -->
     <string name="alert_error_cant_create_article">No se ha podido crear el artículo. Revisa los campos.</string>
+    <string name="alert_error_cant_update_article">No se ha podido actualizar el artículo. Revisa los campos.</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">El artículo se ha generado correctamente.</string>
+    <string name="alert_success_article_updated">El artículo se ha actualizado correctamente.</string>
 </resources>
