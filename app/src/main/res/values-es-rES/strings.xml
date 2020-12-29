@@ -28,4 +28,11 @@
     <string name="activity_main_menu_btn_description">Filtrar por descripción</string>
     <string name="activity_main_menu_btn_stock">Filtrar por estoc</string>
     <string name="activity_main_menu_btn_all">Mostrar todo</string>
+
+    <!-- .: 3. ALERTAS :. -->
+    <!-- Errores -->
+    <string name="alert_error_cant_create_article">No se ha podido crear el artículo. Revisa los campos.</string>
+
+    <!-- Aciertos -->
+    <string name="alert_success_article_created">El artículo se ha generado correctamente.</string>
 </resources>

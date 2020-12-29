@@ -1,21 +1,29 @@
 package com.example.gestioarticles.articlemanage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -45,11 +53,18 @@ public class ArticleManage extends AppCompatActivity {
     private EditText inpStock;
     private Spinner inpFamily;              // Spinner equival a un llistat del tipus 'Dropdown'
 
+    Context context;
+
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_manage);
+
+        // S'instancia la variable, per poder tenir eines per tractar amb la bbdd
+        bbdd = new GestioArticlesDataSource(this);
+
+        context = this;
 
         // Es recupera el ID que se li envia des de la MainActivity
         idArticle = getIntent().getExtras().getLong("id");
@@ -82,9 +97,14 @@ public class ArticleManage extends AppCompatActivity {
             // Es canvia el títol de l'activity
             actionBar.setTitle(R.string.activity_article_manage_article_add_title);
 
-            // Es desactiva el botó per editar l'article
+            // Cerca el TextView corresponent al títol de l'estoc, per poder amagar-lo
+            TextView stockTitle = (TextView) findViewById(R.id.txt_article_stock);
+
+            // Es desactiven els elements
             btnEdit.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
+            inpStock.setVisibility(View.GONE);
+            stockTitle.setVisibility(View.GONE);
         }
         else {
             // Es canvia el títol de l'activity
@@ -93,6 +113,44 @@ public class ArticleManage extends AppCompatActivity {
             // Es desactiva el botó per afegir articles
             btnAdd.setVisibility(View.GONE);
         }
+
+        // Listeners pels elements del layout
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+
+                // Quan es fa click en el botó, es comprova que els inputs estiguin correctament omplenats
+                if (comprovarInputs()) {
+                    long idArticleAfegit = afegirArticle();
+
+                    if (idArticleAfegit >= 0) {
+                        mostrarSnackBarCorrecte(getString(R.string.alert_success_article_created));
+                        finalitzarActivity();
+                    }
+                    else {
+                        mostrarSnackBarError(getString(R.string.alert_error_cant_create_article));
+                    }
+                }
+                else {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_create_article));
+                }
+            }
+        });
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -128,11 +186,200 @@ public class ArticleManage extends AppCompatActivity {
 
     /* .: 5. FUNCIONS PRÒPIES :. */
     /** Omple l'array dels tipus de familia amb les traduccions que es troben
-     * en el recurs String. Segons l'idioma del dispositiu */
+     * en el recurs String. Segons l'idioma del dispositiu.
+     * Per no acumular informació, sempre que es crida al mètode s'esborra
+     * el contingut de l'array */
     private void crearArrayFamilies() {
+
+        familiesArticle.clear();
         familiesArticle.add(getString(R.string.activity_article_manage_article_family_none));       // Cap
         familiesArticle.add(getString(R.string.activity_article_manage_article_family_software));   // Software
         familiesArticle.add(getString(R.string.activity_article_manage_article_family_hardware));   // Hardware
         familiesArticle.add(getString(R.string.activity_article_manage_article_family_other));      // Altres
+
     }
+
+    /** Revisa els valors que tenen els inputs del layout. Si troba cap problema retorna un false,
+     * si tot ha anat correctament, retornarà un true. */
+    private boolean comprovarInputs() {
+
+        boolean focusRequired = false;
+        boolean inputsCorrectes = true;
+
+        // Revisa el codi
+        if (idArticle < 0) {
+            try {
+                String code = inpCode.getText().toString();
+
+                if (code.length() <= 0)
+                    throw new Exception("Codi buit");
+
+                if (bbdd.checkCode(code))
+                    throw new Exception("Codi duplicat");
+            }
+            catch (Exception e) {
+                inpCode.setText(null);
+                inpCode.requestFocus();
+                focusRequired = true;
+                inputsCorrectes = false;
+            }
+        }
+
+        // Revisa la descripció
+        try {
+            String description = inpDescription.getText().toString();
+
+            if (description.length() <= 0)
+                throw new Exception("Descripció buida");
+
+        }
+        catch (Exception e) {
+            inpDescription.setText(null);
+            if (!focusRequired) {
+                inpDescription.requestFocus();
+                focusRequired = true;
+            }
+            inputsCorrectes = false;
+        }
+
+        // Revisa el preu
+        try {
+            double price = Double.parseDouble(inpPrice.getText().toString());
+
+            if (price < 0)
+                throw new Exception("Preu negatiu");
+
+        }
+        catch (Exception e) {
+            inpPrice.setText(null);
+            if (!focusRequired) {
+                inpPrice.requestFocus();
+                focusRequired = true;
+            }
+
+            inputsCorrectes = false;
+        }
+
+        // Revisa l'estoc
+        if (idArticle >= 0) {
+            try {
+                int stock = Integer.parseInt(inpStock.getText().toString());
+            }
+            catch (Exception e) {
+                inpStock.setText(null);
+                if (!focusRequired) {
+                    inpStock.requestFocus();
+                    focusRequired = true;
+                }
+                inputsCorrectes = false;
+            }
+        }
+
+        return inputsCorrectes;
+    }
+
+    /** S'encarrega de fer l'insert en la BBDD amb els camps que hi ha als inputs.
+     * @return Retorna un 'long', que fa referència al ID de l'article. Si és negatiu, l'article no s'ha
+     * pogut afegir. Si es positiu, serà l'identificador de l'article en la BBDD*/
+    private long afegirArticle() {
+
+        boolean inputsCorrectes = true;
+
+        String code = "";
+        String description = "";
+        String family = "";
+        double price = 0;
+
+        // Revisa el codi
+        try {
+            code = inpCode.getText().toString();
+
+            if (code.length() <= 0)
+                throw new Exception("Codi buit");
+
+            if (bbdd.checkCode(code))
+                throw new Exception("Codi duplicat");
+        }
+        catch (Exception e) {
+            inpCode.setText(null);
+            inputsCorrectes = false;
+        }
+
+        // Revisa la descripció
+        try {
+            description = inpDescription.getText().toString();
+
+            if (description.length() <= 0)
+                throw new Exception("Descripció buida");
+
+        }
+        catch (Exception e) {
+            inpDescription.setText(null);
+            inputsCorrectes = false;
+        }
+
+        try {
+            family = inpFamily.getSelectedItem().toString();
+        }
+        catch (Exception e) {
+            inputsCorrectes = false;
+        }
+
+        // Revisa el preu
+        try {
+            price = Double.parseDouble(inpPrice.getText().toString());
+
+            if (price < 0)
+                throw new Exception("Preu negatiu");
+
+        }
+        catch (Exception e) {
+            inpPrice.setText(null);
+            inputsCorrectes = false;
+        }
+
+        // Comprova si ha hagut algun error amb la extracció dels valors.
+        // Si tot ha funcionat correctament, fa l'insert i retorna l'id de l'article
+        if (inputsCorrectes) {
+            return bbdd.insertArticle(code, description, family, price);
+        }
+        else {
+            return -1;
+        }
+    }
+
+    /** Mostra un Snackbar de color vermell en la part superior de la pantalla
+     * notificant d'un error
+     * @param error String amb el contingut del missatge que s'ha de mostrar*/
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void mostrarSnackBarError(String error) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#000000\">" + error + "</font>"), Snackbar.LENGTH_LONG);
+
+        View snackbarView = snackbar.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        snackbarView.setLayoutParams(params);
+        snackbarView.setBackgroundColor(getColor(R.color.design_default_color_error));
+
+        snackbar.show();
+    }
+
+    /** Mostra un Snackbar de color verd en la part superior de la pantalla
+     * avisant que tot ha funcionat correctament
+     * @param missatge String amb el contingut del missatge que s'ha de mostrar*/
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void mostrarSnackBarCorrecte(String missatge) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#000000\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
+
+        View snackbarView = snackbar.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        snackbarView.setLayoutParams(params);
+        snackbarView.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+
+        snackbar.show();
+    }
+
 }

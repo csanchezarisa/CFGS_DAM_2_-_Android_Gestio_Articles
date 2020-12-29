@@ -1,7 +1,9 @@
 package com.example.gestioarticles.databasetools;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class GestioArticlesDataSource {
@@ -45,7 +47,7 @@ public class GestioArticlesDataSource {
 
     /* .: 3. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
     /** Retorna una select amb tots els articles */
-    public Cursor articles_all() {
+    public Cursor articlesAll() {
 
         return dbR.query(TABLE_ARTICLE,
                 new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
@@ -58,7 +60,7 @@ public class GestioArticlesDataSource {
 
     /** Retorna una select filtrada amb els articles que contenen un string determinat
      * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la*/
-    public Cursor articles_description(String description) {
+    public Cursor articlesDescription(String description) {
 
         String QUERY = "SELECT * " +
                 "FROM " + TABLE_ARTICLE +
@@ -69,7 +71,7 @@ public class GestioArticlesDataSource {
 
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
-    public Cursor articles_stock_lower(int stock) {
+    public Cursor articlesStockLower(int stock) {
 
         String QUERY = "SELECT * " +
                 "FROM " + TABLE_ARTICLE +
@@ -81,7 +83,7 @@ public class GestioArticlesDataSource {
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
      * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
-    public Cursor articles_description_stock_lower(String description, int stock) {
+    public Cursor articlesDescriptionStockLower(String description, int stock) {
 
         String QUERY = "SELECT * " +
                 "FROM " + TABLE_ARTICLE +
@@ -90,5 +92,51 @@ public class GestioArticlesDataSource {
         return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock), ARTICLE_DESCRIPCIO, description});
     }
 
+    /* .: 3.1. SELECTS - REALITZEN CONSULTES I RETORNEN BOOLEANS :. */
+    /** Fa una consulta filtrant pel codi de l'article.
+     * Retorna un boolean segons si existeix algun
+     * article amb el mateix codi o no
+     * @param code Codi que es vol cercar en la BBDD*/
+    public boolean checkCode(String code) {
+        boolean exists = false;
+
+        Cursor select = dbR.query(
+                TABLE_ARTICLE,
+                new String[]{ARTICLE_ID},
+                ARTICLE_CODI + " LIKE '%" + code + "%'",
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Es comprova el resultat de la select. Si es diferent a 0, el boolean en posarà en true
+        if (select.getCount() != 0) {
+            exists = true;
+        }
+
+        return exists;
+    }
+
     /* .: 4. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
+    /** Permet fer la inserció d'un nou article en la BBDD */
+    public long insertArticle(String code, String description, String family, double price) {
+
+        long id = -1;
+
+        ContentValues values = new ContentValues();
+        values.put(ARTICLE_CODI, code);
+        values.put(ARTICLE_DESCRIPCIO, description);
+        values.put(ARTICLE_FAMILIA, family);
+        values.put(ARTICLE_PREU, price);
+
+        try {
+            id = dbW.insert(TABLE_ARTICLE, null, values);
+        }
+        catch (Exception e) {
+
+        }
+
+        return id;
+    }
 }

@@ -35,9 +35,12 @@
                 android:id="@+id/input_article_codi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/activity_main_txt_article_codi"
                 android:ems="10"
                 android:hint="@string/activity_main_txt_article_codi"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:nextFocusForward="@id/input_article_descripcio"
+                android:selectAllOnFocus="true" />
 
             <TextView
                 android:id="@+id/txt_article_descripcio"
@@ -52,10 +55,13 @@
                 android:id="@+id/input_article_descripcio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/activity_main_txt_article_description"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/activity_main_txt_article_description"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:nextFocusForward="@id/input_article_preu"
+                android:selectAllOnFocus="true" />
 
             <TextView
                 android:id="@+id/txt_article_familia"
@@ -69,7 +75,8 @@
             <Spinner
                 android:id="@+id/input_article_familia"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
 
             <TextView
                 android:id="@+id/txt_article_preu"
@@ -84,12 +91,14 @@
                 android:id="@+id/input_article_preu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/activity_main_txt_article_price_no_iva"
                 android:ems="10"
                 android:hint="@string/activity_main_txt_article_price_no_iva"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:nextFocusForward="@id/input_article_estoc" />
 
             <TextView
-                android:id="@+id/txt_article_stoc"
+                android:id="@+id/txt_article_stock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -101,6 +110,7 @@
                 android:id="@+id/input_article_estoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/activity_main_txt_article_stock"
                 android:ems="10"
                 android:hint="@string/activity_main_txt_article_stock"
                 android:inputType="number" />

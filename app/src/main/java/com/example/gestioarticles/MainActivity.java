@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     /** Carrega les dades de tots els articles */
     private void carregarArticles() {
 
-        Cursor articles = bbdd.articles_all();
+        Cursor articles = bbdd.articlesAll();
 
         filtreActual = FilterEnum.FILTER_ALL;
 
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         switch (filtreActual) {
             // S'han de mostrar tots els articles
             case FILTER_ALL:
-                articles = bbdd.articles_all();
+                articles = bbdd.articlesAll();
                 break;
 
             // S'han de mostrar els articles filtrats per una descripció

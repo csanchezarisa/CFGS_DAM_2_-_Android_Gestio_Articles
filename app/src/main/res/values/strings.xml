@@ -28,4 +28,11 @@
     <string name="activity_main_menu_btn_description">Filter by description</string>
     <string name="activity_main_menu_btn_stock">Filter by stock</string>
     <string name="activity_main_menu_btn_all">Show all</string>
+
+    <!-- .: 3. ALERTAS :. -->
+    <!-- Errores -->
+    <string name="alert_error_cant_create_article">The article could not be created. Check the inputs.</string>
+
+    <!-- Aciertos -->
+    <string name="alert_success_article_created">The article has been generated successfully.</string>
 </resources>
