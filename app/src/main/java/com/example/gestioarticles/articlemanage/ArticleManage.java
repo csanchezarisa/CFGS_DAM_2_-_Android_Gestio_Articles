@@ -156,8 +156,10 @@ public class ArticleManage extends AppCompatActivity {
 
 
     /* .: 3. ACCIONS PER FINALITZAR L'ACTIVITY :. */
+    /** Finalitza l'activity, marcant com a ResultCode un OK */
     private void finalitzarActivity() {
-
+        setResult(RESULT_OK);
+        finish();
     }
 
 

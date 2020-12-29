@@ -1,6 +1,7 @@
 package com.example.gestioarticles;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -31,12 +32,14 @@ public class MainActivity extends AppCompatActivity {
 
     // Columnes i camps de la BBDD
     private static String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.ARTICLE_DESCRIPCIO, GestioArticlesDataSource.ARTICLE_ESTOC, GestioArticlesDataSource.ARTICLE_PREU};
-    private static int[] to = new int[]{R.id.txt_codi_article, R.id.txt_descripcio_article, R.id.txt_article_estoc, R.id.txt_article_preu_iva};
+    private static int[] to = new int[]{R.id.txt_codi_article, R.id.txt_descripcio_article, R.id.txt_article_estoc, R.id.txt_article_preu_no_iva};
 
     // Enumerador per saber el tipus de filtre, y String que emmagatzema la descripció filtrada
     private FilterEnum filtreActual;
     private String description;
 
+    // Elements del Layout
+    ListView llistatArticles;
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
     @Override
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Enllaçar variables amb els elements de layout
+        llistatArticles = (ListView) findViewById(R.id.article_list);
         // Botó per afegir articles
         FloatingActionButton brn_add = findViewById(R.id.btn_add);
         brn_add.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +123,17 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, idTipusActivity);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        // Revisa que l'activity que es tanca sigui l'encarregada de modificar o afegir articles
+        // I s'hagi tancat amb un ResultCode OK
+        if ((requestCode == ACTIVITY_ADD_ARTICLE || requestCode == ACTIVITY_UPDATE_ARTICLE) && resultCode == RESULT_OK) {
+            refrescarArticles();
+        }
+
+    }
 
     /* .: 4. FUNCIONS PRÒPIES :. */
     /** Carrega les dades de tots els articles */
@@ -130,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
         adaptadorArticles = new ArticlesAdapter(this, R.layout.activity_main_fila, articles, from, to, 1);
 
-        ListView llistat = (ListView) findViewById(R.id.article_list);
-        llistat.setAdapter(adaptadorArticles);
+        llistatArticles.setAdapter(adaptadorArticles);
     }
 
-    /** Refresca les dades i les mostra en el llistat */
+    /** Refresca les dades i les mostra en el llistat segons el filtre que
+     * s'estigui utilitzant actualment*/
     private void refrescarArticles() {
 
         Cursor articles = null;
@@ -159,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        adaptadorArticles.changeCursor(articles);
+        adaptadorArticles.notifyDataSetChanged();
+
+        llistatArticles.setSelection(0);
     }
 
 }
