@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
+
 
 public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
 
@@ -26,13 +29,20 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         // Es recupera l'article que s'ha de mostrar en la fila
         Cursor article = (Cursor) getItem(position);
 
-        // De l'article recuperat, aconseguim el seu estoc
+        // De l'article recuperat, aconseguim el seu estoc i el preu
         int stock = article.getInt(article.getColumnIndexOrThrow(GestioArticlesDataSource.ARTICLE_ESTOC));
+        double price = article.getDouble(article.getColumnIndexOrThrow(GestioArticlesDataSource.ARTICLE_PREU));
 
         // Si l'estoc es inferior o igual a 0, el fons de la fila es pinta de vermell
         if (stock <= 0) {
             fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_NO_STOCK_ARTICLE));
         }
+
+        TextView element = (TextView) fila.findViewById(R.id.txt_article_preu_iva);
+        element.setText(String.valueOf(price * 1.21) + "€");
+
+        element = (TextView) fila.findViewById(R.id.txt_article_preu_no_iva);
+        element.setText(element.getText().toString() + "€, no IVA");
 
         return fila;
     }
