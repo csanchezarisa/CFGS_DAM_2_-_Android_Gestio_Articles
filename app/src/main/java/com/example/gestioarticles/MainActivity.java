@@ -90,11 +90,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_btn_all:
+            case R.id.menu_btn_clear:
+                carregarArticles();
                 return true;
-            case R.id.menu_btn_description:
+            case R.id.menu_btn_filter:
                 return true;
-            case R.id.menu_btn_stock:
+            case R.id.menu_btn_order:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
