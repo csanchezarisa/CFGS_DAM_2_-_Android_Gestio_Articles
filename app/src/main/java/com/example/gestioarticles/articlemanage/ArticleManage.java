@@ -3,9 +3,11 @@ package com.example.gestioarticles.articlemanage;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Build;
@@ -174,7 +176,7 @@ public class ArticleManage extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mostrarAlertaEliminar(getString(R.string.alert_info_title_delete_article), getString(R.string.alert_info_delete_article));
             }
         });
 
@@ -494,6 +496,39 @@ public class ArticleManage extends AppCompatActivity {
     }
 
     /* .: 5.3. MOSTRAR ALERTES :. */
+    /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat */
+    private void mostrarAlertaEliminar(String titol, String contingut) {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+
+        alert.setTitle(titol);
+        alert.setMessage(contingut);
+
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                int articlesEliminats = bbdd.deleteArticle(idArticle);
+
+                if (articlesEliminats > 0) {
+                    finalitzarActivity();
+                }
+                else {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_delete_article));
+                }
+            }
+        });
+
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // No fa res
+            }
+        });
+
+        alert.show();
+    }
+
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
      * notificant d'un error
      * @param error String amb el contingut del missatge que s'ha de mostrar*/

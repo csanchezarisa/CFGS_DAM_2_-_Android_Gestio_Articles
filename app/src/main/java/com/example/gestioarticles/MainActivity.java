@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* .: 5. ALERTES :. */
     /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat */
-    public void mostrarAlertaEliminar(String titol, String contingut, long idArticle) {
+    private void mostrarAlertaEliminar(String titol, String contingut, long idArticle) {
         AlertDialog alert = new AlertDialog.Builder(this).create();
 
         alert.setTitle(titol);
