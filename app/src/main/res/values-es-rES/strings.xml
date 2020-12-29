@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ELEMENT resources (string)*><!ELEMENT string (#PCDATA)><!ATTLIST stringname CDATA #REQUIRED>]>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Gestión artículos</string>
 
