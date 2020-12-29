@@ -33,11 +33,19 @@
     <string name="activity_main_menu_btn_order">Ordenar</string>
 
     <!-- .: 3. ALERTAS :. -->
+    <!-- Explicación -->
+    <string name="alert_info_delete_article">¿Seguro que quieres eliminar el artículo?</string>
+    <string name="alert_info_title_delete_article">Eliminar artículo</string>
+    <string name="alert_info_accept">Aceptar</string>
+    <string name="alert_info_cancel">Cancelar</string>
+
     <!-- Errores -->
     <string name="alert_error_cant_create_article">No se ha podido crear el artículo. Revisa los campos.</string>
     <string name="alert_error_cant_update_article">No se ha podido actualizar el artículo. Revisa los campos.</string>
+    <string name="alert_error_cant_delete_article">No se ha podido eliminar el artículo.</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">El artículo se ha generado correctamente.</string>
     <string name="alert_success_article_updated">El artículo se ha actualizado correctamente.</string>
+    <string name="alert_success_article_deleted">El artículo se ha eliminado correctamente.</string>
 </resources>

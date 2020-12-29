@@ -2,16 +2,24 @@ package com.example.gestioarticles;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.example.gestioarticles.adapter.ArticlesAdapter;
@@ -19,6 +27,7 @@ import com.example.gestioarticles.articlemanage.ArticleManage;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.example.gestioarticles.enumerator.FilterEnum;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     // Columnes i camps de la BBDD
     private static String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.ARTICLE_DESCRIPCIO, GestioArticlesDataSource.ARTICLE_ESTOC, GestioArticlesDataSource.ARTICLE_PREU};
     private static int[] to = new int[]{R.id.txt_codi_article, R.id.txt_descripcio_article, R.id.txt_article_estoc, R.id.txt_article_preu_no_iva};
+
+    // Variabes que permeten accedir a la traducció dels botons acceptar i cancel·lar
+    public static String alertBtnAccept = "";
+    public static String alertBtnCancel = "";
 
     // Enumerador per saber el tipus de filtre, y String que emmagatzema la descripció filtrada
     private FilterEnum filtreActual;
@@ -60,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        alertBtnAccept = getString(R.string.alert_info_accept);
+        alertBtnCancel = getString(R.string.alert_info_cancel);
+
         // S'instancia el DataSource per poder treballar amb les dades de la BBDD
         bbdd = new GestioArticlesDataSource(this);
 
@@ -71,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 gestionarArticle(id);
+            }
+        });
+
+        llistatArticles.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mostrarAlertaEliminar(getString(R.string.alert_info_title_delete_article), getString(R.string.alert_info_delete_article), id);
+                return true;
             }
         });
     }
@@ -188,6 +212,76 @@ public class MainActivity extends AppCompatActivity {
         adaptadorArticles.notifyDataSetChanged();
 
         llistatArticles.setSelection(0);
+    }
+
+    /* .: 5. ALERTES :. */
+    /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat */
+    public void mostrarAlertaEliminar(String titol, String contingut, long idArticle) {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+
+        alert.setTitle(titol);
+        alert.setMessage(contingut);
+
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                int articlesEliminats = bbdd.deleteArticle(idArticle);
+
+                if (articlesEliminats > 0) {
+                    mostrarSnackBarCorrecte(getString(R.string.alert_success_article_deleted));
+                }
+                else {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_delete_article));
+                }
+
+                refrescarArticles();
+            }
+        });
+
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // No fa res
+            }
+        });
+
+        alert.show();
+    }
+
+    /** Mostra un Snackbar de color vermell en la part superior de la pantalla
+     * notificant d'un error
+     * @param error String amb el contingut del missatge que s'ha de mostrar*/
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void mostrarSnackBarError(String error) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#000000\">" + error + "</font>"), Snackbar.LENGTH_LONG);
+
+        View snackbarView = snackbar.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        snackbarView.setLayoutParams(params);
+        snackbarView.setBackgroundColor(getColor(R.color.design_default_color_error));
+
+        snackbar.show();
+    }
+
+    /** Mostra un Snackbar de color verd en la part superior de la pantalla
+     * avisant que tot ha funcionat correctament
+     * @param missatge String amb el contingut del missatge que s'ha de mostrar*/
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void mostrarSnackBarCorrecte(String missatge) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#000000\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
+
+        View snackbarView = snackbar.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        snackbarView.setLayoutParams(params);
+        snackbarView.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+
+        snackbar.show();
     }
 
 }

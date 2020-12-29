@@ -5,8 +5,12 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.gestioarticles.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 
@@ -38,12 +42,16 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
             fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_NO_STOCK_ARTICLE));
         }
 
+        // Canvia el contingut dels preus, per mostrar el símbol € i calcular l'IVA
         TextView element = (TextView) fila.findViewById(R.id.txt_article_preu_iva);
         element.setText(String.valueOf(price * 1.21) + "€");
 
         element = (TextView) fila.findViewById(R.id.txt_article_preu_no_iva);
         element.setText(element.getText().toString() + "€, no IVA");
 
+        ImageView btnEliminar = (ImageView) fila.findViewById(R.id.btn_delete_article);
+
         return fila;
     }
+
 }

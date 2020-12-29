@@ -180,4 +180,22 @@ public class GestioArticlesDataSource {
         return afectedRows;
 
     }
+
+    /** Permet eliminar un registre de la BBDD, segons el ID
+     * @param id ID del registre en la taula, per poder eliminar-lo */
+    public int deleteArticle(long id) {
+
+        int afectedRows = -1;
+
+        try {
+            afectedRows = dbW.delete(TABLE_ARTICLE,
+                    ARTICLE_ID + " = ?",
+                    new String[]{String.valueOf(id)});
+        }
+        catch (Exception e) {
+
+        }
+
+        return afectedRows;
+    }
 }

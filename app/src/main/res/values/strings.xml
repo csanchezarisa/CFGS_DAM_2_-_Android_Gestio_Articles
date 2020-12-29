@@ -33,11 +33,19 @@
     <string name="activity_main_menu_btn_order">Order</string>
 
     <!-- .: 3. ALERTAS :. -->
+    <!-- Explicación -->
+    <string name="alert_info_delete_article">Are you sure you want to delete the article?</string>
+    <string name="alert_info_title_delete_article">Article delete</string>
+    <string name="alert_info_accept">Accept</string>
+    <string name="alert_info_cancel">Cancel</string>
+
     <!-- Errores -->
     <string name="alert_error_cant_create_article">The article could not be created. Check the inputs.</string>
     <string name="alert_error_cant_update_article">The article could not be updated. Check the inputs.</string>
+    <string name="alert_error_cant_delete_article">The article could not be deleted.</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">The article has been generated successfully.</string>
     <string name="alert_success_article_updated">The article has been updated successfully.</string>
+    <string name="alert_success_article_deleted">The article has been deleted successfully.</string>
 </resources>
