@@ -381,6 +381,22 @@ public class ArticleManage extends AppCompatActivity {
             inpDescription.setText(description);
             inpPrice.setText(price);
             inpStock.setText(stock);
+
+            // Revisa quina és la familia de l'article, per seleccionar automàticament la opció en el dropdown
+            int spinnerPosition = 0;
+
+            if (family.equalsIgnoreCase(getString(R.string.activity_article_manage_article_family_software))) {
+                spinnerPosition = 1;
+            }
+            else if (family.equalsIgnoreCase(getString(R.string.activity_article_manage_article_family_hardware))) {
+                spinnerPosition = 2;
+            }
+            else if (family.equalsIgnoreCase(getString(R.string.activity_article_manage_article_family_other))) {
+                spinnerPosition = 3;
+            }
+
+            inpFamily.setSelection(spinnerPosition);
+
         }
         else {
             finish();
