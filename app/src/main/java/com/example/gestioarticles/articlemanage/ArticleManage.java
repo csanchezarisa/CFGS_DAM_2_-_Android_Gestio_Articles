@@ -6,9 +6,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,7 +56,6 @@ public class ArticleManage extends AppCompatActivity {
     private EditText inpStock;
     private Spinner inpFamily;              // Spinner equival a un llistat del tipus 'Dropdown'
 
-    Context context;
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
     @Override
@@ -63,8 +65,6 @@ public class ArticleManage extends AppCompatActivity {
 
         // S'instancia la variable, per poder tenir eines per tractar amb la bbdd
         bbdd = new GestioArticlesDataSource(this);
-
-        context = this;
 
         // Es recupera el ID que se li envia des de la MainActivity
         idArticle = getIntent().getExtras().getLong("id");
@@ -112,6 +112,15 @@ public class ArticleManage extends AppCompatActivity {
 
             // Es desactiva el botó per afegir articles
             btnAdd.setVisibility(View.GONE);
+
+            // Es bloqueja l'input del codi, per que no es pugui modificar
+            inpCode.setVisibility(View.GONE);
+
+            // Es recupera l'article de la BBDD
+            Cursor article = bbdd.getArticle(idArticle);
+
+            // Es carreguen les dades de l'article recuperat en el layout
+            carregarDadesArticle(article);
         }
 
         // Listeners pels elements del layout
@@ -348,6 +357,35 @@ public class ArticleManage extends AppCompatActivity {
         else {
             return -1;
         }
+    }
+
+    /** Carrega les dades de l'article seleccionat per mostrar-les en els diferents
+     * inputs del layout.
+     * Si hi ha cap problema fa un finish i tanca l'activity.
+     * @param article Rep un Cursor com a paràmetre, amb el qual omple els inputs del layout*/
+    private void carregarDadesArticle(Cursor article) {
+
+        // Mou el cursor al primer registre. Si hi ha cap problema, finalitza l'activity
+        if (article.moveToFirst()) {
+
+            // Recupera
+            String code = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_CODI));
+            String description = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_DESCRIPCIO));
+            String family = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_FAMILIA));
+            String price = String.valueOf(article.getDouble(article.getColumnIndexOrThrow(bbdd.ARTICLE_PREU)));
+            String stock = String.valueOf(article.getInt(article.getColumnIndexOrThrow(bbdd.ARTICLE_ESTOC)));
+
+            // Canvia els valors dels inputs pels recuperats de l'article
+            TextView txtArticleCode = (TextView) findViewById(R.id.txt_article_codi);
+            txtArticleCode.setText(txtArticleCode.getText().toString() + ": " + code);
+            inpDescription.setText(description);
+            inpPrice.setText(price);
+            inpStock.setText(stock);
+        }
+        else {
+            finish();
+        }
+
     }
 
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla

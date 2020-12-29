@@ -46,8 +46,21 @@ public class GestioArticlesDataSource {
 
 
     /* .: 3. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
+    /** Retorna una select amb l'article que s'està buscant
+     * @param id ID de l'article que es vol buscar */
+    public Cursor getArticle(long id) {
+
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_ID + " = ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+    }
+
     /** Retorna una select amb tots els articles */
-    public Cursor articlesAll() {
+    public Cursor getArticlesAll() {
 
         return dbR.query(TABLE_ARTICLE,
                 new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},

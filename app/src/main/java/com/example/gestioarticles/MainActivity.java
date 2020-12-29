@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.gestioarticles.adapter.ArticlesAdapter;
@@ -64,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Es carreguen els artícles en la llista
         carregarArticles();
+
+        // Es crea un listener pels elements del llistat
+        llistatArticles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                gestionarArticle(id);
+            }
+        });
     }
 
     /* .: 3. MENÚ PERSONALITZAT :. */
@@ -139,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     /** Carrega les dades de tots els articles */
     private void carregarArticles() {
 
-        Cursor articles = bbdd.articlesAll();
+        Cursor articles = bbdd.getArticlesAll();
 
         filtreActual = FilterEnum.FILTER_ALL;
 
@@ -158,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         switch (filtreActual) {
             // S'han de mostrar tots els articles
             case FILTER_ALL:
-                articles = bbdd.articlesAll();
+                articles = bbdd.getArticlesAll();
                 break;
 
             // S'han de mostrar els articles filtrats per una descripció
