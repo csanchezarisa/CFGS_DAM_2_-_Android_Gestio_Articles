@@ -41,6 +41,13 @@
     <string name="alert_info_reset">Restablir</string>
     <string name="alert_info_title_filter">Selecciona els filtres</string>
     <string name="alert_info_title_select_description">Paraules en la descripció:</string>
+    <string name="alert_info_title_order">Selecciona l\'ordre:</string>
+    <string name="alert_info_order_by_date">Data inserció (vells primer)</string>
+    <string name="alert_info_order_by_date_desc">Data inserció (nous primer)</string>
+    <string name="alert_info_order_by_code">Codi de l\'article (A-Z)</string>
+    <string name="alert_info_order_by_code_desc">Codi de l\'article (Z-A)</string>
+    <string name="alert_info_order_by_price">Preu de menor a major</string>
+    <string name="alert_info_order_by_price_desc">Preu de major a menor</string>
 
     <!-- Errores -->
     <string name="alert_error_cant_create_article">No s\'ha pogut crear l\'article. Revisa els camps.</string>

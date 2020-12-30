@@ -41,6 +41,13 @@
     <string name="alert_info_reset">Reset</string>
     <string name="alert_info_title_filter">Select filters</string>
     <string name="alert_info_title_select_description">Words in description:</string>
+    <string name="alert_info_title_order">Order:</string>
+    <string name="alert_info_order_by_date">Insert date (old ones first)</string>
+    <string name="alert_info_order_by_date_desc">Insert date (newest first)</string>
+    <string name="alert_info_order_by_code">Item code (A-Z)</string>
+    <string name="alert_info_order_by_code_desc">Item code (Z-A)</string>
+    <string name="alert_info_order_by_price">Price from lowest to highest</string>
+    <string name="alert_info_order_by_price_desc">Price from high to low</string>
 
     <!-- Errores -->
     <string name="alert_error_cant_create_article">The article could not be created. Check the inputs.</string>

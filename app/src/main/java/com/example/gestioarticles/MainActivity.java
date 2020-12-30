@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,7 +25,6 @@ import android.widget.ListView;
 import com.example.gestioarticles.adapter.ArticlesAdapter;
 import com.example.gestioarticles.articlemanage.ArticleManage;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
-import com.example.gestioarticles.enumerator.FilterEnum;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -49,11 +47,15 @@ public class MainActivity extends AppCompatActivity {
     public static String alertBtnAccept = "";
     public static String alertBtnCancel = "";
 
-    // Enumerador per saber el tipus de filtre, y String que emmagatzema la descripció filtrada
-    private FilterEnum filtreActual;
+    // Variables que emmagatzemen el filtre actual
     private boolean filterDescription = false;
     private String description;
     private boolean filterStock = false;
+
+    /** Variable que emmagatzemen l'ordre per mostrar els articles.
+     * Per defecte, s'ordenarà pel camp ID */
+    private String sortType = GestioArticlesDataSource.ARTICLE_CODI;
+    private int sortPosition = 0;
 
 
     // Elements del Layout
@@ -119,12 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_btn_clear:
-                carregarArticles();
+                eliminarFiltres();
                 return true;
             case R.id.menu_btn_filter:
                 mostrarAlertFiltrar();
                 return true;
             case R.id.menu_btn_order:
+                mostrarAlertOrdre();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -180,8 +183,6 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor articles = bbdd.getArticlesAll();
 
-        filtreActual = FilterEnum.FILTER_ALL;
-
         adaptadorArticles = new ArticlesAdapter(this, R.layout.activity_main_fila, articles, from, to, 1);
 
         llistatArticles.setAdapter(adaptadorArticles);
@@ -194,16 +195,16 @@ public class MainActivity extends AppCompatActivity {
         Cursor articles = null;
 
         if (filterDescription && filterStock) {
-            articles = bbdd.getArticlesByDescriptionStockLower(description, 0);
+            articles = bbdd.getArticlesByDescriptionStockLower(description, 0, sortType);
         }
         else if (filterDescription) {
-            articles = bbdd.getArticlesByDescription(description);
+            articles = bbdd.getArticlesByDescription(description, sortType);
         }
         else if (filterStock) {
-            articles = bbdd.getArticlesStockLower(0);
+            articles = bbdd.getArticlesStockLower(0, sortType);
         }
         else {
-            articles = bbdd.getArticlesAll();
+            articles = bbdd.getArticlesAll(sortType);
         }
 
         adaptadorArticles.changeCursor(articles);
@@ -211,6 +212,52 @@ public class MainActivity extends AppCompatActivity {
 
         llistatArticles.setSelection(0);
     }
+
+    /** Segons la posició del filtre seleccionat, es canvia la variable amb la
+     * sentència SQL per poder filtrar per aquell camp */
+    private void seleccionarOrdre() {
+
+        switch (sortPosition) {
+            case 1:
+                sortType = GestioArticlesDataSource.ARTICLE_ID + " desc";
+                break;
+
+            case 2:
+                sortType = GestioArticlesDataSource.ARTICLE_CODI;
+                break;
+
+            case 3:
+                sortType = GestioArticlesDataSource.ARTICLE_CODI + " desc";
+                break;
+
+            case 4:
+                sortType = GestioArticlesDataSource.ARTICLE_PREU;
+                break;
+
+            case 5:
+                sortType = GestioArticlesDataSource.ARTICLE_PREU + " desc";
+                break;
+
+            default:
+                sortType = GestioArticlesDataSource.ARTICLE_ID;
+        }
+
+        refrescarArticles();
+
+    }
+
+    /** Reestableix tots els filtres i els ordres modificats, per deixar-ho per
+     * defecte */
+    private void eliminarFiltres() {
+
+        filterDescription = false;
+        description = "";
+        filterStock = false;
+        sortPosition = 0;
+        seleccionarOrdre();
+
+    }
+
 
     /* .: 5. ALERTES :. */
     /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat.
@@ -331,17 +378,54 @@ public class MainActivity extends AppCompatActivity {
         alert.setNeutralButton(R.string.alert_info_reset, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                filterDescription = false;
-                description = "";
-                filterStock = false;
-
-                refrescarArticles();
-
+                eliminarFiltres();
             }
         });
 
         alert.show();
+    }
+
+    /** Mostra un alert que permet seleccionar amb quin tipus de filtre es
+     * volen mostrar els artícles en el llistat */
+    private void mostrarAlertOrdre() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(getString(R.string.alert_info_title_order));
+
+        String[] sorts = new String[]{
+                getString(R.string.alert_info_order_by_date),
+                getString(R.string.alert_info_order_by_date_desc),
+                getString(R.string.alert_info_order_by_code),
+                getString(R.string.alert_info_order_by_code_desc),
+                getString(R.string.alert_info_order_by_price),
+                getString(R.string.alert_info_order_by_price_desc)
+        };
+
+        alert.setSingleChoiceItems(sorts, sortPosition, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sortPosition = which;
+            }
+        });
+
+        alert.setPositiveButton(R.string.alert_info_accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                seleccionarOrdre();
+            }
+        });
+
+        alert.setNegativeButton(R.string.alert_info_cancel, null);
+
+        alert.setNeutralButton(R.string.alert_info_reset, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                eliminarFiltres();
+            }
+        });
+
+        alert.show();
+
     }
 
     /** Mostra un AlertDialog que permet introduir les paraules per filtrar

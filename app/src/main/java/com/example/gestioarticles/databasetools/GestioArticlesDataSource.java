@@ -72,6 +72,20 @@ public class GestioArticlesDataSource {
                 null);
     }
 
+    /** Retorna una select amb tots els articles
+     * Ordenats pel paràmetre passat
+     * @param sort Columna per la que es vol filtrar */
+    public Cursor getArticlesAll(String sort) {
+
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                null,
+                null,
+                null,
+                null,
+                sort);
+    }
+
     /** Retorna una select filtrada amb els articles que contenen un string determinat
      * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la*/
     public Cursor getArticlesByDescription(String description) {
@@ -85,6 +99,21 @@ public class GestioArticlesDataSource {
                 null);
     }
 
+    /** Retorna una select filtrada amb els articles que contenen un string determinat.
+     * Ordenats pel paràmetre passat
+     * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la
+     * @param sort Columna per la que es vol filtrar*/
+    public Cursor getArticlesByDescription(String description, String sort) {
+
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_DESCRIPCIO + " LIKE \"%" + description + "%\"",
+                null,
+                null,
+                null,
+                sort);
+    }
+
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
     public Cursor getArticlesStockLower(int stock) {
@@ -96,6 +125,21 @@ public class GestioArticlesDataSource {
                 null,
                 null,
                 null);
+    }
+
+    /** Retorna una select filtrada amb els articles amb estoc inferior al número passat.
+     * Ordenats pel paràmetre passat
+     * @param stock Número per filtrar els articles amb estoc inferior a ell
+     * @param sort Columna per la que es vol filtrar la select*/
+    public Cursor getArticlesStockLower(int stock, String sort) {
+
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_ESTOC + " <= " + stock,
+                null,
+                null,
+                null,
+                sort);
     }
 
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
@@ -113,6 +157,23 @@ public class GestioArticlesDataSource {
                 null);
     }
 
+    /** Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció.
+     * Ordenats pel paràmetre passat
+     * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la
+     * @param stock Número per filtrar els articles amb estoc inferior a ell
+     * @param sort Columna per la que es vol filtrar la select */
+    public Cursor getArticlesByDescriptionStockLower(String description, int stock, String sort) {
+
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_DESCRIPCIO + " LIKE \"%" + description + "%\" AND " +
+                        ARTICLE_ESTOC + " <= " + stock,
+                null,
+                null,
+                null,
+                sort);
+    }
+
     /* .: 3.1. SELECTS - REALITZEN CONSULTES I RETORNEN BOOLEANS :. */
     /** Fa una consulta filtrant pel codi de l'article.
      * Retorna un boolean segons si existeix algun
@@ -124,7 +185,7 @@ public class GestioArticlesDataSource {
         Cursor select = dbR.query(
                 TABLE_ARTICLE,
                 new String[]{ARTICLE_ID},
-                ARTICLE_CODI + " LIKE '%" + code + "%'",
+                ARTICLE_CODI + " = '%" + code + "%'",
                 null,
                 null,
                 null,
