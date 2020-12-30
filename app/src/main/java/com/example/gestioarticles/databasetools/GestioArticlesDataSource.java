@@ -89,11 +89,13 @@ public class GestioArticlesDataSource {
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
     public Cursor getArticlesStockLower(int stock) {
 
-        String QUERY = "SELECT * " +
-                "FROM " + TABLE_ARTICLE +
-                " WHERE ? <= ?;";
-
-        return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock)});
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_ESTOC + " <= " + stock,
+                null,
+                null,
+                null,
+                null);
     }
 
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
@@ -101,11 +103,14 @@ public class GestioArticlesDataSource {
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
     public Cursor getArticlesByDescriptionStockLower(String description, int stock) {
 
-        String QUERY = "SELECT * " +
-                "FROM " + TABLE_ARTICLE +
-                " WHERE ? <= ? AND ? LIKE '%?%'";
-
-        return dbR.rawQuery(QUERY, new String[]{ARTICLE_ESTOC, String.valueOf(stock), ARTICLE_DESCRIPCIO, description});
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_DESCRIPCIO + " LIKE \"%" + description + "%\" AND " +
+                        ARTICLE_ESTOC + " <= " + stock,
+                null,
+                null,
+                null,
+                null);
     }
 
     /* .: 3.1. SELECTS - REALITZEN CONSULTES I RETORNEN BOOLEANS :. */

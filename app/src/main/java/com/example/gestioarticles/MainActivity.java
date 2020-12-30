@@ -194,13 +194,13 @@ public class MainActivity extends AppCompatActivity {
         Cursor articles = null;
 
         if (filterDescription && filterStock) {
-
+            articles = bbdd.getArticlesByDescriptionStockLower(description, 0);
         }
         else if (filterDescription) {
             articles = bbdd.getArticlesByDescription(description);
         }
         else if (filterStock) {
-
+            articles = bbdd.getArticlesStockLower(0);
         }
         else {
             articles = bbdd.getArticlesAll();
