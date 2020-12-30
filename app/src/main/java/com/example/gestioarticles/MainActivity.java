@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else if (filterDescription) {
-
+            articles = bbdd.getArticlesByDescription(description);
         }
         else if (filterStock) {
 

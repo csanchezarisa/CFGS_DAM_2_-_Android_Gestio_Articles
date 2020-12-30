@@ -74,18 +74,20 @@ public class GestioArticlesDataSource {
 
     /** Retorna una select filtrada amb els articles que contenen un string determinat
      * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la*/
-    public Cursor articlesDescription(String description) {
+    public Cursor getArticlesByDescription(String description) {
 
-        String QUERY = "SELECT * " +
-                "FROM " + TABLE_ARTICLE +
-                " WHERE ? LIKE '%?%'";
-
-        return dbR.rawQuery(QUERY, new String[]{ARTICLE_DESCRIPCIO, description});
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_DESCRIPCIO + " LIKE \"%" + description + "%\"",
+                null,
+                null,
+                null,
+                null);
     }
 
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
-    public Cursor articlesStockLower(int stock) {
+    public Cursor getArticlesStockLower(int stock) {
 
         String QUERY = "SELECT * " +
                 "FROM " + TABLE_ARTICLE +
@@ -97,7 +99,7 @@ public class GestioArticlesDataSource {
     /** Retorna una select filtrada amb els articles amb estoc inferior al número passat i amb la paraula dins de la descripció
      * @param description Paraula o conjunt d'elles que s'usaran en la consulta per filtrar-la
      * @param stock Número per filtrar els articles amb estoc inferior a ell */
-    public Cursor articlesDescriptionStockLower(String description, int stock) {
+    public Cursor getArticlesByDescriptionStockLower(String description, int stock) {
 
         String QUERY = "SELECT * " +
                 "FROM " + TABLE_ARTICLE +
