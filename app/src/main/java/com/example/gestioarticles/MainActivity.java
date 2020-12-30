@@ -215,12 +215,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* .: 5. ALERTES :. */
-    /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat */
-    private void mostrarAlertaEliminar(String titol, String contingut, long idArticle) {
+    /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat.
+     * Es personalitza amb el títol i el contingut que rep per paràmetres
+     * @param titol String amb el títol que tindrà l'alert
+     * @param contingut String amb el missatge que tindrà l'alert
+     * @param idArticle Long que fa referència al ID de l'article per esborrar*/
+    public void mostrarAlertaEliminar(String titol, String contingut, long idArticle) {
         AlertDialog alert = new AlertDialog.Builder(this).create();
 
         alert.setTitle(titol);
         alert.setMessage(contingut);
+
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                int articlesEliminats = bbdd.deleteArticle(idArticle);
+
+                if (articlesEliminats > 0) {
+                    mostrarSnackBarCorrecte(getString(R.string.alert_success_article_deleted));
+                }
+                else {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_delete_article));
+                }
+
+                refrescarArticles();
+            }
+        });
+
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // No fa res
+            }
+        });
+
+        alert.show();
+    }
+
+    /** Mostra un AlertDialog per confirmar l'eliminació de l'element seleccionat */
+    public void mostrarAlertaEliminar(long idArticle) {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+
+        alert.setTitle(getString(R.string.alert_info_title_delete_article));
+        alert.setMessage(getString(R.string.alert_info_delete_article));
 
         alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
