@@ -72,15 +72,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
             public void onClick(View v) {
 
                 // S'aconsegueix la fila
-                /* Es fa dos cops ja que el Layout està montat de la següent manera:
-                *   <LinearLayout>
-                        <LinearLayout>
-                            <ImageView>
-                * Per tant, per aconseguir l'element 'pare' de tota la fila s'ha d'arribar al LinearLayout primer
-                * per això, com que estem partint eds del ImageView, s'han de fer dos 'getParent()' de la View.
-                * El fitxer del amb el layout de la fila s'anomena 'activity_main_fila.xml' */
                 View fila = (View) v.getParent();
-                fila = (View) fila.getParent();
 
                 // S'aconsegueix el llistat sencer, ListView
                 ListView llistat = (ListView) fila.getParent();
