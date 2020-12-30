@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
@@ -50,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
     // Enumerador per saber el tipus de filtre, y String que emmagatzema la descripció filtrada
     private FilterEnum filtreActual;
+    private boolean filterDescription = false;
     private String description;
+    private boolean filterStock = false;
+
 
     // Elements del Layout
     ListView llistatArticles;
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 carregarArticles();
                 return true;
             case R.id.menu_btn_filter:
+                mostrarAlertFiltrar();
                 return true;
             case R.id.menu_btn_order:
                 return true;
@@ -188,24 +193,17 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor articles = null;
 
-        // Es revisa quin tipus de filtre està actiu. Per fer una select o una altre
-        switch (filtreActual) {
-            // S'han de mostrar tots els articles
-            case FILTER_ALL:
-                articles = bbdd.getArticlesAll();
-                break;
+        if (filterDescription && filterStock) {
 
-            // S'han de mostrar els articles filtrats per una descripció
-            case FILTER_DESCRIPTION:
-                break;
+        }
+        else if (filterDescription) {
 
-            // S'han de mostrar els articles sense estoc
-            case FILTER_STOCK:
-                break;
+        }
+        else if (filterStock) {
 
-            // S'han de mostrar els articles filtrats per descripció i sense estoc
-            case FILTER_DESCRIPTION_AND_STOCK:
-                break;
+        }
+        else {
+            articles = bbdd.getArticlesAll();
         }
 
         adaptadorArticles.changeCursor(articles);
@@ -287,6 +285,110 @@ public class MainActivity extends AppCompatActivity {
         });
 
         alert.show();
+    }
+
+    /** Mostra un AlertDialog que permet seleccionar els filtres pels quals poder
+     * filtrar els elements que es mostren en el llistat.
+     * Depenent què s'esculli, s'obrirà un altre AlertDialog demanant més informació o no.
+     * Mostra, també, un botó per restablir els filtres*/
+    private void mostrarAlertFiltrar() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle(getString(R.string.alert_info_title_filter));
+
+        String[] filtres = new String[] {getString(R.string.activity_main_txt_article_description), getString(R.string.activity_main_txt_article_stock)};
+        boolean[] filtresSeleccionats = new boolean[] {filterDescription, filterStock};
+
+        alert.setMultiChoiceItems(filtres, filtresSeleccionats, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                filtresSeleccionats[which] = isChecked;
+            }
+        });
+
+        alert.setPositiveButton(R.string.alert_info_accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                filterDescription = filtresSeleccionats[0];
+                filterStock = filtresSeleccionats[1];
+
+                if (filterDescription) {
+
+                    mostrarAlertDemanarDescripcio();
+
+                }
+                else {
+                    refrescarArticles();
+                }
+
+            }
+        });
+
+        alert.setNegativeButton(R.string.alert_info_cancel, null);
+
+        alert.setNeutralButton(R.string.alert_info_reset, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                filterDescription = false;
+                description = "";
+                filterStock = false;
+
+                refrescarArticles();
+
+            }
+        });
+
+        alert.show();
+    }
+
+    /** Mostra un AlertDialog que permet introduir les paraules per filtrar
+     * els articles per la descripció */
+    private void mostrarAlertDemanarDescripcio() {
+
+        if (filterDescription) {
+
+            AlertDialog alert = new AlertDialog.Builder(this).create();
+            alert.setTitle(getString(R.string.alert_info_title_select_description));
+
+            EditText edtDescription = new EditText(this);
+            alert.setView(edtDescription);
+
+            alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    try {
+                        description = edtDescription.getText().toString().toLowerCase();
+                    }
+                    catch (Exception e) {
+                        description = "";
+                        mostrarSnackBarError(getString(R.string.alert_error_cant_filter_articles));
+                    }
+
+                    if (description.length() <= 0) {
+                        filterDescription = false;
+                    }
+
+                    refrescarArticles();
+
+                }
+            });
+
+            alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // No fa res
+                }
+            });
+
+            alert.show();
+
+        }
+
     }
 
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla

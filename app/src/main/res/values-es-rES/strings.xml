@@ -38,11 +38,15 @@
     <string name="alert_info_title_delete_article">Eliminar artículo</string>
     <string name="alert_info_accept">Aceptar</string>
     <string name="alert_info_cancel">Cancelar</string>
+    <string name="alert_info_reset">Restablecer</string>
+    <string name="alert_info_title_filter">Selecciona los filtros</string>
+    <string name="alert_info_title_select_description">Palabras en la descripción:</string>
 
     <!-- Errores -->
     <string name="alert_error_cant_create_article">No se ha podido crear el artículo. Revisa los campos.</string>
     <string name="alert_error_cant_update_article">No se ha podido actualizar el artículo. Revisa los campos.</string>
     <string name="alert_error_cant_delete_article">No se ha podido eliminar el artículo.</string>
+    <string name="alert_error_cant_filter_articles">No se han podido filtrar los artículos.</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">El artículo se ha generado correctamente.</string>
