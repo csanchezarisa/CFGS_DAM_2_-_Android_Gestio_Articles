@@ -32,6 +32,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
 
     // Constants que defineixen els colors que s'usaran més endavant
     private static final String BACKGROUND_COLOR_NO_STOCK_ARTICLE = "#FA8072";
+    private static final int BACKGROUND_COLOR_DEFAULT_ARTICLE = Color.WHITE;
 
     // Permet emmagatzemar el context, per poder utilitzar-lo en altres mètodes
     private MainActivity context;
@@ -57,6 +58,9 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         // Si l'estoc es inferior o igual a 0, el fons de la fila es pinta de vermell
         if (stock <= 0) {
             fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_NO_STOCK_ARTICLE));
+        }
+        else {
+            fila.setBackgroundColor(BACKGROUND_COLOR_DEFAULT_ARTICLE);
         }
 
         // Canvia el contingut dels preus, per mostrar el símbol € i calcular l'IVA
