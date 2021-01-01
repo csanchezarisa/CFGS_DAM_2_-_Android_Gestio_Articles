@@ -20,7 +20,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.gestioarticles.adapter.ArticlesAdapter;
 import com.example.gestioarticles.articlemanage.ArticleManage;
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Elements del Layout
     ListView llistatArticles;
+    ImageView imgSadFace;
+    TextView txtEmptyArticle;
+    ImageView imgArrow;
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
     @Override
@@ -69,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Enllaçar variables amb els elements de layout
         llistatArticles = (ListView) findViewById(R.id.article_list);
+        imgSadFace = (ImageView) findViewById(R.id.img_sad_face);
+        txtEmptyArticle = (TextView) findViewById(R.id.txt_empty_article);
+        imgArrow = (ImageView) findViewById(R.id.img_arrow);
         // Botó per afegir articles
         FloatingActionButton brn_add = findViewById(R.id.btn_add);
         brn_add.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
         adaptadorArticles = new ArticlesAdapter(this, R.layout.activity_main_fila, articles, from, to, 1);
 
         llistatArticles.setAdapter(adaptadorArticles);
+
+        mostrarMissatgeEmptyArticle();
+
     }
 
     /** Refresca les dades i les mostra en el llistat segons el filtre que
@@ -211,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
         adaptadorArticles.notifyDataSetChanged();
 
         llistatArticles.setSelection(0);
+
+        mostrarMissatgeEmptyArticle();
     }
 
     /** Segons la posició del filtre seleccionat, es canvia la variable amb la
@@ -255,6 +268,27 @@ public class MainActivity extends AppCompatActivity {
         filterStock = false;
         sortPosition = 0;
         seleccionarOrdre();
+
+    }
+
+    /** Permet mostrar o amagar el missatge que notifica que no hi ha cap
+     * article creat encara. */
+    private void mostrarMissatgeEmptyArticle() {
+
+        if (llistatArticles.getCount() <= 0) {
+
+            imgSadFace.setVisibility(View.VISIBLE);
+            txtEmptyArticle.setVisibility(View.VISIBLE);
+            imgArrow.setVisibility(View.VISIBLE);
+
+        }
+        else {
+
+            imgSadFace.setVisibility(View.GONE);
+            txtEmptyArticle.setVisibility(View.GONE);
+            imgArrow.setVisibility(View.GONE);
+
+        }
 
     }
 

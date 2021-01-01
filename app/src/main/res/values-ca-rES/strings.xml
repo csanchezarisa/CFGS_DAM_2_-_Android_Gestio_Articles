@@ -13,6 +13,7 @@
     <string name="activity_main_txt_article_stock">Estoc de l\'article</string>
     <string name="activity_main_txt_article_price_no_iva">Preu sense IVA de l\'article</string>
     <string name="activity_main_txt_article_price_iva">Preu amb IVA de l\'article</string>
+    <string name="activity_main_empty_article">Oops! \n Sembla que no hi ha cap article creat. \n Prova a crear-ne un..</string>
 
     <!-- ArticleManage -->
     <string name="activity_article_manage_article_update_title">Actualizar article</string>
