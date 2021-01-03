@@ -1,10 +1,8 @@
 package com.example.gestioarticles.databasetools;
 
-import android.app.usage.ExternalStorageStats;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class GestioArticlesDataSource {
@@ -23,8 +21,8 @@ public class GestioArticlesDataSource {
 
 
     // Mecanismes per treballar amb SQLite
-    private GestioArticlesHelper dbHelper;
-    private SQLiteDatabase dbW, dbR;
+    private final GestioArticlesHelper dbHelper;
+    private final SQLiteDatabase dbW, dbR;
 
 
     /* .: 2. CONSTRUCTOR I DESTRUCTOR :. */
@@ -197,6 +195,8 @@ public class GestioArticlesDataSource {
             exists = true;
         }
 
+        select.close();
+
         return exists;
     }
 
@@ -218,7 +218,7 @@ public class GestioArticlesDataSource {
                     values);
         }
         catch (Exception e) {
-
+            id = -1;
         }
 
         return id;
@@ -242,7 +242,7 @@ public class GestioArticlesDataSource {
                     new String[]{String.valueOf(id)});
         }
         catch (Exception e) {
-
+            afectedRows = -1;
         }
 
         return afectedRows;
@@ -261,7 +261,7 @@ public class GestioArticlesDataSource {
                     new String[]{String.valueOf(id)});
         }
         catch (Exception e) {
-
+            afectedRows = -1;
         }
 
         return afectedRows;

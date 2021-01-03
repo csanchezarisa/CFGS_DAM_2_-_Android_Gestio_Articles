@@ -34,16 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
     /* .: 1. VARIABLES GLOBALS PER TENIR MEMÒRIA :. */
     // 'ID' que s'assignen a les activities i fan el codi més entenedor
-    private static int ACTIVITY_ADD_ARTICLE = 1;
-    private static int ACTIVITY_UPDATE_ARTICLE = 2;
+    private static final int ACTIVITY_ADD_ARTICLE = 1;
+    private static final int ACTIVITY_UPDATE_ARTICLE = 2;
 
     // Complements per gestionar la BBDD i modificar la llista
     private GestioArticlesDataSource bbdd;
     private ArticlesAdapter adaptadorArticles;
 
     // Columnes i camps de la BBDD
-    private static String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.ARTICLE_DESCRIPCIO, GestioArticlesDataSource.ARTICLE_ESTOC, GestioArticlesDataSource.ARTICLE_PREU};
-    private static int[] to = new int[]{R.id.txt_codi_article, R.id.txt_descripcio_article, R.id.txt_article_estoc, R.id.txt_article_preu_no_iva};
+    private static final String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.ARTICLE_DESCRIPCIO, GestioArticlesDataSource.ARTICLE_ESTOC, GestioArticlesDataSource.ARTICLE_PREU};
+    private static final int[] to = new int[]{R.id.txt_codi_article, R.id.txt_descripcio_article, R.id.txt_article_estoc, R.id.txt_article_preu_no_iva};
 
     // Variabes que permeten accedir a la traducció dels botons acceptar i cancel·lar
     public static String alertBtnAccept = "";
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
      * s'estigui utilitzant actualment*/
     private void refrescarArticles() {
 
-        Cursor articles = null;
+        Cursor articles;
 
         if (filterDescription && filterStock) {
             articles = bbdd.getArticlesByDescriptionStockLower(description, 0, sortType);

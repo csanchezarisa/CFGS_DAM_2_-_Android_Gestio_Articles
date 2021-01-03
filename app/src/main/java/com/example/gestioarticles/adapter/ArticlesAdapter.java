@@ -1,32 +1,17 @@
 package com.example.gestioarticles.adapter;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
-import android.os.Build;
-import android.text.Html;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.gestioarticles.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
-
 
 public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
 
@@ -35,7 +20,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
     private static final int BACKGROUND_COLOR_DEFAULT_ARTICLE = Color.WHITE;
 
     // Permet emmagatzemar el context, per poder utilitzar-lo en altres mètodes
-    private MainActivity context;
+    private final MainActivity context;
 
     // Constructor de l'adapter
     public ArticlesAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
