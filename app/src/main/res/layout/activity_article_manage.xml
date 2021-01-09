@@ -113,7 +113,7 @@
                 android:contentDescription="@string/activity_main_txt_article_stock"
                 android:ems="10"
                 android:hint="@string/activity_main_txt_article_stock"
-                android:inputType="number" />
+                android:inputType="numberSigned|number" />
         </LinearLayout>
     </ScrollView>
 

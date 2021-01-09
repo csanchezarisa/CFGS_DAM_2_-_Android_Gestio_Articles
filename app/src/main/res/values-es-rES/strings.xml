@@ -47,7 +47,7 @@
     <string name="alert_info_order_by_date_desc">Fecha inserción (nuevos primero)</string>
     <string name="alert_info_order_by_code">Código del artículo (A-Z)</string>
     <string name="alert_info_order_by_code_desc">Código del artículo (Z-A)</string>
-    <string name="alert_info_order_by_price">Preció de menor a mayor</string>
+    <string name="alert_info_order_by_price">Precio de menor a mayor</string>
     <string name="alert_info_order_by_price_desc">Precio de mayor a menor</string>
 
     <!-- Errores -->
