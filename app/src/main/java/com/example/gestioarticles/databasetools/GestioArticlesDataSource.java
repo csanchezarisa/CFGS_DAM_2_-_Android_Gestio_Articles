@@ -202,7 +202,7 @@ public class GestioArticlesDataSource {
 
     /* .: 4. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
     /** Permet fer la inserció d'un nou article en la BBDD */
-    public long insertArticle(String code, String description, String family, double price) {
+    public long insertArticle(String code, String description, int family, double price) {
 
         long id = -1;
 
@@ -225,7 +225,7 @@ public class GestioArticlesDataSource {
     }
 
     /** Permet actualitzar les dades d'un registre. Fa servir el ID per filtrar-lo en el WHERE */
-    public int updateArticle(long id, String description, String family, double price, int stock) {
+    public int updateArticle(long id, String description, int family, double price, int stock) {
 
         int afectedRows = -1;
 

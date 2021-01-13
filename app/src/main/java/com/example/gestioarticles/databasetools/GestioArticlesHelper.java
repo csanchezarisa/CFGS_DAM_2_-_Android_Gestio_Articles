@@ -36,7 +36,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
                         ARTICLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         ARTICLE_CODI + " TEXT NOT NULL UNIQUE," +
                         ARTICLE_DESCRIPCIO + " TEXT NOT NULL," +
-                        ARTICLE_FAMILIA + " INTEGER NOT NULL DEFAULT 0," +
+                        ARTICLE_FAMILIA + " INTEGER NOT NULL DEFAULT 0," +      // 0 -> None, 1 -> Software, 2 -> Hardware, 3 -> Other
                         ARTICLE_PREU + " REAL NOT NULL," +
                         ARTICLE_ESTOC + " REAL NOT NULL DEFAULT 0);";
 

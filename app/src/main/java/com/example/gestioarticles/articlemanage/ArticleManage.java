@@ -321,7 +321,7 @@ public class ArticleManage extends AppCompatActivity {
 
         String code = "";
         String description = "";
-        String family = "";
+        int family = 0;
         double price = 0;
 
         // Revisa el codi
@@ -352,8 +352,9 @@ public class ArticleManage extends AppCompatActivity {
             inputsCorrectes = false;
         }
 
+        // Revisa la familia
         try {
-            family = inpFamily.getSelectedItem().toString();
+            family = inpFamily.getSelectedItemPosition();
         }
         catch (Exception e) {
             inputsCorrectes = false;
@@ -391,7 +392,7 @@ public class ArticleManage extends AppCompatActivity {
         boolean inputsCorrectes = true;
 
         String description = "";
-        String family = "";
+        int family = 0;
         double price = 0;
         int stock = 0;
 
@@ -409,7 +410,7 @@ public class ArticleManage extends AppCompatActivity {
         }
 
         try {
-            family = inpFamily.getSelectedItem().toString();
+            family = inpFamily.getSelectedItemPosition();
         }
         catch (Exception e) {
             inputsCorrectes = false;
@@ -459,7 +460,7 @@ public class ArticleManage extends AppCompatActivity {
             // Recupera
             String code = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_CODI));
             String description = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_DESCRIPCIO));
-            String family = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_FAMILIA));
+            int family = article.getInt(article.getColumnIndexOrThrow(bbdd.ARTICLE_FAMILIA));
             String price = String.valueOf(article.getDouble(article.getColumnIndexOrThrow(bbdd.ARTICLE_PREU)));
             String stock = String.valueOf(article.getInt(article.getColumnIndexOrThrow(bbdd.ARTICLE_ESTOC)));
 
@@ -470,20 +471,8 @@ public class ArticleManage extends AppCompatActivity {
             inpPrice.setText(price);
             inpStock.setText(stock);
 
-            // Revisa quina és la familia de l'article, per seleccionar automàticament la opció en el dropdown
-            int spinnerPosition = 0;
-
-            if (family.equalsIgnoreCase(getString(R.string.activity_article_manage_article_family_software))) {
-                spinnerPosition = 1;
-            }
-            else if (family.equalsIgnoreCase(getString(R.string.activity_article_manage_article_family_hardware))) {
-                spinnerPosition = 2;
-            }
-            else if (family.equalsIgnoreCase(getString(R.string.activity_article_manage_article_family_other))) {
-                spinnerPosition = 3;
-            }
-
-            inpFamily.setSelection(spinnerPosition);
+            // Segons l'identificador de la familia, situa el spiner en una posició o en un altre
+            inpFamily.setSelection(family);
 
         }
         else {
