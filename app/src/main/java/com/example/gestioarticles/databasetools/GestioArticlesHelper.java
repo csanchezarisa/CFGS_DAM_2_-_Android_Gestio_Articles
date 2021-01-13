@@ -36,7 +36,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
                         ARTICLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         ARTICLE_CODI + " TEXT NOT NULL UNIQUE," +
                         ARTICLE_DESCRIPCIO + " TEXT NOT NULL," +
-                        ARTICLE_FAMILIA + " TEXT," +
+                        ARTICLE_FAMILIA + " INTEGER NOT NULL DEFAULT 0," +
                         ARTICLE_PREU + " REAL NOT NULL," +
                         ARTICLE_ESTOC + " REAL NOT NULL DEFAULT 0);";
 
@@ -46,6 +46,24 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        if (oldVersion > 2) {
+            String SQL_QUERY =
+                    "DROP TABLE " + TABLE_ARTICLE;
+
+            db.execSQL(SQL_QUERY);
+
+            SQL_QUERY =
+                    "CREATE TABLE "+ TABLE_ARTICLE + "(" +
+                            ARTICLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            ARTICLE_CODI + " TEXT NOT NULL UNIQUE," +
+                            ARTICLE_DESCRIPCIO + " TEXT NOT NULL," +
+                            ARTICLE_FAMILIA + " INTEGER NOT NULL DEFAULT 0," +
+                            ARTICLE_PREU + " REAL NOT NULL," +
+                            ARTICLE_ESTOC + " REAL NOT NULL DEFAULT 0);";
+
+            db.execSQL(SQL_QUERY);
+        }
 
     }
 }
