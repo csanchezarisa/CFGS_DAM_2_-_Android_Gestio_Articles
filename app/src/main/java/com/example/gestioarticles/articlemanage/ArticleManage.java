@@ -521,7 +521,7 @@ public class ArticleManage extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarError(String error) {
         View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#000000\">" + error + "</font>"), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + error + "</font>"), Snackbar.LENGTH_LONG);
 
         View snackbarView = snackbar.getView();
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
@@ -538,7 +538,7 @@ public class ArticleManage extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarCorrecte(String missatge) {
         View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#000000\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
 
         View snackbarView = snackbar.getView();
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
