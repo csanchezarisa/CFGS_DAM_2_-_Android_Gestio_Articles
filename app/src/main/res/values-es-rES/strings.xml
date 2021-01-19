@@ -25,6 +25,8 @@
     <string name="activity_article_manage_article_family_hardware">Hardware</string>
     <string name="activity_article_manage_article_family_other">Otros</string>
 
+    <!-- StockManage -->
+    <string name="activity_stock_manage_title">Control de estoc</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->

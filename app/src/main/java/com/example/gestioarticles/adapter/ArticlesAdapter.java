@@ -39,6 +39,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         // De l'article recuperat, aconseguim el seu estoc i el preu
         int stock = article.getInt(article.getColumnIndexOrThrow(GestioArticlesDataSource.ARTICLE_ESTOC));
         double price = article.getDouble(article.getColumnIndexOrThrow(GestioArticlesDataSource.ARTICLE_PREU));
+        final long id = article.getLong(article.getColumnIndexOrThrow(GestioArticlesDataSource.ARTICLE_ID));
 
         // Si l'estoc es inferior o igual a 0, el fons de la fila es pinta de vermell
         if (stock <= 0) {
@@ -87,7 +88,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         btnStockIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                context.gestionarStock(id, context.ACTIVITY_STOCK_IN);
             }
         });
 
@@ -96,7 +97,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         btnStockOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                context.gestionarStock(id, context.ACTIVITY_STOCK_OUT);
             }
         });
 

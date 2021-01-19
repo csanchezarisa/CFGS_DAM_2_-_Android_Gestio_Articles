@@ -24,6 +24,8 @@
     <string name="activity_article_manage_article_family_hardware">Hardware</string>
     <string name="activity_article_manage_article_family_other">Other</string>
 
+    <!-- StockManage -->
+    <string name="activity_stock_manage_title">Stock manage</string>
 
 
     <!-- .: 2. MENUS :. -->

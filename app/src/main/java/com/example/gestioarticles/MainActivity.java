@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.gestioarticles.adapter.ArticlesAdapter;
 import com.example.gestioarticles.articlemanage.ArticleManage;
+import com.example.gestioarticles.articlemanage.StockActivity;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
     /* .: 1. VARIABLES GLOBALS PER TENIR MEMÒRIA :. */
     // 'ID' que s'assignen a les activities i fan el codi més entenedor
-    private static final int ACTIVITY_ADD_ARTICLE = 1;
-    private static final int ACTIVITY_UPDATE_ARTICLE = 2;
+    public static final int ACTIVITY_ADD_ARTICLE = 1;
+    public static final int ACTIVITY_UPDATE_ARTICLE = 2;
+    public static final int ACTIVITY_STOCK_IN = 3;
+    public static final int ACTIVITY_STOCK_OUT = 4;
 
     // Complements per gestionar la BBDD i modificar la llista
     private GestioArticlesDataSource bbdd;
@@ -173,13 +176,37 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, idTipusActivity);
     }
 
+    /** S'encarrega d'obrir l'activity que permet notificar l'entrada i la sortida
+     * d'estoc d'un article en concret
+     * @param id Long que permet saber quin és l'article a modificar. -1 si no es selecciona cap
+     * @param tipusActivity Int que permet saber quin tipus de crida es farà en la nova activity.
+     * 3 per notificar l'entrada d'estoc i 4 per notificar-ne la sortida*/
+    public void gestionarStock(long id, int tipusActivity) {
+
+        // Es prepara un bundle per passar el ID i el tipus de crida que es fa a l'Activity
+        Bundle data = new Bundle();
+        data.putLong("id", id);
+        data.putInt("stockType", tipusActivity);
+
+        // Es genera l'intent i s'afageixen les dades
+        Intent intent = new Intent(this, StockActivity.class);
+        intent.putExtras(data);
+
+        // S'inicia l'Activity a l'espera d'un resultat
+        startActivityForResult(intent, tipusActivity);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Revisa que l'activity que es tanca sigui l'encarregada de modificar o afegir articles
+        // o l'encarregada de gestionar els stocks
         // I s'hagi tancat amb un ResultCode OK
-        if ((requestCode == ACTIVITY_ADD_ARTICLE || requestCode == ACTIVITY_UPDATE_ARTICLE) && resultCode == RESULT_OK) {
+        if ((requestCode == ACTIVITY_ADD_ARTICLE ||
+                requestCode == ACTIVITY_UPDATE_ARTICLE ||
+                requestCode == ACTIVITY_STOCK_IN ||
+                requestCode == ACTIVITY_STOCK_OUT) && resultCode == RESULT_OK) {
             refrescarArticles();
         }
 
