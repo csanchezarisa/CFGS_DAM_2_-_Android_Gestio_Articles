@@ -55,6 +55,7 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         element = (TextView) fila.findViewById(R.id.txt_article_preu_no_iva);
         element.setText(element.getText().toString() + "€, no IVA");
 
+        // Botó eliminar
         ImageView btnEliminar = (ImageView) fila.findViewById(R.id.btn_delete_article);
         btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +79,24 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
 
                 // Executem el mètode per mostrar l'alert de la MainActivity
                 context.mostrarAlertaEliminar(idArticle);
+            }
+        });
+
+        // Botó stock in
+        ImageView btnStockIn = (ImageView) fila.findViewById(R.id.btn_stock_in);
+        btnStockIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        // Botó stock out
+        ImageView btnStockOut = (ImageView) fila.findViewById(R.id.btn_stock_out);
+        btnStockOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

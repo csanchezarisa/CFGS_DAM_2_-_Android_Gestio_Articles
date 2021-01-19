@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/selectableItemBackground" >
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -17,7 +18,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:contentDescription="@string/activity_main_btn_delete"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -99,7 +104,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:contentDescription="@string/activity_main_stock_out"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
             app:srcCompat="@drawable/ic_remove_shopping" />
 
         <ImageView
@@ -107,7 +116,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:contentDescription="@string/activity_main_stock_in"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
             app:srcCompat="@drawable/ic_add_shopping" />
     </LinearLayout>
 
