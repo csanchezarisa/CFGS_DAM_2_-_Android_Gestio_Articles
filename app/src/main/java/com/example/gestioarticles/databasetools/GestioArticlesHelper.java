@@ -27,7 +27,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
     public static final String MOVIMENT_TIPUS = "tipus";
 
     // Dades sobre la BBDD
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "GestioArticles_DataBase";
 
 
@@ -71,7 +71,8 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if (oldVersion > 2) {
+        if (oldVersion < 2) {
+            // Canvia el camp familia de tipus TEXT a INTEGER
             String SQL_QUERY =
                     "DROP TABLE " + TABLE_ARTICLE;
 
@@ -85,6 +86,22 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
                             ARTICLE_FAMILIA + " INTEGER NOT NULL DEFAULT 0," +
                             ARTICLE_PREU + " REAL NOT NULL," +
                             ARTICLE_ESTOC + " REAL NOT NULL DEFAULT 0);";
+
+            db.execSQL(SQL_QUERY);
+        }
+
+        if (oldVersion < 3) {
+            // Crea la nova taula de MOVIMENT amb la foreign key
+            String SQL_QUERY =
+                    "CREATE TABLE " + TABLE_MOVIMENT + "(" +
+                            MOVIMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            MOVIMENT_CODI_ARTICLE + " INTEGER NOT NULL," +
+                            MOVIMENT_DIA + " TEXT NOT NULL DEFAULT CURRENT_DATE," +
+                            MOVIMENT_QUANTITAT + " INTEGER NOT NULL," +
+                            MOVIMENT_TIPUS + " TEXT NOT NULL, " +
+                            "FOREIGN KEY (" + MOVIMENT_CODI_ARTICLE + ") REFERENCES " + TABLE_ARTICLE + "(" + ARTICLE_ID + ")" +
+                            "ON DELETE CASCADE " +
+                            "ON UPDATE CASCADE);";
 
             db.execSQL(SQL_QUERY);
         }
