@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.gestioarticles.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -187,6 +189,18 @@ public class ArticleManage extends AppCompatActivity {
         finish();
     }
 
+    /** Finalitza l'activity, marcant com a ResultCode un OK
+     * I demana a la MainActivity que obri l'activity per modificar l'estoc */
+    private void finalitzarActivity(long id, int stockType) {
+
+        Intent intent = new Intent();
+        intent.putExtra("id", id);
+        intent.putExtra("stockType", stockType);
+
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     // Listener que controla l'acció del botó "Endarrera" del telèfon
     @Override
     public void onBackPressed() {
@@ -209,6 +223,12 @@ public class ArticleManage extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finalitzarActivity();
+                return true;
+            case R.id.menu_btn_stock_in:
+                finalitzarActivity(idArticle, MainActivity.ACTIVITY_STOCK_IN);
+                return true;
+            case R.id.menu_btn_stock_out:
+                finalitzarActivity(idArticle, MainActivity.ACTIVITY_STOCK_OUT);
                 return true;
         }
 

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.gestioarticles.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 
@@ -37,6 +38,33 @@ public class StockActivity extends AppCompatActivity {
         // Es recuperen les dades que es passen des de l'activity que fa la crida
         id = getIntent().getExtras().getLong("id");
         stockType = getIntent().getExtras().getInt("stockType");
+
+        // Revisa si l'id es negatiu. En cas de ser-ho, per evitar problemes, sempre serà -1
+        if (id < 0) id = -1;
+
+        // S'inicialitza el DataSource
+        bbdd = new GestioArticlesDataSource(this);
+
+        // Segons quin tipus de crida ha tingut, configura el layout
+        switch (stockType) {
+            case MainActivity.ACTIVITY_STOCK_IN:
+                break;
+
+            case MainActivity.ACTIVITY_STOCK_OUT:
+                break;
+
+            default:
+                finish();
+        }
+
+        // Si l'id es positiu, carregarà les dades de l'article
+        // Sino, mostrarà una opció per cercar-lo
+        if (id >= 0) {
+
+        }
+        else {
+
+        }
     }
 
 

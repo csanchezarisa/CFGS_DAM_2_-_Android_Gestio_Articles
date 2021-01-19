@@ -140,6 +140,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_btn_order:
                 mostrarAlertOrdre();
                 return true;
+            case R.id.menu_btn_stock_in:
+                gestionarStock(-1, ACTIVITY_STOCK_IN);
+                return true;
+            case R.id.menu_btn_stock_out:
+                gestionarStock(-1, ACTIVITY_STOCK_OUT);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -207,7 +213,25 @@ public class MainActivity extends AppCompatActivity {
                 requestCode == ACTIVITY_UPDATE_ARTICLE ||
                 requestCode == ACTIVITY_STOCK_IN ||
                 requestCode == ACTIVITY_STOCK_OUT) && resultCode == RESULT_OK) {
-            refrescarArticles();
+
+            // Si desde l'activity que es tanca es passa algún StockType, vol dir que s'ha de fer la crida
+            // A l'activity per modificar els stocks
+            // Sino, refresca la llista
+            try {
+                int stockType = data.getExtras().getInt("stockType");
+                if (stockType != 0) {
+                    long id = data.getExtras().getLong("id");
+
+                    gestionarStock(id, stockType);
+                }
+                else {
+                    refrescarArticles();
+                }
+            }
+            catch (Exception e) {
+                refrescarArticles();
+            }
+
         }
 
     }
