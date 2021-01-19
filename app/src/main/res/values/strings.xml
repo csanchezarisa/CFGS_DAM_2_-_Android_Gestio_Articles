@@ -13,6 +13,8 @@
     <string name="activity_main_txt_article_price_no_iva">Article price without IVA</string>
     <string name="activity_main_txt_article_price_iva">Article price with IVA</string>
     <string name="activity_main_empty_article">Oops! \n It appears that there is no item created. \n Try creating one.</string>
+    <string name="activity_main_stock_out">Report output</string>
+    <string name="activity_main_stock_in">Report input</string>
 
     <!-- ArticleManage -->
     <string name="activity_article_manage_article_update_title">Article update</string>
