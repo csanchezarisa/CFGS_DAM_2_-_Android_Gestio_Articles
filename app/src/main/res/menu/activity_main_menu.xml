@@ -17,4 +17,14 @@
         android:icon="@drawable/ic_close_btn_light"
         android:title="@string/activity_main_menu_btn_clear"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_btn_stock_in"
+        android:icon="@drawable/ic_add_shopping_light"
+        android:title="@string/activity_main_stock_in"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_btn_stock_out"
+        android:icon="@drawable/ic_remove_shopping_light"
+        android:title="@string/activity_main_stock_out"
+        app:showAsAction="ifRoom" />
 </menu>
