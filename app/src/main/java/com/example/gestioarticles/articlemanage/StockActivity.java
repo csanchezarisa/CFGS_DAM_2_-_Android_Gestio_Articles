@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.gestioarticles.MainActivity;
 import com.example.gestioarticles.R;
+import com.example.gestioarticles.assets.datepicker.DatePickerFragment;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -118,6 +120,13 @@ public class StockActivity extends AppCompatActivity {
                     mostrarSnackBarError(getText(R.string.activity_stock_manage_article_not_founded).toString());
                 }
 
+            }
+        });
+
+        inputDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDatePickerDialog();
             }
         });
 
@@ -255,5 +264,19 @@ public class StockActivity extends AppCompatActivity {
         snackbarView.setBackgroundColor(getColor(android.R.color.holo_green_dark));
 
         snackbar.show();
+    }
+
+    /** Mostra un Dialog que permet seleccionar una data de manera gràfica */
+    private void mostrarDatePickerDialog() {
+        DatePickerFragment datePickerDialog;
+        datePickerDialog = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                final String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                inputDate.setText(selectedDate);
+            }
+        });
+
+        datePickerDialog.show(getSupportFragmentManager(), "datePicker");
     }
 }
