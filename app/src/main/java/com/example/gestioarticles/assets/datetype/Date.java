@@ -8,8 +8,15 @@ public class Date {
 
     public Date(int day, int month, int year) {
         this.day = dosDigits(day);
-        this.month = dosDigits(month);
+        this.month = dosDigits(month + 1);
         this.year = String.valueOf(year);
+    }
+
+    public Date(String date) {
+        String[] dateParts = date.split("/");
+        day = dateParts[0];
+        month = dateParts[1];
+        year = dateParts[2];
     }
 
     public String getEuropeanDate() {

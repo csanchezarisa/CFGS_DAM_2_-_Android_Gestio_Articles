@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.gestioarticles.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.assets.datepicker.DatePickerFragment;
+import com.example.gestioarticles.assets.datetype.Date;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -272,8 +273,8 @@ public class StockActivity extends AppCompatActivity {
         datePickerDialog = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                final String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                inputDate.setText(selectedDate);
+                Date data = new Date(dayOfMonth, month, year);
+                inputDate.setText(data.getEuropeanDate());
             }
         });
 
