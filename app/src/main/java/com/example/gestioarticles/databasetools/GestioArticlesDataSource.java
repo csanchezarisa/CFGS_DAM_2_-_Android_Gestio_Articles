@@ -225,7 +225,7 @@ public class GestioArticlesDataSource {
     }
 
     /** Permet actualitzar les dades d'un registre. Fa servir el ID per filtrar-lo en el WHERE */
-    public int updateArticle(long id, String description, int family, double price, int stock) {
+    public int updateArticle(long id, String description, int family, double price) {
 
         int afectedRows = -1;
 
@@ -233,7 +233,6 @@ public class GestioArticlesDataSource {
         values.put(ARTICLE_DESCRIPCIO, description);
         values.put(ARTICLE_FAMILIA, family);
         values.put(ARTICLE_PREU, price);
-        values.put(ARTICLE_ESTOC, stock);
 
         try {
             afectedRows = dbW.update(TABLE_ARTICLE,

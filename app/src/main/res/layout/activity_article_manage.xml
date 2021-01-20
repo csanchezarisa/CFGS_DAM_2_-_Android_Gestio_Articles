@@ -94,26 +94,8 @@
                 android:contentDescription="@string/activity_main_txt_article_price_no_iva"
                 android:ems="10"
                 android:hint="@string/activity_main_txt_article_price_no_iva"
-                android:inputType="numberDecimal"
-                android:nextFocusForward="@id/input_article_estoc" />
+                android:inputType="numberDecimal" />
 
-            <TextView
-                android:id="@+id/txt_article_stock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/activity_main_txt_article_stock"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            <EditText
-                android:id="@+id/input_article_estoc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/activity_main_txt_article_stock"
-                android:ems="10"
-                android:hint="@string/activity_main_txt_article_stock"
-                android:inputType="numberSigned|number" />
         </LinearLayout>
     </ScrollView>
 

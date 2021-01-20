@@ -54,7 +54,6 @@ public class ArticleManage extends AppCompatActivity {
     private EditText inpCode;
     private EditText inpDescription;
     private EditText inpPrice;
-    private EditText inpStock;
     private Spinner inpFamily;              // Spinner equival a un llistat del tipus 'Dropdown'
 
 
@@ -79,7 +78,6 @@ public class ArticleManage extends AppCompatActivity {
         inpCode = (EditText) findViewById(R.id.input_article_codi);
         inpDescription = (EditText) findViewById(R.id.input_article_descripcio);
         inpPrice = (EditText) findViewById(R.id.input_article_preu);
-        inpStock = (EditText) findViewById(R.id.input_article_estoc);
         inpFamily = (Spinner) findViewById(R.id.input_article_familia);
 
         // S'omple l'array dels tius de familia amb les traduccions corresponents
@@ -99,13 +97,10 @@ public class ArticleManage extends AppCompatActivity {
             actionBar.setTitle(R.string.activity_article_manage_article_add_title);
 
             // Cerca el TextView corresponent al títol de l'estoc, per poder amagar-lo
-            TextView stockTitle = (TextView) findViewById(R.id.txt_article_stock);
 
             // Es desactiven els elements
             btnEdit.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
-            inpStock.setVisibility(View.GONE);
-            stockTitle.setVisibility(View.GONE);
         }
         else {
             // Es canvia el títol de l'activity
@@ -313,21 +308,6 @@ public class ArticleManage extends AppCompatActivity {
             inputsCorrectes = false;
         }
 
-        // Revisa l'estoc
-        if (idArticle >= 0) {
-            try {
-                int stock = Integer.parseInt(inpStock.getText().toString());
-            }
-            catch (Exception e) {
-                inpStock.setText(null);
-                if (!focusRequired) {
-                    inpStock.requestFocus();
-                    focusRequired = true;
-                }
-                inputsCorrectes = false;
-            }
-        }
-
         return inputsCorrectes;
     }
 
@@ -414,7 +394,6 @@ public class ArticleManage extends AppCompatActivity {
         String description = "";
         int family = 0;
         double price = 0;
-        int stock = 0;
 
         // Revisa la descripció
         try {
@@ -449,19 +428,10 @@ public class ArticleManage extends AppCompatActivity {
             inputsCorrectes = false;
         }
 
-        // Revisa l'estoc
-        try {
-            stock = Integer.parseInt(inpStock.getText().toString());
-        }
-        catch (Exception e) {
-            inpStock.setText(null);
-            inputsCorrectes = false;
-        }
-
         // Comprova si ha hagut algun error amb la extracció dels valors.
         // Si tot ha funcionat correctament, fa l'insert i retorna l'id de l'article
         if (inputsCorrectes) {
-            return bbdd.updateArticle(idArticle, description, family, price, stock);
+            return bbdd.updateArticle(idArticle, description, family, price);
         }
         else {
             return -1;
@@ -482,14 +452,12 @@ public class ArticleManage extends AppCompatActivity {
             String description = article.getString(article.getColumnIndexOrThrow(bbdd.ARTICLE_DESCRIPCIO));
             int family = article.getInt(article.getColumnIndexOrThrow(bbdd.ARTICLE_FAMILIA));
             String price = String.valueOf(article.getDouble(article.getColumnIndexOrThrow(bbdd.ARTICLE_PREU)));
-            String stock = String.valueOf(article.getInt(article.getColumnIndexOrThrow(bbdd.ARTICLE_ESTOC)));
 
             // Canvia els valors dels inputs pels recuperats de l'article
             TextView txtArticleCode = (TextView) findViewById(R.id.txt_article_codi);
             txtArticleCode.setText(txtArticleCode.getText().toString() + ": " + code);
             inpDescription.setText(description);
             inpPrice.setText(price);
-            inpStock.setText(stock);
 
             // Segons l'identificador de la familia, situa el spiner en una posició o en un altre
             inpFamily.setSelection(family);
