@@ -5,11 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.gestioarticles.assets.datetype.Date;
+
 public class GestioArticlesDataSource {
 
     /* .: 1. DEFINICIÓ DE LES DADES DE LA BBDD :. */
     // Nom de les taules en la BBDD
     public static final String TABLE_ARTICLE = GestioArticlesHelper.TABLE_ARTICLE;
+    public static final String TABLE_MOVIMENT = GestioArticlesHelper.TABLE_MOVIMENT;
 
     // Nom dels camps que conformen la taula "ARTICLE"
     public static final String ARTICLE_ID = GestioArticlesHelper.ARTICLE_ID;
@@ -18,6 +21,13 @@ public class GestioArticlesDataSource {
     public static final String ARTICLE_FAMILIA = GestioArticlesHelper.ARTICLE_FAMILIA;
     public static final String ARTICLE_PREU = GestioArticlesHelper.ARTICLE_PREU;
     public static final String ARTICLE_ESTOC = GestioArticlesHelper.ARTICLE_ESTOC;
+
+    // Nom dels camps que conformen la taula "MOVIMENT"
+    public static final String MOVIMENT_ID = GestioArticlesHelper.MOVIMENT_ID;
+    public static final String MOVIMENT_CODI_ARTICLE = GestioArticlesHelper.MOVIMENT_CODI_ARTICLE;
+    public static final String MOVIMENT_DIA = GestioArticlesHelper.MOVIMENT_DIA;
+    public static final String MOVIMENT_QUANTITAT = GestioArticlesHelper.MOVIMENT_QUANTITAT;
+    public static final String MOVIMENT_TIPUS = GestioArticlesHelper.MOVIMENT_TIPUS;
 
 
     // Mecanismes per treballar amb SQLite
@@ -44,7 +54,8 @@ public class GestioArticlesDataSource {
     }
 
 
-    /* .: 3. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
+    /* .: 3. MÉTODES TAULA ARTICLE :. */
+    /* .: 3.1. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
     /** Retorna una select amb l'article que s'està buscant
      * @param id ID de l'article que es vol buscar */
     public Cursor getArticle(long id) {
@@ -185,7 +196,7 @@ public class GestioArticlesDataSource {
                 sort);
     }
 
-    /* .: 3.1. SELECTS - REALITZEN CONSULTES I RETORNEN BOOLEANS :. */
+    /* .: 3.1.1. SELECTS - REALITZEN CONSULTES I RETORNEN BOOLEANS :. */
     /** Fa una consulta filtrant pel codi de l'article.
      * Retorna un boolean segons si existeix algun
      * article amb el mateix codi o no
@@ -213,7 +224,7 @@ public class GestioArticlesDataSource {
         return exists;
     }
 
-    /* .: 4. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
+    /* .: 3.2. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
     /** Permet fer la inserció d'un nou article en la BBDD */
     public long insertArticle(String code, String description, int family, double price) {
 
@@ -277,5 +288,77 @@ public class GestioArticlesDataSource {
         }
 
         return afectedRows;
+    }
+
+
+    /* .: 4. MÈTODES SOBRE LA TAULA MOVIMENT :. */
+    /* .: 4.1. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
+
+
+    /* .: 4.2. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
+    /** Inserta un nou moviment, actualitzant també la quantiat d'estoc que hi ha de l'article */
+    public boolean insertMovement(long idArticle, Date data, int quantitat, String tipus) {
+
+        long id = -1;
+        int afectedRows = -1;
+        boolean insertCorrecte = false;
+
+        ContentValues values = new ContentValues();
+        values.put(MOVIMENT_CODI_ARTICLE, idArticle);
+        values.put(MOVIMENT_DIA, data.getSQLDate());
+        values.put(MOVIMENT_QUANTITAT, quantitat);
+        values.put(MOVIMENT_TIPUS, tipus.toUpperCase());
+
+        // Fa l'insert a la taula MOVIMENT i retorna un id. -1 si hi ha algún error
+        try {
+            id = dbW.insert(
+                    TABLE_MOVIMENT,
+                    null,
+                    values);
+        }
+        catch (Exception e) {
+            id = -1;
+        }
+
+        // Si tot ha anat correctament, i hi ha un ID vàlid, continua amb l'actualització de la taula
+        if (id > -1) {
+
+            // Recupera l'article afectat pel moviment, i aconsegueix el seu estoc
+            Cursor articleAfectat = this.getArticle(idArticle);
+
+            if (articleAfectat.moveToFirst()) {
+                long estocArticle = articleAfectat.getLong(articleAfectat.getColumnIndexOrThrow(ARTICLE_ESTOC));
+                articleAfectat.close();
+
+                // Si el moviment es d'entrada suma la quantiat, si es de sortida en resta
+                if (tipus.toUpperCase().charAt(0) == 'S') {
+                    estocArticle = estocArticle - quantitat;
+                }
+                else if (tipus.toUpperCase().charAt(0) == 'E') {
+                    estocArticle = estocArticle + quantitat;
+                }
+
+                // Recupera l'estoc i el prepara per insertar
+                values = new ContentValues();
+                values.put(ARTICLE_ESTOC, estocArticle);
+
+                // Fa l'update
+                afectedRows = dbW.update(
+                        TABLE_ARTICLE,
+                        values,
+                        ARTICLE_ID + " = ?",
+                        new String[]{String.valueOf(idArticle)}
+                );
+
+                // Si l'insert s'ha realitzat correctament, retornarà un true
+                if (afectedRows > 0) insertCorrecte = true;
+            }
+            else {
+                articleAfectat.close();
+            }
+
+        }
+
+        return insertCorrecte;
     }
 }

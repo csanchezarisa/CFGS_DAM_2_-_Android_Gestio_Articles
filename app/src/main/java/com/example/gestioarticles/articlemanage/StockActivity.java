@@ -115,7 +115,7 @@ public class StockActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (validArticle) {
-
+                    registrarStock();
                 }
                 else {
                     mostrarSnackBarError(getText(R.string.activity_stock_manage_article_not_founded).toString());
@@ -218,10 +218,12 @@ public class StockActivity extends AppCompatActivity {
         Cursor article = bbdd.getArticle(codiPerCercar);
 
         if (article.getCount() > 0) {
+            id = article.getLong(article.getColumnIndexOrThrow(bbdd.ARTICLE_ID));
             articleValid(true);
             mostrarSnackBarCorrecte(getText(R.string.activity_stock_manage_article_founded).toString());
         }
         else {
+            id = -1;
             articleValid(false);
             mostrarSnackBarError(getText(R.string.activity_stock_manage_article_not_founded).toString());
         }
@@ -279,5 +281,69 @@ public class StockActivity extends AppCompatActivity {
         });
 
         datePickerDialog.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    /** Comprova els valors dels inputs i fa l'insert en la taula de moviments de la BBDD
+     * i fa l'update en el número d'estoc de l'article */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void registrarStock() {
+
+        Date data = null;
+        int stock = 0;
+        boolean dadesCorrectes = true;
+
+
+
+        // Intenta recuperar la quantitat d'estoc
+        try {
+            stock = Integer.parseInt(inputQuantity.getText().toString());
+        }
+        catch (Exception e) {
+            inputQuantity.setText(null);
+            dadesCorrectes = false;
+        }
+
+        // Intenta recuperar la data i fer la transformació al tipus Date
+        try {
+            data = new Date(inputDate.getText().toString(), false);
+        }
+        catch (Exception e) {
+            inputDate.setText(null);
+            dadesCorrectes = false;
+        }
+
+        // Si ha hagut algún problema o l'id de l'article a insertar es negatiu, mostra l'error
+        if (!dadesCorrectes || id < 0) {
+            mostrarSnackBarError(getString(R.string.alert_error_cant_create_movement));
+            return;
+        }
+
+        // Assigna un valor a la variable per decidir el tipus de moviment a insertar
+        String tipusMoviment;
+        switch (stockType) {
+            case MainActivity.ACTIVITY_STOCK_IN:
+                tipusMoviment = "E";
+                break;
+
+            case MainActivity.ACTIVITY_STOCK_OUT:
+                tipusMoviment = "S";
+                break;
+
+            default:
+                finish();
+                return;
+        }
+
+        // Fa l'insert
+        boolean movimentInsertatCorrectament = bbdd.insertMovement(id, data, stock, tipusMoviment);
+
+        // Si ha funcionat correctament, tanca l'activity. Sino, mostra un error
+        if (movimentInsertatCorrectament) {
+            finalitzarActivity();
+        }
+        else {
+            mostrarSnackBarError(getString(R.string.alert_error_cant_create_movement));
+        }
+
     }
 }

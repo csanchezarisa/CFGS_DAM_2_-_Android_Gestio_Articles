@@ -65,6 +65,8 @@
     <string name="alert_error_cant_update_article">No s\'ha pogut actualitzar l\'article. Revisa els camps.</string>
     <string name="alert_error_cant_delete_article">No s\'ha pogut eliminar l\'article.</string>
     <string name="alert_error_cant_filter_articles">No s\'han pogut filtrar els articles.</string>
+    <string name="alert_error_cant_create_movement">No s\'ha pogut crear el moviment. Revisa els camps.</string>
+    <string name="alert_error_cant_update_movement">No s\'ha pogut actualitzar el moviment. Revisa els camps.</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">L\'article s\'ha generat correctament.</string>

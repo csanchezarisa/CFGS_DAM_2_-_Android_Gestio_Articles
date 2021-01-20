@@ -12,11 +12,21 @@ public class Date {
         this.year = String.valueOf(year);
     }
 
-    public Date(String date) {
-        String[] dateParts = date.split("/");
-        day = dateParts[0];
-        month = dateParts[1];
-        year = dateParts[2];
+    public Date(String date, boolean SQLDate) {
+
+        if (SQLDate) {
+            String[] dateParts = date.split("-");
+            day = dateParts[2];
+            month = dateParts[1];
+            year = dateParts[0];
+        }
+        else {
+
+            String[] dateParts = date.split("/");
+            day = dateParts[0];
+            month = dateParts[1];
+            year = dateParts[2];
+        }
     }
 
     public String getEuropeanDate() {
@@ -24,7 +34,7 @@ public class Date {
     }
 
     public String getSQLDate() {
-        return this.year + "/" + this.month + "/" + this.day;
+        return this.year + "-" + this.month + "-" + this.day;
     }
 
     public static String dosDigits(int number) {
