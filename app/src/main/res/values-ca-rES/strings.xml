@@ -30,6 +30,8 @@
     <string name="activity_stock_manage_search">Cercar</string>
     <string name="activity_stock_manage_quantity">Quantitat</string>
     <string name="activity_stock_manage_date">Data</string>
+    <string name="activity_stock_manage_article_founded">S\'ha trobat l\'article</string>
+    <string name="activity_stock_manage_article_not_founded">No s\'ha trobat l\'article</string>
 
 
     <!-- .: 2. MENUS :. -->

@@ -58,6 +58,19 @@ public class GestioArticlesDataSource {
                 null);
     }
 
+    /** Retorna una select amb l'article que s'està buscant
+     * @param codi Codi de l'article que es vol buscar */
+    public Cursor getArticle(String codi) {
+
+        return dbR.query(TABLE_ARTICLE,
+                new String[]{ARTICLE_ID, ARTICLE_CODI, ARTICLE_DESCRIPCIO, ARTICLE_FAMILIA, ARTICLE_PREU, ARTICLE_ESTOC},
+                ARTICLE_CODI + " = '" + codi + "'",
+                null,
+                null,
+                null,
+                null);
+    }
+
     /** Retorna una select amb tots els articles */
     public Cursor getArticlesAll() {
 

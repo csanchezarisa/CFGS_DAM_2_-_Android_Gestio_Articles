@@ -30,6 +30,8 @@
     <string name="activity_stock_manage_search">Buscar</string>
     <string name="activity_stock_manage_quantity">Cantidad</string>
     <string name="activity_stock_manage_date">Fecha</string>
+    <string name="activity_stock_manage_article_founded">Se ha encontrado el artículo</string>
+    <string name="activity_stock_manage_article_not_founded">No se ha encontrado el artículo</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->

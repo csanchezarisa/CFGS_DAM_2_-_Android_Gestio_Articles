@@ -29,6 +29,8 @@
     <string name="activity_stock_manage_search">Search</string>
     <string name="activity_stock_manage_quantity">Quantity</string>
     <string name="activity_stock_manage_date">Date</string>
+    <string name="activity_stock_manage_article_founded">Article founded</string>
+    <string name="activity_stock_manage_article_not_founded">Article not founded</string>
 
 
     <!-- .: 2. MENUS :. -->
