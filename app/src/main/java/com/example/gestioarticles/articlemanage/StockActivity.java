@@ -217,7 +217,7 @@ public class StockActivity extends AppCompatActivity {
 
         Cursor article = bbdd.getArticle(codiPerCercar);
 
-        if (article.getCount() > 0) {
+        if (article.moveToFirst()) {
             id = article.getLong(article.getColumnIndexOrThrow(bbdd.ARTICLE_ID));
             articleValid(true);
             mostrarSnackBarCorrecte(getText(R.string.activity_stock_manage_article_founded).toString());
