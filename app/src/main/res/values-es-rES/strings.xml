@@ -27,6 +27,9 @@
 
     <!-- StockManage -->
     <string name="activity_stock_manage_title">Control de estoc</string>
+    <string name="activity_stock_manage_search">Buscar</string>
+    <string name="activity_stock_manage_quantity">Cantidad</string>
+    <string name="activity_stock_manage_date">Fecha</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->

@@ -57,7 +57,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_MOVIMENT + "(" +
                         MOVIMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         MOVIMENT_CODI_ARTICLE + " INTEGER NOT NULL," +
-                        MOVIMENT_DIA + " TEXT NOT NULL DEFAULT CURRENT_DATE," +
+                        MOVIMENT_DIA + " TEXT NOT NULL," +
                         MOVIMENT_QUANTITAT + " INTEGER NOT NULL," +
                         MOVIMENT_TIPUS + " TEXT NOT NULL, " +
                         "FOREIGN KEY (" + MOVIMENT_CODI_ARTICLE + ") REFERENCES " + TABLE_ARTICLE + "(" + ARTICLE_ID + ")" +
@@ -96,7 +96,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
                     "CREATE TABLE " + TABLE_MOVIMENT + "(" +
                             MOVIMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                             MOVIMENT_CODI_ARTICLE + " INTEGER NOT NULL," +
-                            MOVIMENT_DIA + " TEXT NOT NULL DEFAULT CURRENT_DATE," +
+                            MOVIMENT_DIA + " TEXT NOT NULL," +
                             MOVIMENT_QUANTITAT + " INTEGER NOT NULL," +
                             MOVIMENT_TIPUS + " TEXT NOT NULL, " +
                             "FOREIGN KEY (" + MOVIMENT_CODI_ARTICLE + ") REFERENCES " + TABLE_ARTICLE + "(" + ARTICLE_ID + ")" +
