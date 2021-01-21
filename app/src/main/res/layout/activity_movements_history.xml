@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:text="@string/activity_main_txt_article_codi"
+                android:contentDescription="@string/activity_movement_history_start_date"
+                android:text="@string/activity_movement_history_start_date"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -67,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:text="@string/activity_main_txt_article_codi"
+                android:contentDescription="@string/activity_movement_history_final_date"
+                android:text="@string/activity_movement_history_final_date"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 

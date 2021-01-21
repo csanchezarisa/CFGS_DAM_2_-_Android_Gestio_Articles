@@ -39,6 +39,8 @@
     <string name="activity_movements_history_title">Historial de movimientos</string>
     <string name="activity_movement_history_all_movements">Todos los movimientos</string>
     <string name="activity_movement_history_article_selected_movements">Movimientos del artículo</string>
+    <string name="activity_movement_history_start_date">Fecha inicial</string>
+    <string name="activity_movement_history_final_date">Fecha final</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
