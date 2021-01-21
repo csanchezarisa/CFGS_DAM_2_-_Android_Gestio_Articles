@@ -1,13 +1,11 @@
 package com.example.gestioarticles.articlemanage;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -52,7 +50,6 @@ public class StockActivity extends AppCompatActivity {
 
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +175,6 @@ public class StockActivity extends AppCompatActivity {
 
     /** Fa una consulta que retorna un article. Amb les dades d'aquest
      * es personalitzen els elements del layout. */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void carregarDadesArticle(long id) {
         Cursor articleSeleccionat = bbdd.getArticle(id);
 
@@ -195,7 +191,6 @@ public class StockActivity extends AppCompatActivity {
 
     /* .: 6. FUNCIONS PRÒPIES :. */
     /** Cerca l'article pel codi introduit dins del input de codi */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void cercarArticle() {
 
         String codiPerCercar;
@@ -230,7 +225,6 @@ public class StockActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void articleValid(boolean valid) {
         this.validArticle = valid;
     }
@@ -238,7 +232,6 @@ public class StockActivity extends AppCompatActivity {
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
      * notificant d'un error
      * @param error String amb el contingut del missatge que s'ha de mostrar*/
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarError(String error) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + error + "</font>"), Snackbar.LENGTH_LONG);
@@ -255,7 +248,6 @@ public class StockActivity extends AppCompatActivity {
     /** Mostra un Snackbar de color verd en la part superior de la pantalla
      * avisant que tot ha funcionat correctament
      * @param missatge String amb el contingut del missatge que s'ha de mostrar*/
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarCorrecte(String missatge) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
@@ -285,7 +277,6 @@ public class StockActivity extends AppCompatActivity {
 
     /** Comprova els valors dels inputs i fa l'insert en la taula de moviments de la BBDD
      * i fa l'update en el número d'estoc de l'article */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void registrarStock() {
 
         Date data = null;

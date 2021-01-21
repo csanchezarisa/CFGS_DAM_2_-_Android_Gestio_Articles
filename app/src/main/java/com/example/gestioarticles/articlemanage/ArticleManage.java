@@ -1,7 +1,6 @@
 package com.example.gestioarticles.articlemanage;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -121,7 +119,6 @@ public class ArticleManage extends AppCompatActivity {
 
         // Listeners pels elements del layout
         btnAdd.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
 
@@ -144,7 +141,6 @@ public class ArticleManage extends AppCompatActivity {
         });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
 
@@ -478,7 +474,6 @@ public class ArticleManage extends AppCompatActivity {
         alert.setMessage(contingut);
 
         alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -506,7 +501,6 @@ public class ArticleManage extends AppCompatActivity {
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
      * notificant d'un error
      * @param error String amb el contingut del missatge que s'ha de mostrar*/
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarError(String error) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + error + "</font>"), Snackbar.LENGTH_LONG);
@@ -523,7 +517,6 @@ public class ArticleManage extends AppCompatActivity {
     /** Mostra un Snackbar de color verd en la part superior de la pantalla
      * avisant que tot ha funcionat correctament
      * @param missatge String amb el contingut del missatge que s'ha de mostrar*/
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarCorrecte(String missatge) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
