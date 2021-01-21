@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -22,6 +24,8 @@ import android.widget.TextView;
 
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.adapter.MovementsHistoryAdapter;
+import com.example.gestioarticles.assets.datepicker.DatePickerFragment;
+import com.example.gestioarticles.assets.datetype.Date;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -48,8 +52,13 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     private static final String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.MOVIMENT_DIA, GestioArticlesDataSource.MOVIMENT_QUANTITAT, GestioArticlesDataSource.MOVIMENT_TIPUS};
     private static final int[] to = new int[]{R.id.txt_movement_article_code, R.id.txt_movement_date, R.id.txt_movement_quantity, R.id.txt_movement_type};
 
+    // Dates per fer el filtratge
+    private Date startDateFilter;
+    private Date finalDateFilter;
+
     // Elements del layout
     ImageButton btnFilterDate;
+    ImageButton btnClearDate;
     EditText inputDateFrom;
     EditText inputDateTo;
     ListView listHistory;
@@ -74,6 +83,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
         // Es vinculen els elements del layout amb les variables
         btnFilterDate = (ImageButton) findViewById(R.id.btn_history_date_search);
+        btnClearDate = (ImageButton) findViewById(R.id.btn_history_date_clear);
         inputDateFrom = (EditText) findViewById(R.id.input_history_date_from);
         inputDateTo = (EditText) findViewById(R.id.input_history_date_to);
         listHistory = (ListView) findViewById(R.id.list_history_movements);
@@ -90,6 +100,50 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         // Es carreguen els moviments en el llistat
         loadMovements();
 
+        // Listeners
+        inputDateTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDatePickerDialog(inputDateTo);
+            }
+        });
+
+        inputDateTo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                inputDateTo.setText(null);
+                return false;
+            }
+        });
+
+        inputDateFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDatePickerDialog(inputDateFrom);
+            }
+        });
+
+        inputDateFrom.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                inputDateFrom.setText(null);
+                return false;
+            }
+        });
+
+        btnClearDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearDates();
+            }
+        });
+
+        btnFilterDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDates();
+            }
+        });
     }
 
 
@@ -172,7 +226,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     private void mostrarAlertCercarArticle() {
 
         AlertDialog alert = new AlertDialog.Builder(this).create();
-        alert.setTitle(getString(R.string.alert_info_title_select_description));
+        alert.setTitle(getString(R.string.activity_main_txt_article_codi));
 
         EditText edtArticleCode = new EditText(this);
         alert.setView(edtArticleCode);
@@ -204,8 +258,33 @@ public class MovementsHistoryActivity extends AppCompatActivity {
             }
         });
 
+        alert.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.alert_info_reset), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                idArticle = -1;
+                loadMovements();
+
+            }
+        });
+
         alert.show();
 
+    }
+
+    /** Mostra un Dialog que permet seleccionar una data de manera gràfica
+     * @param input Permet especificar a quin input se li ha de posar el resultat */
+    private void mostrarDatePickerDialog(EditText input) {
+        DatePickerFragment datePickerDialog;
+        datePickerDialog = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Date data = new Date(dayOfMonth, month, year);
+                input.setText(data.getEuropeanDate());
+            }
+        });
+
+        datePickerDialog.show(getSupportFragmentManager(), "datePicker");
     }
 
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
@@ -242,6 +321,11 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
 
     /* .: 6. FUNCIONS PRÒPIES :. */
+    private void clearDates() {
+        inputDateFrom.setText(null);
+        inputDateTo.setText(null);
+    }
+
     /** Carrega per primer cop els moviments en el llistat */
     private void loadMovements() {
 
@@ -251,13 +335,13 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         if (idArticle > -1) {
 
             // Fa la consulta dels moviments de l'article seleccionat
-            moviments = bbdd.getMovimentsByArticleID(idArticle, sortType);
+            moviments = bbdd.getMovimentsByArticleID(idArticle, sortType, startDateFilter, finalDateFilter);
 
         }
         else {
 
             // Fa la consulta de tots els moviments
-            moviments = bbdd.getMoviments(sortType);
+            moviments = bbdd.getMoviments(sortType, startDateFilter, finalDateFilter);
 
         }
 
@@ -280,7 +364,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
                 sortType = GestioArticlesDataSource.MOVIMENT_DIA + " desc";
         }
 
-        reloadList();
+        loadMovements();
 
     }
 
@@ -291,7 +375,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     private void filtrarArticle(String articleCode) {
 
         // Es recupera un cursor amb els moviments de l'article seleccionat
-        Cursor movimentsArticle = bbdd.getMovimentsByArticleCode(articleCode, sortType);
+        Cursor movimentsArticle = bbdd.getMovimentsByArticleCode(articleCode, sortType, startDateFilter, finalDateFilter);
 
         // Si la select funciona correctament, filtra. Sino, mostra un error
         if (movimentsArticle.moveToFirst()) {
@@ -312,7 +396,31 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
     }
 
+    private void setDates() {
+
+        try {
+            startDateFilter = new Date(inputDateFrom.getText().toString(), false);
+        }
+        catch (Exception e) {
+            startDateFilter = null;
+            inputDateFrom.setText(null);
+        }
+
+        try {
+            finalDateFilter = new Date(inputDateTo.getText().toString(), false);
+        }
+        catch (Exception e) {
+            finalDateFilter = null;
+            inputDateTo.setText(null);
+        }
+
+        loadMovements();
+
+    }
+
     private void filtrarArticle(long id) {
+
+
 
     }
 
@@ -324,12 +432,6 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         listHistory.setSelection(0);
-
-    }
-
-    /** Refresca el contingut del llistat
-     * ell fa la select */
-    private void reloadList() {
 
     }
 }

@@ -98,6 +98,17 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:srcCompat="@drawable/ic_search" />
 
+    <ImageButton
+        android:id="@+id/btn_history_date_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/activity_main_menu_btn_clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:srcCompat="@drawable/ic_close" />
+
     <ListView
         android:id="@+id/list_history_movements"
         android:layout_width="0dp"

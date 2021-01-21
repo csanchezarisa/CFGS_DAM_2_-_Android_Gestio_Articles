@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.annotation.Nullable;
+
 import com.example.gestioarticles.assets.datetype.Date;
 
 public class GestioArticlesDataSource {
@@ -293,33 +295,115 @@ public class GestioArticlesDataSource {
 
     /* .: 4. MÈTODES SOBRE LA TAULA MOVIMENT :. */
     /* .: 4.1. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
+
     /** Retorna un cursor amb tots els elements. Ordenats segons el criteri.
-     * @param orderBy String amb la clàusula SQL ORDER BY */
-    public Cursor getMoviments(String orderBy) {
-        return dbR.query(
-                TABLE_MOVIMENT,
-                new String[]{MOVIMENT_ID, MOVIMENT_CODI_ARTICLE, MOVIMENT_DIA, MOVIMENT_QUANTITAT, MOVIMENT_TIPUS},
-                null,
-                null,
-                null,
-                null,
-                orderBy
-        );
+     * @param orderBy String amb la clàusula SQL ORDER BY
+     * @param startDate Data inicial per filtrar
+     * @param finalDate Data final per filtrar */
+    public Cursor getMoviments(String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
+        String QUERY;
+
+        if (startDate == null && finalDate == null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " ORDER BY " + orderBy;
+
+        }
+        else if (startDate == null && finalDate != null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
+        else if (startDate != null && finalDate == null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
+        else {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
+
+        return dbR.rawQuery(QUERY, null);
     }
 
     /** Retorna un cursor amb tots els elements filtrats pel codi de l'article
      * i ordenats segons el criteri.
      * @param articleCode String amb el codi de l'article pel que es vol filtrar
-     * @param orderBy String amb la clàusula SQL ORDER BY */
-    public Cursor getMovimentsByArticleCode(String articleCode, String orderBy) {
+     * @param orderBy String amb la clàusula SQL ORDER BY
+     * @param startDate Data inicial per filtrar
+     * @param finalDate Data final per filtrar */
+    public Cursor getMovimentsByArticleCode(String articleCode, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
 
-        final String QUERY =
-                "SELECT * " +
-                        "FROM " + TABLE_MOVIMENT + " a " +
-                        "INNER JOIN " + TABLE_ARTICLE + " b " +
-                        "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                        " WHERE b." + ARTICLE_CODI + " = " + articleCode +
-                        " ORDER BY " + orderBy;
+        String QUERY;
+
+        if (startDate == null && finalDate == null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
+        else if (startDate == null && finalDate != null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
+        else if (startDate != null && finalDate == null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
+        else {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " +
+                            " ORDER BY " + orderBy;
+
+        }
 
         return dbR.rawQuery(QUERY, null);
     }
@@ -327,19 +411,59 @@ public class GestioArticlesDataSource {
     /** Retorna un cursor amb tots els elements filtrats per l'ID de l'article
      * i ordenats segons el criteri.
      * @param idArticle Long amb l'ID de l'article pel que es vol filtrar
-     * @param orderBy String amb la clàusula SQL ORDER BY */
-    public Cursor getMovimentsByArticleID(long idArticle, String orderBy) {
+     * @param orderBy String amb la clàusula SQL ORDER BY
+     * @param startDate Data inicial per filtrar
+     * @param finalDate Data final per filtrar */
+    public Cursor getMovimentsByArticleID(long idArticle, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
 
+        String QUERY;
 
-        return dbR.query(
-                TABLE_MOVIMENT,
-                new String[]{MOVIMENT_ID, MOVIMENT_CODI_ARTICLE, MOVIMENT_DIA, MOVIMENT_QUANTITAT, MOVIMENT_TIPUS},
-                MOVIMENT_CODI_ARTICLE + " = ?",
-                new String[]{String.valueOf(idArticle)},
-                null,
-                null,
-                orderBy
-        );
+        if (startDate == null && finalDate == null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " ORDER BY " + orderBy;
+
+        }
+        else if (startDate == null && finalDate != null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID + " AND a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " ORDER BY " + orderBy;
+
+        }
+        else if (startDate != null && finalDate == null) {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID + " AND a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " ORDER BY " + orderBy;
+
+        }
+        else {
+
+            QUERY =
+                    "SELECT * " +
+                            "FROM " + TABLE_MOVIMENT + " a " +
+                            "INNER JOIN " + TABLE_ARTICLE + " b " +
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID + " AND a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " ORDER BY " + orderBy;
+
+        }
+
+        return dbR.rawQuery(QUERY, null);
     }
 
     /* .: 4.2. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */

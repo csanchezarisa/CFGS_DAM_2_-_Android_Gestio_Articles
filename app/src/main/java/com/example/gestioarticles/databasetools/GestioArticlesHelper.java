@@ -13,7 +13,7 @@ public class GestioArticlesHelper extends SQLiteOpenHelper {
 
     // Nom dels camps que conformen la taula "ARTICLE"
     public static final String ARTICLE_ID = "_id";
-    public static final String ARTICLE_CODI = "codiarticle";
+    public static final String ARTICLE_CODI = "codi";
     public static final String ARTICLE_DESCRIPCIO = "descripcio";
     public static final String ARTICLE_FAMILIA = "familia";
     public static final String ARTICLE_PREU = "preu";

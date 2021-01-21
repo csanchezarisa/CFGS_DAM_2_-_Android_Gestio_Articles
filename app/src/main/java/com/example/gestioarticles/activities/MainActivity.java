@@ -218,9 +218,12 @@ public class MainActivity extends AppCompatActivity {
     /** Obre l'activity que mostra el llistat amb els moviments */
     private void mostrarHistorial() {
 
+        Bundle data = new Bundle();
+        data.putLong("id", -1);
+
         // Es crida a l'activity passant-li un -1 com id, per mostrar tots els moviments
         Intent intent = new Intent(this, MovementsHistoryActivity.class);
-        intent.putExtra("id", -1);
+        intent.putExtras(data);
 
         // Es crida a l'activity
         startActivity(intent);
