@@ -293,6 +293,17 @@ public class GestioArticlesDataSource {
 
     /* .: 4. MÈTODES SOBRE LA TAULA MOVIMENT :. */
     /* .: 4.1. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
+    public Cursor getMoviments() {
+        return dbR.query(
+                TABLE_MOVIMENT,
+                new String[]{MOVIMENT_ID, MOVIMENT_CODI_ARTICLE, MOVIMENT_DIA, MOVIMENT_QUANTITAT, MOVIMENT_TIPUS},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
 
 
     /* .: 4.2. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */

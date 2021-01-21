@@ -3,12 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_btn_stock_out"
+        android:contentDescription="@string/activity_main_stock_out"
         android:icon="@drawable/ic_remove_shopping_light"
         android:title="@string/activity_main_stock_out"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_btn_stock_in"
+        android:contentDescription="@string/activity_main_stock_in"
         android:icon="@drawable/ic_add_shopping_light"
         android:title="@string/activity_main_stock_in"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_btn_article_history"
+        android:contentDescription="@string/activity_article_manage_btn_history"
+        android:icon="@drawable/ic_history_light"
+        android:title="@string/activity_article_manage_btn_history"
         app:showAsAction="ifRoom" />
 </menu>

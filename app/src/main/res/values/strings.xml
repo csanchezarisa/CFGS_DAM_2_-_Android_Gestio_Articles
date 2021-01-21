@@ -15,6 +15,7 @@
     <string name="activity_main_empty_article">Oops! \n It appears that there is no item created. \n Try creating one.</string>
     <string name="activity_main_stock_out">Report output</string>
     <string name="activity_main_stock_in">Report input</string>
+    <string name="activity_main_btn_history">Access history</string>
 
     <!-- ArticleManage -->
     <string name="activity_article_manage_article_update_title">Article update</string>
@@ -23,6 +24,7 @@
     <string name="activity_article_manage_article_family_software">Software</string>
     <string name="activity_article_manage_article_family_hardware">Hardware</string>
     <string name="activity_article_manage_article_family_other">Other</string>
+    <string name="activity_article_manage_btn_history">Access article history</string>
 
     <!-- StockManage -->
     <string name="activity_stock_manage_title">Stock manage</string>

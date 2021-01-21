@@ -16,6 +16,7 @@
     <string name="activity_main_empty_article">Oops! \n Parece que no hay ningún artículo creado. \n Prueba a crear uno.</string>
     <string name="activity_main_stock_out">Notificar salida</string>
     <string name="activity_main_stock_in">Notificar entrada</string>
+    <string name="activity_main_btn_history">Acceder al historial</string>
 
     <!-- ArticleManage -->
     <string name="activity_article_manage_article_update_title">Actualizar artículo </string>
@@ -24,6 +25,7 @@
     <string name="activity_article_manage_article_family_software">Software</string>
     <string name="activity_article_manage_article_family_hardware">Hardware</string>
     <string name="activity_article_manage_article_family_other">Otros</string>
+    <string name="activity_article_manage_btn_history">Acceder al historial del artículo</string>
 
     <!-- StockManage -->
     <string name="activity_stock_manage_title">Control de estoc</string>
