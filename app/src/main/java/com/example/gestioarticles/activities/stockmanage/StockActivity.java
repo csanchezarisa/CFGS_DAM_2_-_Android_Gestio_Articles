@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -90,6 +91,9 @@ public class StockActivity extends AppCompatActivity {
             default:
                 finish();
         }
+
+        // Carrega la data actual en l'input data
+        carregarDataActual();
 
         // Si l'id es positiu, carregarà les dades de l'article
         if (id >= 0) {
@@ -336,5 +340,21 @@ public class StockActivity extends AppCompatActivity {
             mostrarSnackBarError(getString(R.string.alert_error_cant_create_movement));
         }
 
+    }
+
+    /** Personalitza l'input data amb la data actual */
+    private void carregarDataActual() {
+
+        // Crea un calendari d'avui i aconsegueix el dia, mes i any
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Pasa aquesta informació al tipus Date (propia d'aquest projecte)
+        Date data = new Date(day, month, year);
+
+        // Inserta aquesta data al input
+        inputDate.setText(data.getEuropeanDate());
     }
 }
