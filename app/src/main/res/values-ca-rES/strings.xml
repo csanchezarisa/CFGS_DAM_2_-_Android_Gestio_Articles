@@ -35,6 +35,9 @@
     <string name="activity_stock_manage_article_founded">S\'ha trobat l\'article</string>
     <string name="activity_stock_manage_article_not_founded">No s\'ha trobat l\'article</string>
 
+    <!-- MovementsHistory -->
+    <string name="activity_movements_history_title">Historial de moviments</string>
+
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->

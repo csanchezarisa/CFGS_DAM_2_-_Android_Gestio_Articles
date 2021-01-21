@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_btn_search_article_history"
+        android:contentDescription="@string/activity_stock_manage_search"
+        android:icon="@drawable/ic_search_light"
+        android:title="@string/activity_stock_manage_search"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_btn_history_order"
+        android:contentDescription="@string/activity_main_menu_btn_order"
+        android:icon="@drawable/ic_order_btn_light"
+        android:title="@string/activity_main_menu_btn_order"
+        app:showAsAction="ifRoom" />
+</menu>

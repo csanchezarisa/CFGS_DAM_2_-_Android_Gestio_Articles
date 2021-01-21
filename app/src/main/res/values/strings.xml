@@ -34,6 +34,9 @@
     <string name="activity_stock_manage_article_founded">Article founded</string>
     <string name="activity_stock_manage_article_not_founded">Article not founded</string>
 
+    <!-- MovementsHistory -->
+    <string name="activity_movements_history_title">Movements history</string>
+
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
