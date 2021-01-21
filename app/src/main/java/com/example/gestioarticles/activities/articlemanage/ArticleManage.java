@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.gestioarticles.activities.MainActivity;
 import com.example.gestioarticles.R;
+import com.example.gestioarticles.activities.stockmanage.MovementsHistoryActivity;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -221,13 +222,28 @@ public class ArticleManage extends AppCompatActivity {
             case R.id.menu_btn_stock_out:
                 finalitzarActivity(idArticle, MainActivity.ACTIVITY_STOCK_OUT);
                 return true;
+            case R.id.menu_btn_article_history:
+                mostrarHistorial();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
 
-    /* .: 5. FUNCIONS PRÒPIES :. */
+    /* .: 5. COMUNICACIÓ AMB ALTRES ACTIVITIES :. */
+    private void mostrarHistorial() {
+
+        // Es crida a l'activity passant-li un -1 com id, per mostrar tots els moviments
+        Intent intent = new Intent(this, MovementsHistoryActivity.class);
+        intent.putExtra("id", idArticle);
+
+        // Es crida a l'activity
+        startActivity(intent);
+    }
+
+
+    /* .: 6. FUNCIONS PRÒPIES :. */
     /** Omple l'array dels tipus de familia amb les traduccions que es troben
      * en el recurs String. Segons l'idioma del dispositiu.
      * Per no acumular informació, sempre que es crida al mètode s'esborra

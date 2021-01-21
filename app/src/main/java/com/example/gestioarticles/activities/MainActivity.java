@@ -2,7 +2,6 @@ package com.example.gestioarticles.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.gestioarticles.R;
+import com.example.gestioarticles.activities.stockmanage.MovementsHistoryActivity;
 import com.example.gestioarticles.adapter.ArticlesAdapter;
 import com.example.gestioarticles.activities.articlemanage.ArticleManage;
 import com.example.gestioarticles.activities.stockmanage.StockActivity;
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imgSadFace;
     TextView txtEmptyArticle;
     ImageView imgArrow;
+    FloatingActionButton btnHistory;
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
     @Override
@@ -81,13 +82,21 @@ public class MainActivity extends AppCompatActivity {
         imgSadFace = (ImageView) findViewById(R.id.img_sad_face);
         txtEmptyArticle = (TextView) findViewById(R.id.txt_empty_article);
         imgArrow = (ImageView) findViewById(R.id.img_arrow);
+        btnHistory = (FloatingActionButton) findViewById(R.id.btn_history);
         // Botó per afegir articles
-        FloatingActionButton brn_add = findViewById(R.id.btn_add);
-        brn_add.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton btn_add = findViewById(R.id.btn_add);
+        btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Es crida a l'activity de gestió d'articles, passant un id negatiu per obligar a crear-ne un article nou
                 gestionarArticle(-1);
+            }
+        });
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarHistorial();
             }
         });
 
@@ -147,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_btn_stock_out:
                 gestionarStock(-1, ACTIVITY_STOCK_OUT);
                 return true;
+            case R.id.menu_btn_history:
+                mostrarHistorial();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -201,6 +213,17 @@ public class MainActivity extends AppCompatActivity {
 
         // S'inicia l'Activity a l'espera d'un resultat
         startActivityForResult(intent, tipusActivity);
+    }
+
+    /** Obre l'activity que mostra el llistat amb els moviments */
+    private void mostrarHistorial() {
+
+        // Es crida a l'activity passant-li un -1 com id, per mostrar tots els moviments
+        Intent intent = new Intent(this, MovementsHistoryActivity.class);
+        intent.putExtra("id", -1);
+
+        // Es crida a l'activity
+        startActivity(intent);
     }
 
     @Override
@@ -358,7 +381,6 @@ public class MainActivity extends AppCompatActivity {
         alert.setMessage(contingut);
 
         alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -393,7 +415,6 @@ public class MainActivity extends AppCompatActivity {
         alert.setMessage(getString(R.string.alert_info_delete_article));
 
         alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -527,7 +548,6 @@ public class MainActivity extends AppCompatActivity {
             alert.setView(edtDescription);
 
             alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -564,7 +584,6 @@ public class MainActivity extends AppCompatActivity {
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
      * notificant d'un error
      * @param error String amb el contingut del missatge que s'ha de mostrar*/
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarError(String error) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + error + "</font>"), Snackbar.LENGTH_LONG);
@@ -581,7 +600,6 @@ public class MainActivity extends AppCompatActivity {
     /** Mostra un Snackbar de color verd en la part superior de la pantalla
      * avisant que tot ha funcionat correctament
      * @param missatge String amb el contingut del missatge que s'ha de mostrar*/
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void mostrarSnackBarCorrecte(String missatge) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
