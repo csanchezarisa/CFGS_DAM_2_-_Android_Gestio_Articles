@@ -293,7 +293,9 @@ public class GestioArticlesDataSource {
 
     /* .: 4. MÈTODES SOBRE LA TAULA MOVIMENT :. */
     /* .: 4.1. SELECTS - MÈTODES QUE RETORNEN LLISTATS AMB DADES :. */
-    public Cursor getMoviments() {
+    /** Retorna un cursor amb tots els elements. Ordenats segons el criteri.
+     * @param orderBy String amb la clàusula SQL ORDER BY */
+    public Cursor getMoviments(String orderBy) {
         return dbR.query(
                 TABLE_MOVIMENT,
                 new String[]{MOVIMENT_ID, MOVIMENT_CODI_ARTICLE, MOVIMENT_DIA, MOVIMENT_QUANTITAT, MOVIMENT_TIPUS},
@@ -301,10 +303,44 @@ public class GestioArticlesDataSource {
                 null,
                 null,
                 null,
-                null
+                orderBy
         );
     }
 
+    /** Retorna un cursor amb tots els elements filtrats pel codi de l'article
+     * i ordenats segons el criteri.
+     * @param articleCode String amb el codi de l'article pel que es vol filtrar
+     * @param orderBy String amb la clàusula SQL ORDER BY */
+    public Cursor getMovimentsByArticleCode(String articleCode, String orderBy) {
+
+        final String QUERY =
+                "SELECT * " +
+                        "FROM " + TABLE_MOVIMENT + " a " +
+                        "INNER JOIN " + TABLE_ARTICLE + " b " +
+                        "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
+                        " WHERE b." + ARTICLE_CODI + " = " + articleCode +
+                        " ORDER BY " + orderBy;
+
+        return dbR.rawQuery(QUERY, null);
+    }
+
+    /** Retorna un cursor amb tots els elements filtrats per l'ID de l'article
+     * i ordenats segons el criteri.
+     * @param idArticle Long amb l'ID de l'article pel que es vol filtrar
+     * @param orderBy String amb la clàusula SQL ORDER BY */
+    public Cursor getMovimentsByArticleID(long idArticle, String orderBy) {
+
+
+        return dbR.query(
+                TABLE_MOVIMENT,
+                new String[]{MOVIMENT_ID, MOVIMENT_CODI_ARTICLE, MOVIMENT_DIA, MOVIMENT_QUANTITAT, MOVIMENT_TIPUS},
+                MOVIMENT_CODI_ARTICLE + " = ?",
+                new String[]{String.valueOf(idArticle)},
+                null,
+                null,
+                orderBy
+        );
+    }
 
     /* .: 4.2. UPDATES/INSERTS/DELETES - MÈTODES QUE PERMETEN MANIPULAR LES DADES :. */
     /** Inserta un nou moviment, actualitzant també la quantiat d'estoc que hi ha de l'article */

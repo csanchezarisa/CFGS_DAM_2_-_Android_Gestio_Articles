@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -17,8 +18,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.gestioarticles.R;
+import com.example.gestioarticles.adapter.MovementsHistoryAdapter;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,6 +40,13 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     /** Variable que emmagatzema el DataSource, el qual permet treballar amb la BBDD
      * fer Inserts, Updates, Deletes, etc. */
     private GestioArticlesDataSource bbdd;
+
+    /** Adapter per mostrar els elements en el llistat */
+    private MovementsHistoryAdapter adapter;
+
+    // Columnes i camps de la BBDD
+    private static final String[] from = new String[]{GestioArticlesDataSource.ARTICLE_CODI, GestioArticlesDataSource.MOVIMENT_DIA, GestioArticlesDataSource.MOVIMENT_QUANTITAT, GestioArticlesDataSource.MOVIMENT_TIPUS};
+    private static final int[] to = new int[]{R.id.txt_movement_article_code, R.id.txt_movement_date, R.id.txt_movement_quantity, R.id.txt_movement_type};
 
     // Elements del layout
     ImageButton btnFilterDate;
@@ -67,6 +77,19 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         inputDateFrom = (EditText) findViewById(R.id.input_history_date_from);
         inputDateTo = (EditText) findViewById(R.id.input_history_date_to);
         listHistory = (ListView) findViewById(R.id.list_history_movements);
+
+        // Es canvia el títol
+        TextView title = (TextView) findViewById(R.id.txt_history_title);
+        if (idArticle > -1) {
+            title.setText(getString(R.string.activity_movement_history_article_selected_movements));
+        }
+        else {
+            title.setText(getString(R.string.activity_movement_history_all_movements));
+        }
+
+        // Es carreguen els moviments en el llistat
+        loadMovements();
+
     }
 
 
@@ -115,7 +138,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
 
     /* .: 5. ALERTES :. */
-    /** Mostra un dialog que permet introduir el codi de l'article que es vol cercar */
+    /** Mostra un dialog que permet seleccionar quin serà l'ordre en el que es mostrarà la llista */
     private void mostrarAlertOrdenarLlistat() {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -145,8 +168,43 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         alert.show();
     }
 
-    /** Mostra un dialog que permet seleccionar quin serà l'ordre en el que es mostrarà la llista */
+    /** Mostra un dialog que permet introduir el codi de l'article que es vol cercar */
     private void mostrarAlertCercarArticle() {
+
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+        alert.setTitle(getString(R.string.alert_info_title_select_description));
+
+        EditText edtArticleCode = new EditText(this);
+        alert.setView(edtArticleCode);
+
+        alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String articleCode;
+
+                try {
+                    articleCode  = edtArticleCode.getText().toString();
+                }
+                catch (Exception e) {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_filter_articles));
+                    return;
+                }
+
+                if (articleCode.length() > 0) {
+                    filtrarArticle(articleCode);
+                }
+            }
+        });
+
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // No fa res
+            }
+        });
+
+        alert.show();
 
     }
 
@@ -184,6 +242,34 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
 
     /* .: 6. FUNCIONS PRÒPIES :. */
+    /** Carrega per primer cop els moviments en el llistat */
+    private void loadMovements() {
+
+        Cursor moviments;
+
+        // Comprova si algun article ha estat seleccionat
+        if (idArticle > -1) {
+
+            // Fa la consulta dels moviments de l'article seleccionat
+            moviments = bbdd.getMovimentsByArticleID(idArticle, sortType);
+
+        }
+        else {
+
+            // Fa la consulta de tots els moviments
+            moviments = bbdd.getMoviments(sortType);
+
+        }
+
+        // S'inicialitza l'adapter amb la select feta
+        adapter = new MovementsHistoryAdapter(this, R.layout.activity_movements_history_fila, moviments, from, to, 1);
+
+        // Es vincula l'adapter amb el llistat
+        listHistory.setAdapter(adapter);
+
+    }
+
+    /** Canvia l'ordre en que es mostren els elements del llistat */
     private void seleccionarOrdre() {
 
         switch (sortPosition) {
@@ -193,6 +279,57 @@ public class MovementsHistoryActivity extends AppCompatActivity {
             default:
                 sortType = GestioArticlesDataSource.MOVIMENT_DIA + " desc";
         }
+
+        reloadList();
+
+    }
+
+    /** Fa la cerca de l'article segons el codi introduit. Si el troba, canvia la variable id
+     * pel de l'article que s'ha seleccionat. Sino, la posa a -1 i mostra un error.
+     * Després, refresca el llistat
+     * @param articleCode String amb el codi de l'article que es vol cercar*/
+    private void filtrarArticle(String articleCode) {
+
+        // Es recupera un cursor amb els moviments de l'article seleccionat
+        Cursor movimentsArticle = bbdd.getMovimentsByArticleCode(articleCode, sortType);
+
+        // Si la select funciona correctament, filtra. Sino, mostra un error
+        if (movimentsArticle.moveToFirst()) {
+
+            mostrarSnackBarCorrecte(getString(R.string.activity_stock_manage_article_founded));
+
+            // Recupera l'id de l'article seleccionat
+            idArticle = movimentsArticle.getLong(movimentsArticle.getColumnIndexOrThrow(bbdd.TABLE_ARTICLE + "." + bbdd.ARTICLE_ID));
+
+            reloadList(movimentsArticle);
+
+        }
+        else {
+
+            mostrarSnackBarError(getString(R.string.activity_stock_manage_article_not_founded));
+
+        }
+
+    }
+
+    private void filtrarArticle(long id) {
+
+    }
+
+    /** Refresca el contingut del llistat
+     * @param movements Cursor amb la select per mostrar*/
+    private void reloadList(Cursor movements) {
+
+        adapter.changeCursor(movements);
+        adapter.notifyDataSetChanged();
+
+        listHistory.setSelection(0);
+
+    }
+
+    /** Refresca el contingut del llistat
+     * ell fa la select */
+    private void reloadList() {
 
     }
 }

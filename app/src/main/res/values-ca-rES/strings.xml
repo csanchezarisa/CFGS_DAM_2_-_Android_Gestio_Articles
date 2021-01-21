@@ -41,6 +41,7 @@
     <string name="activity_movement_history_article_selected_movements">Moviments de l\'article</string>
     <string name="activity_movement_history_start_date">Data inicial</string>
     <string name="activity_movement_history_final_date">Data final</string>
+    <string name="activity_movement_history_row_type">Tipus</string>
 
 
     <!-- .: 2. MENUS :. -->

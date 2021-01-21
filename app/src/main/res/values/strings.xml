@@ -40,6 +40,7 @@
     <string name="activity_movement_history_article_selected_movements">Article movements</string>
     <string name="activity_movement_history_start_date">Start date</string>
     <string name="activity_movement_history_final_date">Final date</string>
+    <string name="activity_movement_history_row_type">Type</string>
 
 
     <!-- .: 2. MENUS :. -->
