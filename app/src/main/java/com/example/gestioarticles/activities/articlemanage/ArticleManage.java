@@ -1,4 +1,4 @@
-package com.example.gestioarticles.articlemanage;
+package com.example.gestioarticles.activities.articlemanage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,7 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.gestioarticles.MainActivity;
+import com.example.gestioarticles.activities.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

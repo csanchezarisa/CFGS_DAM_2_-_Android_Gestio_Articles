@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestioArticles">
-        <activity android:name=".articlemanage.StockActivity"></activity>
-        <activity android:name=".articlemanage.ArticleManage" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.stockmanage.StockActivity"></activity>
+        <activity android:name=".activities.articlemanage.ArticleManage" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

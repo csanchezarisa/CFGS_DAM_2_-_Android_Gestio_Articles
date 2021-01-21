@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.gestioarticles.MainActivity;
+import com.example.gestioarticles.activities.MainActivity;
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 

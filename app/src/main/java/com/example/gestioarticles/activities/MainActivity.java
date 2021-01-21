@@ -1,4 +1,4 @@
-package com.example.gestioarticles;
+package com.example.gestioarticles.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,9 +24,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gestioarticles.R;
 import com.example.gestioarticles.adapter.ArticlesAdapter;
-import com.example.gestioarticles.articlemanage.ArticleManage;
-import com.example.gestioarticles.articlemanage.StockActivity;
+import com.example.gestioarticles.activities.articlemanage.ArticleManage;
+import com.example.gestioarticles.activities.stockmanage.StockActivity;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
