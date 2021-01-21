@@ -37,6 +37,8 @@
 
     <!-- MovementsHistory -->
     <string name="activity_movements_history_title">Historial de movimientos</string>
+    <string name="activity_movement_history_all_movements">Todos los movimientos</string>
+    <string name="activity_movement_history_article_selected_movements">Movimientos del artículo</string>
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
