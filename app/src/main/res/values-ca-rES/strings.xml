@@ -42,6 +42,8 @@
     <string name="activity_movement_history_start_date">Data inicial</string>
     <string name="activity_movement_history_final_date">Data final</string>
     <string name="activity_movement_history_row_type">Tipus</string>
+    <string name="activity_movement_history_row_type_stock_in">Entrada</string>
+    <string name="activity_movement_history_row_type_stock_out">Sortida</string>
 
 
     <!-- .: 2. MENUS :. -->

@@ -41,6 +41,8 @@
     <string name="activity_movement_history_start_date">Start date</string>
     <string name="activity_movement_history_final_date">Final date</string>
     <string name="activity_movement_history_row_type">Type</string>
+    <string name="activity_movement_history_row_type_stock_in">Stock in</string>
+    <string name="activity_movement_history_row_type_stock_out">Stock out</string>
 
 
     <!-- .: 2. MENUS :. -->
