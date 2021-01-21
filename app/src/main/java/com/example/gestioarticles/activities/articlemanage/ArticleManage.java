@@ -232,6 +232,9 @@ public class ArticleManage extends AppCompatActivity {
 
 
     /* .: 5. COMUNICACIÓ AMB ALTRES ACTIVITIES :. */
+    /** Obre l'activity que mostra el llistat amb els moviments de l'article seleccionat.
+     * Si no hi ha cap article seleccionat perque s'ha d'inserir, s'envia -1 i es mostraran tots
+     * els moviments.*/
     private void mostrarHistorial() {
 
         // Es crida a l'activity passant-li un -1 com id, per mostrar tots els moviments

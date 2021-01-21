@@ -8,6 +8,8 @@ import com.example.gestioarticles.R;
 
 public class MovementsHistoryActivity extends AppCompatActivity {
 
+    private long idArticle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

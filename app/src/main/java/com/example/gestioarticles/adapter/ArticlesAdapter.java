@@ -56,6 +56,9 @@ public class ArticlesAdapter extends android.widget.SimpleCursorAdapter {
         element = (TextView) fila.findViewById(R.id.txt_article_preu_no_iva);
         element.setText(element.getText().toString() + "€, no IVA");
 
+        element = (TextView) fila.findViewById(R.id.txt_article_estoc);
+        element.setText(String.valueOf(stock) + " u");
+
         // Botó eliminar
         ImageView btnEliminar = (ImageView) fila.findViewById(R.id.btn_delete_article);
         btnEliminar.setOnClickListener(new View.OnClickListener() {
