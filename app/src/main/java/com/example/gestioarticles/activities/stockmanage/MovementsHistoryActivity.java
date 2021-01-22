@@ -38,7 +38,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
     /** Variable que emmagatzemen l'ordre per mostrar els articles.
      * Per defecte, s'ordenarà pel camp DIA de manera descendent */
-    private String sortType = GestioArticlesDataSource.MOVIMENT_DIA + " desc";
+    private String sortType = GestioArticlesDataSource.MOVIMENT_CODI_ARTICLE;
     private int sortPosition = 0;
 
     /** Variable que emmagatzema el DataSource, el qual permet treballar amb la BBDD
@@ -199,6 +199,8 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         alert.setTitle(getString(R.string.alert_info_title_order));
 
         String[] sorts = new String[]{
+                getString(R.string.alert_info_order_by_code),
+                getString(R.string.alert_info_order_by_code_desc),
                 getString(R.string.alert_info_order_by_date_desc),
                 getString(R.string.alert_info_order_by_date)
         };
@@ -358,10 +360,16 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
         switch (sortPosition) {
             case 1:
+                sortType = GestioArticlesDataSource.MOVIMENT_CODI_ARTICLE + " desc";
+                break;
+            case 2:
+                sortType = GestioArticlesDataSource.MOVIMENT_DIA + " desc";
+                break;
+            case 3:
                 sortType = GestioArticlesDataSource.MOVIMENT_DIA;
                 break;
             default:
-                sortType = GestioArticlesDataSource.MOVIMENT_DIA + " desc";
+                sortType = GestioArticlesDataSource.MOVIMENT_CODI_ARTICLE;
         }
 
         loadMovements();
