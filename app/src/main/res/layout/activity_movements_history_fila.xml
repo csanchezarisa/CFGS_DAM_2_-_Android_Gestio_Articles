@@ -86,15 +86,33 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_movement_type"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/activity_movement_history_row_type"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/activity_movement_history_row_type"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_movement_type"
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/activity_movement_history_row_type"
+                android:scaleType="fitStart"
+                app:srcCompat="@drawable/ic_movement_in" />
+
+            <TextView
+                android:id="@+id/txt_movement_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/activity_movement_history_row_type"
+                android:gravity="center"
+                android:text="@string/activity_movement_history_row_type"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

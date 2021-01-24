@@ -3,8 +3,10 @@ package com.example.gestioarticles.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -42,16 +44,19 @@ public class MovementsHistoryAdapter extends SimpleCursorAdapter {
         element = fila.findViewById(R.id.txt_movement_quantity);
         element.setText(moviment.getInt(moviment.getColumnIndexOrThrow(GestioArticlesDataSource.MOVIMENT_QUANTITAT)) + " u");
 
-        // Es canvia el tipus de moviment pel text corresponent
+        // Es canvia el tipus de moviment pel text corresponent, juntament amb el color i la icona de la fila
         element = fila.findViewById(R.id.txt_movement_type);
+        ImageView imgMovementType = (ImageView) fila.findViewById(R.id.img_movement_type);
         switch (moviment.getString(moviment.getColumnIndexOrThrow(GestioArticlesDataSource.MOVIMENT_TIPUS)).toUpperCase().charAt(0)) {
             case 'E':
                 element.setText(context.getString(R.string.activity_movement_history_row_type_stock_in));
                 fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_STOCK_IN));
+                imgMovementType.setImageResource(R.drawable.ic_movement_in);
                 break;
             case 'S':
                 element.setText(context.getString(R.string.activity_movement_history_row_type_stock_out));
                 fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_STOCK_OUT));
+                imgMovementType.setImageResource(R.drawable.ic_movement_out);
                 break;
         }
 
