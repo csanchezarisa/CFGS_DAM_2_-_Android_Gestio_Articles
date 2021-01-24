@@ -2,6 +2,7 @@ package com.example.gestioarticles.databasetools;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -300,8 +301,9 @@ public class GestioArticlesDataSource {
      * @param orderBy String amb la clàusula SQL ORDER BY
      * @param startDate Data inicial per filtrar
      * @param finalDate Data final per filtrar */
-    public Cursor getMoviments(String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
+    public Cursor getMoviments(char movementType, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
         String QUERY;
+        String filterMovementType = movementTypeFilter(movementType);
 
         if (startDate == null && finalDate == null) {
 
@@ -309,9 +311,14 @@ public class GestioArticlesDataSource {
                     "SELECT * " +
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
-                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " ORDER BY " + orderBy;
+                            "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID;
 
+            // Si hi ha algún filtre seleccionat, crea la clàusula WHERE
+            if (!filterMovementType.equals(" ")) {
+                QUERY = QUERY + " WHERE " + filterMovementType.substring(4);
+            }
+
+            QUERY = QUERY + " ORDER BY " + orderBy;
         }
         else if (startDate == null && finalDate != null) {
 
@@ -320,7 +327,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " +
+                            " WHERE a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -331,7 +338,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " +
+                            " WHERE a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -342,7 +349,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " +
+                            " WHERE a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -356,9 +363,10 @@ public class GestioArticlesDataSource {
      * @param orderBy String amb la clàusula SQL ORDER BY
      * @param startDate Data inicial per filtrar
      * @param finalDate Data final per filtrar */
-    public Cursor getMovimentsByArticleCode(String articleCode, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
+    public Cursor getMovimentsByArticleCode(String articleCode, char movementType, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
 
         String QUERY;
+        String filterMovementType = movementTypeFilter(movementType);
 
         if (startDate == null && finalDate == null) {
 
@@ -367,7 +375,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' " +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -378,7 +386,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -389,7 +397,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -400,7 +408,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " +
+                            " WHERE b." + ARTICLE_CODI + " = '" + articleCode + "' AND a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -414,9 +422,10 @@ public class GestioArticlesDataSource {
      * @param orderBy String amb la clàusula SQL ORDER BY
      * @param startDate Data inicial per filtrar
      * @param finalDate Data final per filtrar */
-    public Cursor getMovimentsByArticleID(long idArticle, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
+    public Cursor getMovimentsByArticleID(long idArticle, char movementType, String orderBy, @Nullable Date startDate, @Nullable Date finalDate) {
 
         String QUERY;
+        String filterMovementType = movementTypeFilter(movementType);
 
         if (startDate == null && finalDate == null) {
 
@@ -425,7 +434,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID +
-                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -436,7 +445,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID + " AND a."  + MOVIMENT_DIA + " < '" + finalDate.getSQLDate() + "' " +
-                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -447,7 +456,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID + " AND a."  + MOVIMENT_DIA + " > '" + startDate.getSQLDate() + "' " +
-                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -458,7 +467,7 @@ public class GestioArticlesDataSource {
                             "FROM " + TABLE_MOVIMENT + " a " +
                             "INNER JOIN " + TABLE_ARTICLE + " b " +
                             "ON a." + MOVIMENT_CODI_ARTICLE + " = b." + ARTICLE_ID + " AND a."  + MOVIMENT_DIA + " BETWEEN '" + startDate.getSQLDate() + "' AND '" + finalDate.getSQLDate() + "' " +
-                            " WHERE b." + ARTICLE_ID + " = " + idArticle +
+                            " WHERE b." + ARTICLE_ID + " = " + idArticle + filterMovementType +
                             " ORDER BY " + orderBy;
 
         }
@@ -531,5 +540,22 @@ public class GestioArticlesDataSource {
         }
 
         return insertCorrecte;
+    }
+
+
+    /* .: 5. FUNCIONS PRÒPIES :. */
+    /** Segons el tipus de moviment seleccionat, crea la part del WHERE corresponent */
+    private String movementTypeFilter(char movementType) {
+
+        String whereClausure;
+
+        if (movementType != ' ') {
+            whereClausure = " AND a." + MOVIMENT_TIPUS + " = '" + movementType + "' ";
+        }
+        else {
+            whereClausure = " ";
+        }
+
+        return whereClausure;
     }
 }

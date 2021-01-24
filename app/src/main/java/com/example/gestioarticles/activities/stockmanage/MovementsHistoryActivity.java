@@ -379,14 +379,14 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         if (idArticle > -1) {
 
             // Fa la consulta dels moviments de l'article seleccionat
-            moviments = bbdd.getMovimentsByArticleID(idArticle, sortType, startDateFilter, finalDateFilter);
+            moviments = bbdd.getMovimentsByArticleID(idArticle, filterType, sortType, startDateFilter, finalDateFilter);
             title.setText(getString(R.string.activity_movement_history_article_selected_movements));
 
         }
         else {
 
             // Fa la consulta de tots els moviments
-            moviments = bbdd.getMoviments(sortType, startDateFilter, finalDateFilter);
+            moviments = bbdd.getMoviments(filterType, sortType, startDateFilter, finalDateFilter);
             title.setText(getString(R.string.activity_movement_history_all_movements));
 
         }
@@ -445,7 +445,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     private void filtrarArticle(String articleCode) {
 
         // Es recupera un cursor amb els moviments de l'article seleccionat
-        Cursor movimentsArticle = bbdd.getMovimentsByArticleCode(articleCode, sortType, startDateFilter, finalDateFilter);
+        Cursor movimentsArticle = bbdd.getMovimentsByArticleCode(articleCode, filterType, sortType, startDateFilter, finalDateFilter);
 
         // Si la select funciona correctament, filtra. Sino, mostra un error
         if (movimentsArticle.moveToFirst()) {
@@ -453,7 +453,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
             mostrarSnackBarCorrecte(getString(R.string.activity_stock_manage_article_founded));
 
             // Recupera l'id de l'article seleccionat
-            idArticle = movimentsArticle.getLong(movimentsArticle.getColumnIndexOrThrow(bbdd.TABLE_ARTICLE + "." + bbdd.ARTICLE_ID));
+            idArticle = movimentsArticle.getLong(movimentsArticle.getColumnIndexOrThrow(bbdd.ARTICLE_ID));
 
             reloadList(movimentsArticle);
 
