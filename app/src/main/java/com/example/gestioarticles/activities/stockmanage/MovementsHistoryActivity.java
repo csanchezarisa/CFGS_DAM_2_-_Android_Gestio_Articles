@@ -41,6 +41,10 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     private String sortType = GestioArticlesDataSource.MOVIMENT_CODI_ARTICLE;
     private int sortPosition = 0;
 
+    /** Variable que emmagatzema el filtre que s'està utilitzant actualment */
+    private char filterType = ' ';
+    private int filterPosition = 0;
+
     /** Variable que emmagatzema el DataSource, el qual permet treballar amb la BBDD
      * fer Inserts, Updates, Deletes, etc. */
     private GestioArticlesDataSource bbdd;
@@ -164,6 +168,9 @@ public class MovementsHistoryActivity extends AppCompatActivity {
             case R.id.menu_btn_history_order:
                 mostrarAlertOrdenarLlistat();
                 return true;
+            case R.id.menu_btn_filter:
+                mostrarAlertFiltrar();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -271,6 +278,44 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
     }
 
+    /** Mostra un AlertDialog que permet seleccionar els filtres pels quals poder
+     * filtrar els elements que es mostren en el llistat. */
+    private void mostrarAlertFiltrar() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle(getString(R.string.alert_info_title_filter));
+
+        String[] filtres = new String[] {getString(R.string.activity_movement_history_all_movements), getString(R.string.activity_movement_history_row_type_stock_in), getString(R.string.activity_movement_history_row_type_stock_out)};
+
+        alert.setSingleChoiceItems(filtres, filterPosition, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                filterPosition = which;
+            }
+        });
+
+        alert.setPositiveButton(R.string.alert_info_accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                seleccionarFiltre();
+            }
+        });
+
+        alert.setNegativeButton(R.string.alert_info_cancel, null);
+
+        alert.setNeutralButton(R.string.alert_info_reset, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                filterPosition = 0;
+                filterType = ' ';
+                loadMovements();
+            }
+        });
+
+        alert.show();
+    }
+
     /** Mostra un Dialog que permet seleccionar una data de manera gràfica
      * @param input Permet especificar a quin input se li ha de posar el resultat */
     private void mostrarDatePickerDialog(EditText input) {
@@ -369,6 +414,24 @@ public class MovementsHistoryActivity extends AppCompatActivity {
                 break;
             default:
                 sortType = GestioArticlesDataSource.MOVIMENT_CODI_ARTICLE;
+        }
+
+        loadMovements();
+
+    }
+
+    /** Canvia el tipus de filtre segons quina posició hi ha seleccionada */
+    private void seleccionarFiltre() {
+
+        switch (filterPosition) {
+            case 1:
+                filterType = 'E';
+                break;
+            case 2:
+                filterType = 'S';
+                break;
+            default:
+                filterType = ' ';
         }
 
         loadMovements();

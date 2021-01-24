@@ -9,6 +9,12 @@
         android:title="@string/activity_stock_manage_search"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menu_btn_filter"
+        android:contentDescription="@string/activity_main_menu_btn_filter"
+        android:icon="@drawable/ic_filter_btn_light"
+        android:title="@string/activity_main_menu_btn_filter"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_btn_history_order"
         android:contentDescription="@string/activity_main_menu_btn_order"
         android:icon="@drawable/ic_order_btn_light"
