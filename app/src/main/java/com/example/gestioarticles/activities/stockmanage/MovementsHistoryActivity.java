@@ -62,6 +62,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
     EditText inputDateFrom;
     EditText inputDateTo;
     ListView listHistory;
+    TextView title;
 
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
@@ -87,15 +88,7 @@ public class MovementsHistoryActivity extends AppCompatActivity {
         inputDateFrom = (EditText) findViewById(R.id.input_history_date_from);
         inputDateTo = (EditText) findViewById(R.id.input_history_date_to);
         listHistory = (ListView) findViewById(R.id.list_history_movements);
-
-        // Es canvia el títol
-        TextView title = (TextView) findViewById(R.id.txt_history_title);
-        if (idArticle > -1) {
-            title.setText(getString(R.string.activity_movement_history_article_selected_movements));
-        }
-        else {
-            title.setText(getString(R.string.activity_movement_history_all_movements));
-        }
+        title = (TextView) findViewById(R.id.txt_history_title);
 
         // Es carreguen els moviments en el llistat
         loadMovements();
@@ -244,11 +237,15 @@ public class MovementsHistoryActivity extends AppCompatActivity {
                 }
                 catch (Exception e) {
                     mostrarSnackBarError(getString(R.string.alert_error_cant_filter_articles));
+                    title.setText(getString(R.string.activity_movement_history_all_movements));
                     return;
                 }
 
                 if (articleCode.length() > 0) {
                     filtrarArticle(articleCode);
+                }
+                else {
+                    mostrarSnackBarError(getString(R.string.alert_error_cant_filter_articles));
                 }
             }
         });
@@ -338,12 +335,14 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
             // Fa la consulta dels moviments de l'article seleccionat
             moviments = bbdd.getMovimentsByArticleID(idArticle, sortType, startDateFilter, finalDateFilter);
+            title.setText(getString(R.string.activity_movement_history_article_selected_movements));
 
         }
         else {
 
             // Fa la consulta de tots els moviments
             moviments = bbdd.getMoviments(sortType, startDateFilter, finalDateFilter);
+            title.setText(getString(R.string.activity_movement_history_all_movements));
 
         }
 
@@ -395,10 +394,14 @@ public class MovementsHistoryActivity extends AppCompatActivity {
 
             reloadList(movimentsArticle);
 
+            title.setText(getString(R.string.activity_movement_history_article_selected_movements));
+
         }
         else {
 
             mostrarSnackBarError(getString(R.string.activity_stock_manage_article_not_founded));
+
+            title.setText(getString(R.string.activity_movement_history_all_movements));
 
         }
 

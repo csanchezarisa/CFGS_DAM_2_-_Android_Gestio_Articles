@@ -2,6 +2,7 @@ package com.example.gestioarticles.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleCursorAdapter;
@@ -13,6 +14,10 @@ import com.example.gestioarticles.assets.datetype.Date;
 import com.example.gestioarticles.databasetools.GestioArticlesDataSource;
 
 public class MovementsHistoryAdapter extends SimpleCursorAdapter {
+
+    // Constants que defineixen els colors que s'usaran més endavant
+    private static final String BACKGROUND_COLOR_STOCK_OUT = "#FA8072";
+    private static final String BACKGROUND_COLOR_STOCK_IN = "#72A8FA";
 
     private MovementsHistoryActivity context;
 
@@ -42,9 +47,11 @@ public class MovementsHistoryAdapter extends SimpleCursorAdapter {
         switch (moviment.getString(moviment.getColumnIndexOrThrow(GestioArticlesDataSource.MOVIMENT_TIPUS)).toUpperCase().charAt(0)) {
             case 'E':
                 element.setText(context.getString(R.string.activity_movement_history_row_type_stock_in));
+                fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_STOCK_IN));
                 break;
             case 'S':
                 element.setText(context.getString(R.string.activity_movement_history_row_type_stock_out));
+                fila.setBackgroundColor(Color.parseColor(BACKGROUND_COLOR_STOCK_OUT));
                 break;
         }
 

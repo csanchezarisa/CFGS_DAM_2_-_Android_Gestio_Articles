@@ -2,18 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
+        android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +35,8 @@
                 android:text="@string/activity_main_txt_article_codi"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                tools:ignore="RtlCompat" />
 
             <TextView
                 android:id="@+id/txt_movement_date"
@@ -44,7 +48,8 @@
                 android:gravity="center"
                 android:text="@string/activity_stock_manage_date"
                 android:textAlignment="textEnd"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                tools:ignore="RtlCompat" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +68,8 @@
                 android:gravity="center"
                 android:text="@string/activity_stock_manage_quantity"
                 android:textAlignment="textEnd"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                tools:ignore="RtlCompat" />
 
             <TextView
                 android:id="@+id/txt_movement_quantity"
@@ -75,7 +81,8 @@
                 android:gravity="center"
                 android:text="@string/activity_stock_manage_quantity"
                 android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                tools:ignore="RtlCompat" />
 
         </LinearLayout>
 
