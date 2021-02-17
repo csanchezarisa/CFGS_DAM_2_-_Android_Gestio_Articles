@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestioArticles">
-        <activity android:name=".activities.stockmanage.MovementsHistoryActivity"></activity>
+        <activity android:name=".activities.weather.WeatherActivity"></activity>
+        <activity android:name=".activities.stockmanage.MovementsHistoryActivity" />
         <activity android:name=".activities.stockmanage.StockActivity" />
         <activity android:name=".activities.articlemanage.ArticleManage" />
         <activity android:name=".activities.MainActivity">
