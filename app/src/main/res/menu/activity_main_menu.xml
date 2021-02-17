@@ -7,19 +7,24 @@
         android:contentDescription="@string/activity_main_menu_btn_filter"
         android:icon="@drawable/ic_filter_btn_light"
         android:title="@string/activity_main_menu_btn_filter"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_btn_order"
         android:contentDescription="@string/activity_main_menu_btn_order"
         android:icon="@drawable/ic_order_btn_light"
         android:title="@string/activity_main_menu_btn_order"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_btn_weather"
+        android:icon="@drawable/ic_weather_light"
+        android:title="@string/activity_main_menu_btn_weather"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_btn_clear"
         android:contentDescription="@string/activity_main_menu_btn_clear"
         android:icon="@drawable/ic_close_btn_light"
         android:title="@string/activity_main_menu_btn_clear"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_btn_history"
         android:contentDescription="@string/activity_main_btn_history"

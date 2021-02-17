@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Article management</string>
+    <string name="app_name">Articles</string>
 
     <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
@@ -50,6 +50,7 @@
     <string name="activity_main_menu_btn_description">Filter by description</string>
     <string name="activity_main_menu_btn_stock">Filter by stock</string>
     <string name="activity_main_menu_btn_all">Show all</string>
+    <string name="activity_main_menu_btn_weather">Wheather</string>
     <string name="activity_main_menu_btn_clear">Clear filters</string>
     <string name="activity_main_menu_btn_filter">Filter</string>
     <string name="activity_main_menu_btn_order">Order</string>

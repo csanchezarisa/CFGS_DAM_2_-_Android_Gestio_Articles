@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.gestioarticles.R;
 import com.example.gestioarticles.activities.stockmanage.MovementsHistoryActivity;
+import com.example.gestioarticles.activities.weather.WeatherActivity;
 import com.example.gestioarticles.adapter.ArticlesAdapter;
 import com.example.gestioarticles.activities.articlemanage.ArticleManage;
 import com.example.gestioarticles.activities.stockmanage.StockActivity;
@@ -159,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_btn_history:
                 mostrarHistorial();
                 return true;
+            case R.id.menu_btn_weather:
+                Intent intent = new Intent(this, WeatherActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

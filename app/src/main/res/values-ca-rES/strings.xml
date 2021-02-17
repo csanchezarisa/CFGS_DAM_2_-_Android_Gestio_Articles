@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Gestió articles</string>
+    <string name="app_name">Articles</string>
 
     <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
@@ -51,6 +51,7 @@
     <string name="activity_main_menu_btn_description">Filtrar per descripció</string>
     <string name="activity_main_menu_btn_stock">Filtrar per estoc</string>
     <string name="activity_main_menu_btn_all">Mostrar tot</string>
+    <string name="activity_main_menu_btn_weather">Temps</string>
     <string name="activity_main_menu_btn_clear">Netejar filtres</string>
     <string name="activity_main_menu_btn_filter">Filtrar</string>
     <string name="activity_main_menu_btn_order">Ordenar</string>
