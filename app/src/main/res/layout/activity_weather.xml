@@ -288,7 +288,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/img_weather_sow"
+                    android:id="@+id/img_weather_snow"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="10dp"
