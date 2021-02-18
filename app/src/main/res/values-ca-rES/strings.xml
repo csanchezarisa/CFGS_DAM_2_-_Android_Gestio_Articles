@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Articles</string>
+    <string name="app_lang">ca</string>
 
     <!-- .: 1. LAYOUTS :. -->
     <!-- Main Activity -->
