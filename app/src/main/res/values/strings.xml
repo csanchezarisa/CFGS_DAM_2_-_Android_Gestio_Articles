@@ -61,6 +61,7 @@
     <string name="activity_weather_getting_info">Getting info</string>
     <string name="activity_weather_processing_info">Processing info</string>
     <string name="activity_weather_error_getting_info">Error getting info</string>
+    <string name="activity_weather_not_location">Oops! \nThere\'s no location selected. \nTry to select one.</string>
 
 
     <!-- .: 2. MENUS :. -->

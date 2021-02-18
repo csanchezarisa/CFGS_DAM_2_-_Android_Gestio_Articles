@@ -62,6 +62,7 @@
     <string name="activity_weather_getting_info">Obtenint informació</string>
     <string name="activity_weather_processing_info">Processant informació</string>
     <string name="activity_weather_error_getting_info">Error obtenint la informació</string>
+    <string name="activity_weather_not_location">Oops! \nNo hi ha cap ubicació seleccionada. \nProva a seleccionar-ne una.</string>
 
 
     <!-- .: 2. MENUS :. -->

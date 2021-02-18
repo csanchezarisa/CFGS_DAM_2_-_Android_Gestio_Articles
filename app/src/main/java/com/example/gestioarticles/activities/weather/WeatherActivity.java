@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -60,6 +61,8 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView imgRain;
     private TextView txtRain;
     private FloatingActionButton btnSearch;
+    private ImageView imgNotLocation;
+    private TextView txtNotLocation;
 
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
@@ -91,6 +94,7 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
 
+        ocultarLayout(true);
     }
 
 
@@ -139,6 +143,7 @@ public class WeatherActivity extends AppCompatActivity {
                 }
                 catch (Exception e) {
                     mostrarSnackBarError(getString(R.string.alert_error_invalid_location));
+                    ocultarLayout(true);
                 }
             }
         });
@@ -211,6 +216,8 @@ public class WeatherActivity extends AppCompatActivity {
         imgRain = (ImageView) findViewById(R.id.img_weather_rain);
         txtRain = (TextView) findViewById(R.id.txt_rain);
         btnSearch = (FloatingActionButton) findViewById(R.id.btn_search_weather);
+        imgNotLocation = (ImageView) findViewById(R.id.img_sad_face2);
+        txtNotLocation = (TextView) findViewById(R.id.txt_empty_article2);
     }
 
     /** Permet fer la petició HTTP a OpenWeatherMap amb la localització especificada */
@@ -256,14 +263,17 @@ public class WeatherActivity extends AppCompatActivity {
                 }
 
                 progressDialog.hide();
+                ocultarLayout(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progressDialog.hide();
                 String errorString = error.getMessage().toString();
                 errorString = getString(R.string.activity_weather_error_getting_info) + ". " + errorString;
 
                 mostrarSnackBarError(errorString);
+                ocultarLayout(true);
                 mostrarAlertCiutat();
             }
         });
@@ -362,6 +372,19 @@ public class WeatherActivity extends AppCompatActivity {
         catch (Exception e) {
             txtSnow.setVisibility(View.GONE);
             imgSnow.setVisibility(View.GONE);
+        }
+    }
+
+    private void ocultarLayout(boolean bool) {
+        if (bool) {
+            layout.setVisibility(View.GONE);
+            imgNotLocation.setVisibility(View.VISIBLE);
+            txtNotLocation.setVisibility(View.VISIBLE);
+        }
+        else {
+            layout.setVisibility(View.VISIBLE);
+            imgNotLocation.setVisibility(View.GONE);
+            txtNotLocation.setVisibility(View.GONE);
         }
     }
 }
