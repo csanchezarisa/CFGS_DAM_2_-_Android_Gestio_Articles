@@ -105,4 +105,5 @@
     <string name="alert_success_article_created">L\'article s\'ha generat correctament.</string>
     <string name="alert_success_article_updated">L\'article s\'ha actualitzat correctament.</string>
     <string name="alert_success_article_deleted">L\'article s\'ha eliminat correctament.</string>
+    <string name="alert_success_processing_location">Dades processades correctament</string>
 </resources>

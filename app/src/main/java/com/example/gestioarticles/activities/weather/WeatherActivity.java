@@ -256,7 +256,6 @@ public class WeatherActivity extends AppCompatActivity {
                 }
                 catch (Exception e) {
                     mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
-
                     ocultarLayout(true);
                 }
 
@@ -265,6 +264,7 @@ public class WeatherActivity extends AppCompatActivity {
                     try {
                         procesarJson(jsonResponse);
                         ocultarLayout(false);
+                        mostrarSnackBarCorrecte(getString(R.string.alert_success_processing_location));
                     }
                     catch (Exception e) {
                         mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));

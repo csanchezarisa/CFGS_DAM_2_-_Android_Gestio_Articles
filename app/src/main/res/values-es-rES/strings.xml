@@ -105,4 +105,5 @@
     <string name="alert_success_article_created">El artículo se ha generado correctamente.</string>
     <string name="alert_success_article_updated">El artículo se ha actualizado correctamente.</string>
     <string name="alert_success_article_deleted">El artículo se ha eliminado correctamente.</string>
+    <string name="alert_success_processing_location">Datos procesados correctamente</string>
 </resources>

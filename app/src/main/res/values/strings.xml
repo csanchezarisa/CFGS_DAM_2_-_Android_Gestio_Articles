@@ -104,4 +104,5 @@
     <string name="alert_success_article_created">The article has been generated successfully.</string>
     <string name="alert_success_article_updated">The article has been updated successfully.</string>
     <string name="alert_success_article_deleted">The article has been deleted successfully.</string>
+    <string name="alert_success_processing_location">Success processing the data</string>
 </resources>
