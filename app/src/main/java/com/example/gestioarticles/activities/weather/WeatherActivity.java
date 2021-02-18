@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Gravity;
@@ -33,6 +34,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -250,20 +256,23 @@ public class WeatherActivity extends AppCompatActivity {
                 }
                 catch (Exception e) {
                     mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
+
+                    ocultarLayout(true);
                 }
 
                 // El JSON s'ha convertit bé?
                 if (jsonResponse != null) {
                     try {
                         procesarJson(jsonResponse);
+                        ocultarLayout(false);
                     }
-                    catch (JSONException e) {
+                    catch (Exception e) {
                         mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
+                        ocultarLayout(true);
                     }
                 }
 
                 progressDialog.hide();
-                ocultarLayout(false);
             }
 
             @Override
@@ -282,7 +291,7 @@ public class WeatherActivity extends AppCompatActivity {
     /** Procesa el JSON con la respuesta de OpenWeatherAPI
      * y va mostrando los datos por pantalla
      * @param json JSONObject con el json de la respuesta*/
-    private void procesarJson(JSONObject json) throws JSONException {
+    private void procesarJson(JSONObject json) throws JSONException, IOException {
 
         // Es recupera el nom de la ubicació treduit des del JSON
         String string = json.getString("name");
@@ -294,6 +303,9 @@ public class WeatherActivity extends AppCompatActivity {
 
         // Es recupera la icona
         String icon = jsonObject.getString("icon");
+        icon = OpenWeatherMapApi.getUrlIcon(icon);
+        Picasso.get().load(icon).into(imgWeather);
+        Picasso.get().load(icon).into(imgDescription);
 
         // Es recupera la informació de la descripció i s'aplica al layout
         string = jsonObject.getString("description");
