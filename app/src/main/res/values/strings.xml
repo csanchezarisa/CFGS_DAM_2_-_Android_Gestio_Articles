@@ -92,6 +92,7 @@
     <string name="alert_error_cant_filter_articles">Articles could not be filtered.</string>
     <string name="alert_error_cant_create_movement">The movement could not be created. Check the inputs.</string>
     <string name="alert_error_cant_update_movement">The movement could not be updated. Check the inputs.</string>
+    <string name="alert_error_invalid_location">Invalid location</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">The article has been generated successfully.</string>

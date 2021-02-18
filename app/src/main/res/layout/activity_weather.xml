@@ -328,7 +328,9 @@
                     android:text="10mm"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

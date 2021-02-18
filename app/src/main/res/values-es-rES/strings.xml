@@ -93,6 +93,7 @@
     <string name="alert_error_cant_filter_articles">No se han podido filtrar los artículos.</string>
     <string name="alert_error_cant_create_movement">No se ha podido crear el movimiento. Revisa los campos.</string>
     <string name="alert_error_cant_update_movement">No se ha podido actualizar el movimiento. Revisa los campos.</string>
+    <string name="alert_error_invalid_location">Ubicación inválida</string>
 
     <!-- Aciertos -->
     <string name="alert_success_article_created">El artículo se ha generado correctamente.</string>

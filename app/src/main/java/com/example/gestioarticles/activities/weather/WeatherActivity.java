@@ -8,21 +8,24 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gestioarticles.R;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
+import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -65,7 +68,7 @@ public class WeatherActivity extends AppCompatActivity {
 
         vincularElements();
 
-        layout.setVisibility(View.GONE);
+        // layout.setVisibility(View.GONE);
 
         mostrarAlertCiutat();
 
@@ -75,6 +78,7 @@ public class WeatherActivity extends AppCompatActivity {
                 mostrarAlertCiutat();
             }
         });
+
     }
 
 
@@ -101,6 +105,8 @@ public class WeatherActivity extends AppCompatActivity {
 
 
     /* .: 4. ALERTES :. */
+    /** Mostra l'alert que permet introduir una ubicació per obtenir-ne el dels dades
+     * meteorològiques. */
     private void mostrarAlertCiutat() {
         AlertDialog alert = new AlertDialog.Builder(this).create();
         alert.setTitle(getString(R.string.activity_weather_location));
@@ -108,13 +114,24 @@ public class WeatherActivity extends AppCompatActivity {
         EditText edtLocation = new EditText(this);
         alert.setView(edtLocation);
 
+        // Botó positiu
         alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                try {
+                    String location = edtLocation.getText().toString().toLowerCase();
+                    if (location.length() == 0) {
+                        throw new Exception("Text null");
+                    }
+                    getWeatherInfo(location);
+                }
+                catch (Exception e) {
+                    mostrarSnackBarError(getString(R.string.alert_error_invalid_location));
+                }
             }
         });
 
+        // Botó negatiu
         alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -123,6 +140,38 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
         alert.show();
+    }
+
+    /** Mostra un Snackbar de color vermell en la part superior de la pantalla
+     * notificant d'un error
+     * @param error String amb el contingut del missatge que s'ha de mostrar*/
+    private void mostrarSnackBarError(String error) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + error + "</font>"), Snackbar.LENGTH_LONG);
+
+        View snackbarView = snackbar.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        snackbarView.setLayoutParams(params);
+        snackbarView.setBackgroundColor(getColor(R.color.design_default_color_error));
+
+        snackbar.show();
+    }
+
+    /** Mostra un Snackbar de color verd en la part superior de la pantalla
+     * avisant que tot ha funcionat correctament
+     * @param missatge String amb el contingut del missatge que s'ha de mostrar*/
+    private void mostrarSnackBarCorrecte(String missatge) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(parentLayout, Html.fromHtml("<font color=\"#FFFFFF\">" + missatge + "</font>"), Snackbar.LENGTH_LONG);
+
+        View snackbarView = snackbar.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        snackbarView.setLayoutParams(params);
+        snackbarView.setBackgroundColor(getColor(android.R.color.holo_green_dark));
+
+        snackbar.show();
     }
 
 
@@ -146,5 +195,10 @@ public class WeatherActivity extends AppCompatActivity {
         imgRain = (ImageView) findViewById(R.id.img_weather_rain);
         txtRain = (TextView) findViewById(R.id.txt_rain);
         btnSearch = (FloatingActionButton) findViewById(R.id.btn_search_weather);
+    }
+
+
+    private void getWeatherInfo(String location) {
+
     }
 }
