@@ -25,7 +25,15 @@ import com.example.gestioarticles.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -39,6 +47,10 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView txtDescription;
     private TextView txtTemperatureMin;
     private TextView txtTemperatureMax;
+    private ImageView imgClouds;
+    private TextView txtClouds;
+    private ImageView imgThermicSensation;
+    private TextView txtThermicSensation;
     private ImageView imgWind;
     private TextView txtWind;
     private ImageView imgHumidity;
@@ -186,6 +198,10 @@ public class WeatherActivity extends AppCompatActivity {
         txtDescription = (TextView) findViewById(R.id.txt_description);
         txtTemperatureMin = (TextView) findViewById(R.id.txt_temperature_min);
         txtTemperatureMax = (TextView) findViewById(R.id.txt_temperature_max);
+        imgClouds = (ImageView) findViewById(R.id.img_weather_clouds);
+        txtClouds = (TextView) findViewById(R.id.txt_clouds);
+        imgThermicSensation = (ImageView) findViewById(R.id.img_temperature_sensation);
+        txtThermicSensation = (TextView) findViewById(R.id.txt_temperature_sensation);
         imgWind = (ImageView) findViewById(R.id.img_weather_wind);
         txtWind = (TextView) findViewById(R.id.txt_wind);
         imgHumidity = (ImageView) findViewById(R.id.img_weather_humidity);
@@ -197,8 +213,155 @@ public class WeatherActivity extends AppCompatActivity {
         btnSearch = (FloatingActionButton) findViewById(R.id.btn_search_weather);
     }
 
-
+    /** Permet fer la petició HTTP a OpenWeatherMap amb la localització especificada */
     private void getWeatherInfo(String location) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setMaxRetriesAndTimeout(0, 10000);
 
+        String url = OpenWeatherMapApi.getUrlWeather(location, getString(R.string.app_lang));
+
+        client.get(this, url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                progressDialog.setTitle(getString(R.string.activity_weather_getting_info));
+                progressDialog.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                progressDialog.setTitle(getString(R.string.activity_weather_processing_info));
+
+                // Es pasa la resposta a String
+                String jsonContentString = new String(responseBody);
+                JSONObject jsonResponse = null;
+
+                // Es converteix la resposta en un objecte JSON per poder
+                // treballar amb ell desde JAVA
+                try {
+                    jsonResponse = new JSONObject(jsonContentString);
+                }
+                catch (Exception e) {
+                    mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
+                }
+
+                // El JSON s'ha convertit bé?
+                if (jsonResponse != null) {
+                    try {
+                        procesarJson(jsonResponse);
+                    }
+                    catch (JSONException e) {
+                        mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
+                    }
+                }
+
+                progressDialog.hide();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String errorString = error.getMessage().toString();
+                errorString = getString(R.string.activity_weather_error_getting_info) + ". " + errorString;
+
+                mostrarSnackBarError(errorString);
+                mostrarAlertCiutat();
+            }
+        });
+    }
+
+    /** Procesa el JSON con la respuesta de OpenWeatherAPI
+     * y va mostrando los datos por pantalla
+     * @param json JSONObject con el json de la respuesta*/
+    private void procesarJson(JSONObject json) throws JSONException {
+
+        // Es recupera el nom de la ubicació treduit des del JSON
+        String string = json.getString("name");
+        txtLocation.setText(string);
+
+        // Es recupera l'array amb la informació del clima. Es pasa a JSONObject
+        JSONArray jsonArray = (JSONArray) json.get("weather");
+        JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+
+        // Es recupera la icona
+        String icon = jsonObject.getString("icon");
+
+        // Es recupera la informació de la descripció i s'aplica al layout
+        string = jsonObject.getString("description");
+        string = string.substring(0, 1).toUpperCase() + string.substring(1);
+        txtDescription.setText(string);
+
+        // Es recupera la temperatura
+        jsonObject = (JSONObject) json.get("main");
+        string = String.valueOf(jsonObject.getDouble("temp"));
+        string = string + "ºC";
+        txtTemperature.setText(string);
+
+        // Es recuepra la temperatura mínima
+        string = String.valueOf(jsonObject.getDouble("temp_min"));
+        string = string + "ºC";
+        txtTemperatureMin.setText(string);
+
+        // Es recupera la temperatura màxima
+        string = String.valueOf(jsonObject.getDouble("temp_max"));
+        string = string + "ºC";
+        txtTemperatureMax.setText(string);
+
+        // Es recupera la sensació tèrmica
+        string = String.valueOf(jsonObject.getDouble("feels_like"));
+        string = string + "ºC";
+        txtThermicSensation.setText(string);
+
+        // Es recupera la humitat
+        string = String.valueOf(jsonObject.getDouble("humidity"));
+        string = string + "%";
+        txtHumidity.setText(string);
+
+        // Es recupera la informació del vent
+        jsonObject = (JSONObject) json.get("wind");
+        string = String.valueOf(jsonObject.get("speed"));
+        string = string + "m/s";
+        txtWind.setText(string);
+
+        // Es recupera la informació sobre els núvols
+        try {
+            jsonObject = (JSONObject) json.get("clouds");
+            string = String.valueOf(jsonObject.getDouble("all"));
+            string = string + "%";
+            txtClouds.setText(string);
+            txtClouds.setVisibility(View.VISIBLE);
+            imgClouds.setVisibility(View.VISIBLE);
+        }
+        catch (Exception e) {
+            txtClouds.setVisibility(View.GONE);
+            imgClouds.setVisibility(View.GONE);
+        }
+
+        // Es recupera la informació sobre la pluja
+        try {
+            jsonObject = (JSONObject) json.get("rain");
+            string = String.valueOf(jsonObject.getDouble("1h"));
+            string = string + "mm";
+            txtRain.setText(string);
+            txtRain.setVisibility(View.VISIBLE);
+            imgRain.setVisibility(View.VISIBLE);
+        }
+        catch (Exception e) {
+            txtRain.setVisibility(View.GONE);
+            imgRain.setVisibility(View.GONE);
+        }
+
+        // Es recupera la infomació sobre la neu
+        try {
+            jsonObject = (JSONObject) json.get("snow");
+            string = String.valueOf(jsonObject.getDouble("1h"));
+            string = string + "mm";
+            txtSnow.setText(string);
+            txtSnow.setVisibility(View.VISIBLE);
+            imgSnow.setVisibility(View.VISIBLE);
+        }
+        catch (Exception e) {
+            txtSnow.setVisibility(View.GONE);
+            imgSnow.setVisibility(View.GONE);
+        }
     }
 }

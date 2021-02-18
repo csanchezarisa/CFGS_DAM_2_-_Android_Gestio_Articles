@@ -54,9 +54,14 @@
     <string name="activity_weather_temperature">Temperatura</string>
     <string name="activity_weather_temperature_min">Temperatura mínima</string>
     <string name="activity_weather_temperature_max">Temperatura máxima</string>
+    <string name="activity_weather_temperature_sensation">Sensación térmica</string>
     <string name="activity_weather_wind">Viento</string>
     <string name="activity_weather_humidity">Humedad</string>
     <string name="activity_weather_snow">Nieve</string>
+    <string name="activity_weather_clouds">Nubes</string>
+    <string name="activity_weather_getting_info">Obteniendo información</string>
+    <string name="activity_weather_processing_info">Procesando información</string>
+    <string name="activity_weather_error_getting_info">Error obteniendo la información</string>
 
 
     <!-- .: 2. MENUS :. -->
