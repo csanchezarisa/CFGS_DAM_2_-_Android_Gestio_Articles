@@ -46,6 +46,19 @@
     <string name="activity_movement_history_row_type_stock_in">Entrada</string>
     <string name="activity_movement_history_row_type_stock_out">Salida</string>
 
+    <!-- WeatherActivity -->
+    <string name="activity_weather_title">Tiempo</string>
+    <string name="activity_weather_location">Ubicación</string>
+    <string name="activity_weather_icon">Icono del tiempo</string>
+    <string name="activity_weather_description">Descripción</string>
+    <string name="activity_weather_temperature">Temperatura</string>
+    <string name="activity_weather_temperature_min">Temperatura mínima</string>
+    <string name="activity_weather_temperature_max">Temperatura máxima</string>
+    <string name="activity_weather_wind">Viento</string>
+    <string name="activity_weather_humidity">Humedad</string>
+    <string name="activity_weather_snow">Nieve</string>
+
+
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
     <string name="activity_main_menu_btn_description">Filtrar por descripción</string>

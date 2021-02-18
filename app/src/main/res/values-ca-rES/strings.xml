@@ -46,6 +46,18 @@
     <string name="activity_movement_history_row_type_stock_in">Entrada</string>
     <string name="activity_movement_history_row_type_stock_out">Sortida</string>
 
+    <!-- WeatherActivity -->
+    <string name="activity_weather_title">Temps</string>
+    <string name="activity_weather_location">Ubicació</string>
+    <string name="activity_weather_icon">Icona del temps</string>
+    <string name="activity_weather_description">Descripció</string>
+    <string name="activity_weather_temperature">Temperatura</string>
+    <string name="activity_weather_temperature_min">Temperatura mínima</string>
+    <string name="activity_weather_temperature_max">Temperatura màxima</string>
+    <string name="activity_weather_wind">Vent</string>
+    <string name="activity_weather_humidity">Humitat</string>
+    <string name="activity_weather_snow">New</string>
+
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->

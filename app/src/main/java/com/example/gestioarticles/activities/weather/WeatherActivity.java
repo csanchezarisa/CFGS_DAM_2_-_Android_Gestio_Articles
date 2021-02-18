@@ -8,6 +8,8 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.ImageView;
 
 import com.example.gestioarticles.R;
@@ -28,7 +30,7 @@ public class WeatherActivity extends AppCompatActivity {
         // Es modifica la ActionBar per mostrar el botò per retornar i canviar el títol
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getString(R.string.activity_main_menu_btn_weather));
+        actionBar.setTitle(getString(R.string.activity_weather_title));
 
         // Inicialitzem el progress dialog, tot i no mostrar-lo encara
         progressDialog = new ProgressDialog(this);
@@ -37,5 +39,12 @@ public class WeatherActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_weather_menu, menu);
+        return true;
     }
 }

@@ -45,6 +45,18 @@
     <string name="activity_movement_history_row_type_stock_in">Stock in</string>
     <string name="activity_movement_history_row_type_stock_out">Stock out</string>
 
+    <!-- WeatherActivity -->
+    <string name="activity_weather_title">Wheather</string>
+    <string name="activity_weather_location">Location</string>
+    <string name="activity_weather_icon">Weather icon</string>
+    <string name="activity_weather_description">Description</string>
+    <string name="activity_weather_temperature">Temperature</string>
+    <string name="activity_weather_temperature_min">Minimum temperature</string>
+    <string name="activity_weather_temperature_max">Maximum temperature</string>
+    <string name="activity_weather_wind">Wind</string>
+    <string name="activity_weather_humidity">Humidity</string>
+    <string name="activity_weather_snow">Snow</string>
+
 
     <!-- .: 2. MENUS :. -->
     <!-- Main Activity Menú -->
