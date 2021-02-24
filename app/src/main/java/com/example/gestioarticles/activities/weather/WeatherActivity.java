@@ -318,6 +318,10 @@ public class WeatherActivity extends AppCompatActivity {
         });
     }
 
+    /** Crea el JSON i mostra el seu contingut per pantalla
+     * a partir del json en String passat per paràmetre
+     * @param jsonContent String amb el format json
+     * del temps*/
     private void recuperarDadesCiutat(String jsonContent) {
 
         JSONObject jsonObject = null;
