@@ -69,6 +69,10 @@ public class WeatherActivity extends AppCompatActivity {
     private FloatingActionButton btnSearch;
     private ImageView imgNotLocation;
     private TextView txtNotLocation;
+    private AlertDialog searchAlert;
+
+    /** Guarda el contingut del JSON de la resposta per quan es roti la pantalla */
+    private String jsonMessage = "";
 
 
     /* .: 2. CREACIÓ DE L'ACTIVITY :. */
@@ -88,8 +92,6 @@ public class WeatherActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         vincularElements();
-
-        // layout.setVisibility(View.GONE);
 
         mostrarAlertCiutat();
 
@@ -130,14 +132,14 @@ public class WeatherActivity extends AppCompatActivity {
     /** Mostra l'alert que permet introduir una ubicació per obtenir-ne el dels dades
      * meteorològiques. */
     private void mostrarAlertCiutat() {
-        AlertDialog alert = new AlertDialog.Builder(this).create();
-        alert.setTitle(getString(R.string.activity_weather_location));
+        searchAlert = new AlertDialog.Builder(this).create();
+        searchAlert.setTitle(getString(R.string.activity_weather_location));
 
         EditText edtLocation = new EditText(this);
-        alert.setView(edtLocation);
+        searchAlert.setView(edtLocation);
 
         // Botó positiu
-        alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
+        searchAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.alert_info_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
@@ -155,14 +157,14 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
         // Botó negatiu
-        alert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
+        searchAlert.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.alert_info_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
 
-        alert.show();
+        searchAlert.show();
     }
 
     /** Mostra un Snackbar de color vermell en la part superior de la pantalla
@@ -198,7 +200,32 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
 
-    /* .: 5. FUNCIONS PRÒPIES :. */
+    /* .: 5. CONTROL DE ROTACIÓ DE LA PANTALLA :. */
+    // Quan es rota la pantalla es guarda el contingut del json de la ciutat seleccionada
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
+        outState.putString("jsonMessage", jsonMessage);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    // Quan es torna a carregar l'activity, es recupera aquest json
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+
+        String jsonContent = savedInstanceState.getString("jsonMessage");
+
+        if (jsonContent.length() > 0) {
+            jsonMessage = jsonContent;
+            recuperarDadesCiutat(jsonContent);
+        }
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+
+    /* .: 6. FUNCIONS PRÒPIES :. */
     /** Permite vincular los elementos del layout con las variables de la activity */
     private void vincularElements() {
         layout = (LinearLayout) findViewById(R.id.layout_weather);
@@ -246,16 +273,17 @@ public class WeatherActivity extends AppCompatActivity {
                 progressDialog.setTitle(getString(R.string.activity_weather_processing_info));
 
                 // Es pasa la resposta a String
-                String jsonContentString = new String(responseBody);
+                jsonMessage = new String(responseBody);
                 JSONObject jsonResponse = null;
 
                 // Es converteix la resposta en un objecte JSON per poder
                 // treballar amb ell desde JAVA
                 try {
-                    jsonResponse = new JSONObject(jsonContentString);
+                    jsonResponse = new JSONObject(jsonMessage);
                 }
                 catch (Exception e) {
                     mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
+                    jsonMessage = "";
                     ocultarLayout(true);
                 }
 
@@ -268,6 +296,7 @@ public class WeatherActivity extends AppCompatActivity {
                     }
                     catch (Exception e) {
                         mostrarSnackBarError(getString(R.string.activity_weather_error_getting_info));
+                        jsonMessage = "";
                         ocultarLayout(true);
                     }
                 }
@@ -283,9 +312,27 @@ public class WeatherActivity extends AppCompatActivity {
 
                 mostrarSnackBarError(errorString);
                 ocultarLayout(true);
+                jsonMessage = "";
                 mostrarAlertCiutat();
             }
         });
+    }
+
+    private void recuperarDadesCiutat(String jsonContent) {
+
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = new JSONObject(jsonContent);
+            procesarJson(jsonObject);
+        }
+        catch (Exception e) {
+            ocultarLayout(true);
+            return;
+        }
+
+        searchAlert.hide();
+        ocultarLayout(false);
     }
 
     /** Procesa el JSON con la respuesta de OpenWeatherAPI
